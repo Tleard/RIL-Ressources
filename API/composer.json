@@ -12,6 +12,7 @@
         "symfony/yaml": "5.1.*"
     },
     "require-dev": {
+        "symfony/web-server-bundle": "^4.4.2"
     },
     "config": {
         "optimize-autoloader": true,
