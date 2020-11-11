@@ -28,9 +28,12 @@
         "symfony/twig-bundle": "5.1.*",
         "symfony/validator": "5.1.*",
         "symfony/web-server-bundle": "4.4",
-        "symfony/yaml": "5.1.*"
+        "symfony/yaml": "5.1.*",
+      "ext-json": "*",
+        "ext-http": "*"
     },
     "require-dev": {
+        "symfony/maker-bundle": "^1.23"
     },
     "config": {
         "optimize-autoloader": true,

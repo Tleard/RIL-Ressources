@@ -29,7 +29,7 @@ Mise en route de l'API
 Cette API n'inclue pas le package "web-server-bundle" de Symfony, pour pouvoir lancer le serveur il faut donc effectuer la commande PHP suivante :
 
 ```console
-user@Computer:[...]/RIL-Ressources/API$ php -S 127.0.0.1:8000
+user@Computer:[...]/RIL-Ressources/API$ php -S 127.0.0.1:8000 -t public/
 Listening on http://127.0.0.1:8000
 Document root is /var/www/html/RIL-Ressources/API
 Press Ctrl-C to quit.

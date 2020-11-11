@@ -1,15 +1,33 @@
 security:
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
+    encoders:
+        App\Entity\User: bcrypt
     providers:
-        users_in_memory: { memory: null }
+        #users_in_memory: { memory: null }
+        database:
+            entity:
+                class: App\Entity\User
+                property: username
+
     firewalls:
+        login:
+            pattern: api/login_check
+            stateless: true
+            anonymous: true
+            json_login:
+                check_path:     /api/login_check
+                success_handler: lexik_jwt_authentication.handler.authentication_success
+                failure_handler: lexik_jwt_authentication.handler.authentication_failure
+        api:
+            pattern: ^/api
+            stateless: true
+            guard:
+                authenticators:
+                    - lexik_jwt_authentication.jwt_token_authenticator
+
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
-        main:
-            anonymous: true
-            lazy: true
-            provider: users_in_memory
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#firewalls-authentication
