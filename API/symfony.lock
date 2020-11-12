@@ -98,6 +98,18 @@
     "fig/link-util": {
         "version": "1.1.1"
     },
+    "friendsofsymfony/rest-bundle": {
+        "version": "2.2",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "master",
+            "version": "2.2",
+            "ref": "cad41ef93d6150067ae2bb3c7fd729492dff6f0a"
+        },
+        "files": [
+            "config/packages/fos_rest.yaml"
+        ]
+    },
     "lcobucci/jwt": {
         "version": "3.3.3"
     },
@@ -240,6 +252,9 @@
             ".env"
         ]
     },
+    "symfony/form": {
+        "version": "v5.1.8"
+    },
     "symfony/framework-bundle": {
         "version": "5.1",
         "recipe": {
@@ -269,6 +284,9 @@
     "symfony/http-kernel": {
         "version": "v5.1.8"
     },
+    "symfony/intl": {
+        "version": "v5.1.8"
+    },
     "symfony/maker-bundle": {
         "version": "1.0",
         "recipe": {
@@ -285,6 +303,9 @@
         "version": "v2.0.0"
     },
     "symfony/polyfill-intl-grapheme": {
+        "version": "v1.20.0"
+    },
+    "symfony/polyfill-intl-icu": {
         "version": "v1.20.0"
     },
     "symfony/polyfill-intl-normalizer": {
@@ -420,6 +441,9 @@
     },
     "webmozart/assert": {
         "version": "1.9.1"
+    },
+    "willdurand/jsonp-callback-validator": {
+        "version": "v1.1.0"
     },
     "willdurand/negotiation": {
         "version": "v2.3.1"
