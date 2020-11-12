@@ -27,8 +27,8 @@ class User implements UserInterface
 
     /**
      * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="guid")
+     * @ORM\GeneratedValue(strategy="UUID")
+     * @ORM\Column(name="id", type="guid", unique=true)
      */
     private $id;
 
@@ -38,11 +38,21 @@ class User implements UserInterface
     private $username;
 
     /**
+     * @Assert\Regex(
+     *     pattern="/\d/",
+     *     match=false,
+     *     message="Your name cannot contain a number"
+     * )
      * @ORM\Column(type="string", length=255)
      */
     private $firstName;
 
     /**
+     * @Assert\Regex(
+     *     pattern="/\d/",
+     *     match=false,
+     *     message="Your name cannot contain a number"
+     * )
      * @ORM\Column(type="string", length=255)
      */
     private $lastName;
@@ -51,13 +61,18 @@ class User implements UserInterface
      * @ORM\Column(type="string", length=255)
      * @Assert\Regex(
      *     pattern="/(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).{7,}/",
-     *     message="Password must be seven characters long and contain at least one digit, one upper case letter and one lower case letter",
-     *     groups={"post"}
+     *     match=false,
+     *     message="Password must be seven characters long and contain at least one digit, one upper case letter and one lower case letter"
      * )
      */
     private $password;
 
+    private $retypedPassword;
+
     /**
+     * @Assert\Email(
+     *     message = "The email '{{ value }}' is not a valid email."
+     * )
      * @ORM\Column(type="string", length=255)
      */
     private $email;
@@ -67,7 +82,7 @@ class User implements UserInterface
      */
     private $createdAt;
 
-    public function getId(): ?int
+    public function getId(): ?string
     {
         return $this->id;
     }
@@ -89,7 +104,7 @@ class User implements UserInterface
         return $this->firstName;
     }
 
-    public function setFirstName(string $firstName): self
+    public function setFirstName(string $firstName)
     {
         $this->firstName = $firstName;
 
@@ -143,6 +158,24 @@ class User implements UserInterface
 
         return $this;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getRetypedPassword()
+    {
+        return $this->retypedPassword;
+    }
+
+    /**
+     * @param mixed $retypedPassword
+     */
+    public function setRetypedPassword($retypedPassword): void
+    {
+        $this->retypedPassword = $retypedPassword;
+    }
+
+
 
     public function getRoles()
     {
