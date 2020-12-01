@@ -10,14 +10,13 @@ use Exception;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
 use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 use Symfony\Component\Form\Form;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
-use Symfony\Component\Serializer\Encoder\JsonEncoder;
-use Symfony\Component\Serializer\Encoder\XmlEncoder;
-use Symfony\Component\Serializer\Serializer;
-use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use FOS\RestBundle\View\View as FosRestView;
+use Symfony\Component\HttpFoundation\Response;
 
 
 class UsersController extends AbstractFOSRestController
@@ -54,26 +53,15 @@ class UsersController extends AbstractFOSRestController
      * @Route(name="register", path="/register", methods={"POST"})
      * @param Request $request
      * @param UserPasswordEncoderInterface $encoder
-     * @return JsonResponse $user
+     * @return FosRestView|Response
      * @throws Exception
      */
     public function registerAction(Request $request, UserPasswordEncoderInterface $encoder)
     {
-        $encoders = [new XmlEncoder(), new JsonEncoder()];
-        $normalizers = [new ObjectNormalizer()];
-
-
-        $serializer = new Serializer( $normalizers, $encoders);
 
         $data = json_decode($request->getContent(), true);
 
         $user = new User;
-        /*$user->setUsername($data['username']);
-        $user->setFirstName($data['first_name']);
-        $user->setLastName($data['last_name']);
-        $user->setEmail($data['email']);
-        $user->setPassword($data['password']);*/
-
 
         $em = $this->getDoctrine()->getManager();
         $user->setCreatedAt(new \DateTime());
@@ -87,19 +75,50 @@ class UsersController extends AbstractFOSRestController
         //Encoded password using sodium algorithm
         $data['password'] = $encoder->encodePassword($user, $data['password']);
 
-        $form = $this->get('form.factory')->create(UserType::class, $user);
+        try {
+            $form = $this->createForm(UserType::class, $user);
 
+            /** @var Form $form*/
+            $form->submit($data);
 
-        /** @var Form $form*/
-        $form->submit($data);
+            if (!$form->isValid())
+            {
+                $errors = array();
 
-        if ($form->isSubmitted())
-        {
-            $em->persist($user);
-            $em->flush();
+                //Parse errors to print in Json format
+                foreach ($form->getErrors() as $error) {
+                    $errors[$form->getName()][] = $error->getMessage();
+                }
+
+                foreach ($form as $child /** @var Form $child */) {
+                    if (!$child->isValid()) {
+                        foreach ($child->getErrors() as $error) {
+                            $errors[$child->getName()][] = $error->getMessage();
+                        }
+                    }
+                }
+
+                return new JsonResponse([
+                    500,
+                    $errors
+                ]);
+            }
+
+            if ($form->isSubmitted())
+            {
+                $em->persist($user);
+                $em->flush();
+            }
+
+            return new JsonResponse([
+                200,
+                'User : ' . $data['username'] . ' created'
+            ]);
+
+            //return $user;
+        } catch (\Exception $exception) {
+            return new JsonResponse(['message' => $exception->getMessage()], Response::HTTP_BAD_REQUEST);
         }
-
-        return $this->json($user);
 
     }
 

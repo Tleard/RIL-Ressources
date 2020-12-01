@@ -7,6 +7,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Constraints\Valid;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
@@ -61,8 +63,8 @@ class User implements UserInterface
      * @ORM\Column(type="string", length=255)
      * @Assert\Regex(
      *     pattern="/(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).{7,}/",
-     *     match=false,
-     *     message="Password must be seven characters long and contain at least one digit, one upper case letter and one lower case letter"
+     *     match=true,
+     *     message="Password must be seven characters long and contain at least one digit, one upper case letter and one lower case letter",
      * )
      */
     private $password;
@@ -174,8 +176,6 @@ class User implements UserInterface
     {
         $this->retypedPassword = $retypedPassword;
     }
-
-
 
     public function getRoles()
     {

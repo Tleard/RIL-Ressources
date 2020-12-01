@@ -3,17 +3,12 @@
 namespace App\Form;
 
 use App\Entity\User;
-use FOS\RestBundle\Validator\Constraints\Regex;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\Email;
-use Symfony\Component\Validator\Constraints\Length;
-use Symfony\Component\Validator\Constraints\NotBlank;
-use Symfony\Component\Validator\Constraints\Unique;
 
 class UserType extends AbstractType
 {
@@ -21,42 +16,22 @@ class UserType extends AbstractType
     {
         $builder
             ->add('username', TextType::class, [
-                'required' => true,
-                'constraints' => new Unique()
+                'required' => true
             ])
             ->add('first_name', TextType::class, [
-                'required' => true,
-                'constraints' => [
-                    new NotBlank(),
-                    new Regex('/^[a-zA-Z]*$/')
-                ]
+                'required' => true
             ])
             ->add('last_name', TextType::class, [
-                'required' => true,
-                'constraints' => [
-                    new Regex('/^[a-zA-Z]*$/')
-                ]
+                'required' => true
             ])
             ->add('password', PasswordType::class, [
-                'required' => true,
-                'constraints' => [
-                    New NotBlank(),
-                    New Regex('/(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).{7,}/')
-                ]
+                'required' => true
             ])
             ->add('retyped_password', PasswordType::class, [
-                'required' => true,
-                'constraints' => [
-                    New NotBlank(),
-                    New Regex('/(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).{7,}/')
-                ]
+                'required' => true
             ])
             ->add('email', EmailType::class, [
-                'required' => true,
-                'constraints' => [
-                    new NotBlank(),
-                    new Email()
-                ]
+                'required' => true
             ])
         ;
     }
@@ -65,6 +40,7 @@ class UserType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => User::class,
+            'csrf_protection' => false
         ]);
     }
 }
