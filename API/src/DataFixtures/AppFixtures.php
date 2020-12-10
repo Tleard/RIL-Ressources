@@ -11,10 +11,9 @@ class AppFixtures extends Fixture
 {
     public function load(ObjectManager $manager)
     {
-        // $product = new Product();
-        // $manager->persist($product);
         $faker = Faker::create('fr_FR');
-        for($i=0 ; $i < 10; $i++) {
+        for($i=0 ; $i < 10; $i++)
+        {
             $user = new User();
             $user
                 ->setUsername($faker->userName)

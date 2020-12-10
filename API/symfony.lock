@@ -70,7 +70,7 @@
             "ref": "e5b542d4ef47d8a003c91beb35650c76907f7e53"
         },
         "files": [
-            "./src/DataFixtures/AppFixtures.php"
+            "src/DataFixtures/AppFixtures.php"
         ]
     },
     "doctrine/doctrine-migrations-bundle": {
