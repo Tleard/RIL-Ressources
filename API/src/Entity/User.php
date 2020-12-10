@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -18,13 +19,19 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
 class User implements UserInterface
 {
 
+    const ROLE_USER = 'ROLE_USER';
+    const ROLE_ADMIN = 'ROLE_ADMIN';
+    const ROLE_MODERATOR = 'ROLE_MODERATOR';
+
+    const DEFAULT_ROLES = [self::ROLE_USER];
+
     /**
      * @ORM\PrePersist()
      * @throws \Exception
      */
     public function prePersist()
     {
-        $this->createdAt = new \DateTime();
+        $this->createdAt = new DateTime();
     }
 
     /**
@@ -83,6 +90,16 @@ class User implements UserInterface
      * @ORM\Column(type="datetime")
      */
     private $createdAt;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isBanned;
+
+    /**
+     * @ORM\Column(type="array")
+     */
+    private $roles;
 
     public function getId(): ?string
     {
@@ -170,16 +187,31 @@ class User implements UserInterface
     }
 
     /**
-     * @param mixed $retypedPassword
+     * @return mixed
      */
-    public function setRetypedPassword($retypedPassword): void
+    public function getIsBanned()
     {
-        $this->retypedPassword = $retypedPassword;
+        return $this->isBanned;
     }
 
-    public function getRoles()
+    /**
+     * @param mixed $isBanned
+     */
+    public function setIsBanned($isBanned): void
     {
-        // TODO: Implement getRoles() method.
+        $this->isBanned = $isBanned;
+    }
+
+    public function getRoles(): array
+    {
+        return $this->roles;
+    }
+
+    public function setRoles($roles): self
+    {
+        $this->roles = $roles;
+
+        return $this;
     }
 
     public function getSalt()

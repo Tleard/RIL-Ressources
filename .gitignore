@@ -16,3 +16,5 @@ API/.env
 /config/jwt/*.pem
 ###< lexik/jwt-authentication-bundle ###
 .idea/
+
+API/.env_example
