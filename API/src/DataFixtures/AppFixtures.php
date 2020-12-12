@@ -10,6 +10,7 @@ use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
 use Faker\Factory as Faker;
 use App\Entity\User;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class AppFixtures extends Fixture
 {
@@ -19,9 +20,15 @@ class AppFixtures extends Fixture
      */
     private $faker;
 
-    public function __construct()
+    /**
+     * @var UserPasswordEncoderInterface
+     */
+    private $passwordEncoder;
+
+    public function __construct(UserPasswordEncoderInterface $passwordEncoder)
     {
         $this->faker = Factory::create('fr_FR');
+        $this->passwordEncoder = $passwordEncoder;
     }
 
     private const USERS = [
@@ -115,11 +122,15 @@ class AppFixtures extends Fixture
     {
         foreach (self::USERS as $userFixture) {
             $user = new User();
+            $password = $this->passwordEncoder->encodePassword($user, $userFixture['password']);
+
             $user->setUsername($userFixture['username']);
             $user->setFirstName($userFixture['first_name']);
             $user->setLastName($userFixture['last_name']);
             $user->setEmail($userFixture['email']);
-            $user->setPassword($userFixture['password']);
+            $user->setPassword(
+                $this->passwordEncoder->encodePassword($user, $password)
+            );
             $user->setRoles($userFixture['roles']);
             $user->setIsBanned(false);
             $user->setCreatedAt($this->faker->dateTime());
