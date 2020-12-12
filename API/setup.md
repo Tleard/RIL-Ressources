@@ -48,6 +48,25 @@ JWT_PUBLIC_KEY=%kernel.project_dir%/config/jwt/public.pem
 JWT_PASSPHRASE=VOTREMOTDEPASSE
 ```
 
+Installation de la BDD
+--------------
+
+L'installation de la base de données se fait avec Doctrine.
+
+Vérifier dans votre fichier **.env** la syntaxe de la ligne suivante
+```dotenv
+DATABASE_URL=mysql://MYSQL_USER:PASSWORD@127.0.0.1:3306/DB_NAME
+```
+_Pensez à changer les informations présentes dans cette ligne avec vos informations de BDD et le 
+nom de la nouvelle BDD qui sera créé par Doctrine_
+
+```bash
+user@Computer:/var/www/html/RIL-Ressources/API$ php bin/console doctrine:dabatase:create
+user@Computer:/var/www/html/RIL-Ressources/API$ php bin/console doctrine:schema:update --force
+```
+
+
+
 Mise en route de l'API
 --------------
 Cette API n'inclue pas le package "web-server-bundle" de Symfony, pour pouvoir lancer le serveur il faut donc effectuer la commande PHP suivante :

@@ -52,4 +52,33 @@ class ResourcesController extends AbstractController
         $response->headers->set('Content-Type', 'application/json');
         return $response;
     }
+
+    /**
+     * @Rest\Get(
+     *     path = "/api/resources",
+     *     name = "list_resource"
+     * )
+     * @param Request $request
+     * @return FosRestView|Response
+     */
+    public function listAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        try {
+            $qb = $em->getRepository(Resources::class)
+                ->createQueryBuilder('r');
+
+            $resources = $qb->getQuery()->getArrayResult();
+
+
+        } catch (NonUniqueResultException $nonUniqueResultException) {
+            return FosRestView::create(['message' => 'Non unique result'], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+
+        $response = new Response(json_encode($resources));
+        $response->headers->set('Content-Type', 'application/json');
+        return $response;
+
+    }
 }
