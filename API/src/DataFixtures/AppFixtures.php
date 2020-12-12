@@ -128,9 +128,7 @@ class AppFixtures extends Fixture
             $user->setFirstName($userFixture['first_name']);
             $user->setLastName($userFixture['last_name']);
             $user->setEmail($userFixture['email']);
-            $user->setPassword(
-                $this->passwordEncoder->encodePassword($user, $password)
-            );
+            $user->setPassword($password);
             $user->setRoles($userFixture['roles']);
             $user->setIsBanned(false);
             $user->setCreatedAt($this->faker->dateTime());
