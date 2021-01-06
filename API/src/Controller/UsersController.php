@@ -42,9 +42,8 @@ class UsersController extends AbstractFOSRestController
             return new JsonResponse(['token' => $JWTManager->create($user)]);
         } else {
             return new JsonResponse([
-                401,
                 'message' => "Invalid Credentials."
-                ]);
+                ], Response::HTTP_UNAUTHORIZED);
         }
 
     }
@@ -99,9 +98,8 @@ class UsersController extends AbstractFOSRestController
                 }
 
                 return new JsonResponse([
-                    500,
                     $errors
-                ]);
+                ], Response::HTTP_BAD_REQUEST);
             }
 
             if ($form->isSubmitted())
@@ -111,9 +109,8 @@ class UsersController extends AbstractFOSRestController
             }
 
             return new JsonResponse([
-                200,
-                'User : ' . $data['username'] . ' created'
-            ]);
+                $user
+            ], Response::HTTP_CREATED);
 
             //return $user;
         } catch (\Exception $exception) {
