@@ -82,10 +82,10 @@ class ResourcesController extends AbstractController
 
     }
 
-    public function createRessourcesAction(Request $request)
+    /*public function createRessourcesAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
 
 
-    }
+    }*/
 }
