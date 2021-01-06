@@ -2,9 +2,9 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\Resources;
-use App\Entity\ResourcesCategory;
-use App\Entity\ResourcesStatus;
+use App\Entity\Resource;
+use App\Entity\ResourceCategory;
+use App\Entity\ResourceStatus;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
@@ -70,14 +70,13 @@ class AppFixtures extends Fixture
         $this->loadResourcesCategories($manager);
         $this->loadResourcesStatus($manager);
         $this->loadResources($manager);
-
     }
 
     public function loadResourcesCategories(ObjectManager $manager)
     {
         $i = 0;
         foreach (self::CATEGORIES as $resourcesCategories) {
-            $category = new ResourcesCategory();
+            $category = new ResourceCategory();
             $category->setName($resourcesCategories);
             $i++;
             $this->setReference("category_" . $i, $category);
@@ -91,7 +90,7 @@ class AppFixtures extends Fixture
     {
         $i = 0;
         foreach (self::STATUS as $resourcesStatus) {
-            $status = new ResourcesStatus();
+            $status = new ResourceStatus();
             $status->setName($resourcesStatus);
             $this->setReference("status_" . $i, $status);
             $i++;
@@ -105,13 +104,15 @@ class AppFixtures extends Fixture
     public function loadResources(ObjectManager $manager)
     {
         for ($i = 0; $i < 100; $i++) {
-            $resource = new Resources();
+            $resource = new Resource();
             $resource->setTitle($this->faker->realText(20, 5));
             $resource->setDescription($this->faker->realText(200, 5));
             $resource->setStatus($this->getReference("status_" . rand(1, sizeof(self::STATUS) -1)));
 
             //Todo: Improve setCategories to have multiple categories
             $resource->setCategories($this->getReference("category_" . rand(1, sizeof(self::CATEGORIES) -1)));
+
+            $resource->setAuthor($this->getReference("user_" . rand(1, sizeof(self::USERS) -1)));
             //Todo: Add Template Assets
             $manager->persist($resource);
         }
@@ -120,6 +121,7 @@ class AppFixtures extends Fixture
 
     public function loadUsers(ObjectManager $manager)
     {
+        $i = 0;
         foreach (self::USERS as $userFixture) {
             $user = new User();
             $password = $this->passwordEncoder->encodePassword($user, $userFixture['password']);
@@ -133,8 +135,8 @@ class AppFixtures extends Fixture
             $user->setIsBanned(false);
             $user->setCreatedAt($this->faker->dateTime());
 
-            $this->setReference('user_' . $userFixture['username'], $user);
-
+            $this->setReference('user_' . $i, $user);
+            $i++;
             $manager->persist($user);
         }
         $manager->flush();

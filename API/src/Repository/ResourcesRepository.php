@@ -2,25 +2,25 @@
 
 namespace App\Repository;
 
-use App\Entity\Resources;
+use App\Entity\Resource;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @method Resources|null find($id, $lockMode = null, $lockVersion = null)
- * @method Resources|null findOneBy(array $criteria, array $orderBy = null)
- * @method Resources[]    findAll()
- * @method Resources[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Resource|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Resource|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Resource[]    findAll()
+ * @method Resource[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class ResourcesRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Resources::class);
+        parent::__construct($registry, Resource::class);
     }
 
     // /**
-    //  * @return Resources[] Returns an array of Resources objects
+    //  * @return Resource[] Returns an array of Resource objects
     //  */
     /*
     public function findByExampleField($value)
@@ -37,7 +37,7 @@ class ResourcesRepository extends ServiceEntityRepository
     */
 
     /*
-    public function findOneBySomeField($value): ?Resources
+    public function findOneBySomeField($value): ?Resource
     {
         return $this->createQueryBuilder('u')
             ->andWhere('u.exampleField = :val')

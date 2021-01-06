@@ -7,12 +7,12 @@ use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Class Resources
+ * Class Resource
  * @package App\Entity
  * @ORM\Table(name="resources")
  * @ORM\Entity(repositoryClass="App\Repository\ResourcesRepository")
  */
-class Resources
+class Resource
 {
     public function __construct()
     {
@@ -33,18 +33,18 @@ class Resources
     private $title;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\ResourcesType")
+     * @ORM\ManyToOne(targetEntity="App\Entity\ResourceType")
      */
     private $type;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\ResourcesCategory", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="App\Entity\ResourceCategory", cascade={"persist"})
      * @ORM\JoinColumn(name="categories_id", referencedColumnName="id", nullable=true)
      */
     private $categories;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\ResourcesAsset")
+     * @ORM\ManyToOne(targetEntity="App\Entity\ResourceAsset")
      * @ORM\JoinColumn(name="assets_id", referencedColumnName="id", nullable=true)
      */
     private $assets;
@@ -60,10 +60,16 @@ class Resources
     private $creation_date;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\ResourcesStatus", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="App\Entity\ResourceStatus", cascade={"persist"})
      * @ORM\JoinColumn(name="status_id", referencedColumnName="id", nullable=true)
      */
     private $status;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", cascade={"persist"})
+     * @ORM\JoinColumn(name="author_id", referencedColumnName="id", nullable=true)
+     */
+    private $author;
 
     /**
      * @return mixed
@@ -75,9 +81,9 @@ class Resources
 
     /**
      * @param mixed $id
-     * @return Resources
+     * @return Resource
      */
-    public function setId($id): Resources
+    public function setId($id): Resource
     {
         $this->id = $id;
         return $this;
@@ -93,9 +99,9 @@ class Resources
 
     /**
      * @param mixed $title
-     * @return Resources
+     * @return Resource
      */
-    public function setTitle($title): Resources
+    public function setTitle($title): Resource
     {
         $this->title = $title;
         return $this;
@@ -111,9 +117,9 @@ class Resources
 
     /**
      * @param mixed $type
-     * @return Resources
+     * @return Resource
      */
-    public function setType($type): Resources
+    public function setType($type): Resource
     {
         $this->type = $type;
         return $this;
@@ -129,9 +135,9 @@ class Resources
 
     /**
      * @param mixed $categories
-     * @return Resources
+     * @return Resource
      */
-    public function setCategories($categories): Resources
+    public function setCategories($categories): Resource
     {
         $this->categories = $categories;
         return $this;
@@ -147,9 +153,9 @@ class Resources
 
     /**
      * @param mixed $assets
-     * @return Resources
+     * @return Resource
      */
-    public function setAssets($assets): Resources
+    public function setAssets($assets): Resource
     {
         $this->assets = $assets;
         return $this;
@@ -165,9 +171,9 @@ class Resources
 
     /**
      * @param mixed $description
-     * @return Resources
+     * @return Resource
      */
-    public function setDescription($description): Resources
+    public function setDescription($description): Resource
     {
         $this->description = $description;
         return $this;
@@ -176,16 +182,16 @@ class Resources
     /**
      * @return mixed
      */
-    public function getCreationDate()
+    public function getCreationDate(): DateTime
     {
         return $this->creation_date;
     }
 
     /**
      * @param mixed $creation_date
-     * @return Resources
+     * @return Resource
      */
-    public function setCreationDate($creation_date): Resources
+    public function setCreationDate($creation_date): Resource
     {
         $this->creation_date = $creation_date;
         return $this;
@@ -201,12 +207,28 @@ class Resources
 
     /**
      * @param mixed $status
-     * @return Resources
+     * @return Resource
      */
-    public function setStatus($status): Resources
+    public function setStatus($status): Resource
     {
         $this->status = $status;
         return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAuthor()
+    {
+        return $this->author;
+    }
+
+    /**
+     * @param mixed $author
+     */
+    public function setAuthor($author): void
+    {
+        $this->author = $author;
     }
 
 }

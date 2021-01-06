@@ -29,6 +29,14 @@ Installation
 
 **Les instructions pour l'installation de la plateforme se situe sur le fichier [setup.md][4]**
 
+## Branches
+
+Les branches doivent commencer par un des préfixes suivants :
+* feature/
+* fix/
+* refactor/
+* testing/
+
 ------------
 
 Enjoy ;)
