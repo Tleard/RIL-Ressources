@@ -37,12 +37,12 @@ class Resource
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\ResourceType")
+     * @ORM\JoinColumn(name="type_id", referencedColumnName="id")
      */
     private $type;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\ResourceCategory", cascade={"persist"})
-     * @ORM\JoinColumn(name="categories_id", referencedColumnName="id", nullable=true)
      */
     private $categories;
 

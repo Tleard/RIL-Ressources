@@ -103,9 +103,12 @@ class ResourcesController extends AbstractController
 
         $resource = new Resource();
 
-        //Todo : Improve
+        //Default Status
         $resource->setStatus($em->getRepository(ResourceStatus::class)->findOneBy(['name' => 'queued']));
-        $resource->setCategories($em->getRepository(ResourceCategory::class)->findOneBy(['name' => $data['categories']]));
+
+        //Todo : Improve
+        //Set Data
+        $resource->setCategories($em->getRepository(ResourceCategory::class)->findBy(['name' => $data['categories']]));
         $resource->setType($em->getRepository(ResourceType::class)->findOneBy(['type_name' => $data['type']]));
         $resource->setAuthor($this->getUser());
 

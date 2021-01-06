@@ -4,6 +4,7 @@
 namespace App\Form;
 
 
+use App\Entity\ResourceCategory;
 use App\Entity\ResourceType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -21,7 +22,9 @@ class ResourcesType extends AbstractType
                 'class' => ResourceType::class,
                 'required' => true
             ])
-            ->add('categories', CollectionType::class, [
+            ->add('categories', EntityType::class, [
+                'class' => ResourceCategory::class,
+                'multiple' => true,
                 'required' => true
             ])
             ->add('title', TextType::class, [
