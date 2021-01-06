@@ -2,25 +2,25 @@
 
 namespace App\Repository;
 
-use App\Entity\ResourceCategory;
+use App\Entity\ResourceStatus;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @method ResourceCategory|null find($id, $lockMode = null, $lockVersion = null)
- * @method ResourceCategory|null findOneBy(array $criteria, array $orderBy = null)
- * @method ResourceCategory[]    findAll()
- * @method ResourceCategory[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method ResourceStatus|null find($id, $lockMode = null, $lockVersion = null)
+ * @method ResourceStatus|null findOneBy(array $criteria, array $orderBy = null)
+ * @method ResourceStatus[]    findAll()
+ * @method ResourceStatus[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class ResourcesStatusRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, ResourceCategory::class);
+        parent::__construct($registry, ResourceStatus::class);
     }
 
     // /**
-    //  * @return ResourceCategory[] Returns an array of ResourceCategory objects
+    //  * @return ResourceStatus[] Returns an array of ResourceStatus objects
     //  */
     /*
     public function findByExampleField($value)
@@ -37,7 +37,7 @@ class ResourcesStatusRepository extends ServiceEntityRepository
     */
 
     /*
-    public function findOneBySomeField($value): ?ResourceCategory
+    public function findOneBySomeField($value): ?ResourceStatus
     {
         return $this->createQueryBuilder('u')
             ->andWhere('u.exampleField = :val')

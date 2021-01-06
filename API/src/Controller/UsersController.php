@@ -5,7 +5,7 @@ namespace App\Controller;
 
 
 use App\Entity\User;
-use App\Form\UserType;
+use App\Form\UsersType;
 use Exception;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
 use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
@@ -76,7 +76,7 @@ class UsersController extends AbstractFOSRestController
         $data['password'] = $encoder->encodePassword($user, $data['password']);
 
         try {
-            $form = $this->createForm(UserType::class, $user);
+            $form = $this->createForm(UsersType::class, $user);
 
             /** @var Form $form*/
             $form->submit($data);

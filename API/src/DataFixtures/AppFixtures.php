@@ -52,6 +52,7 @@ class AppFixtures extends Fixture
 
     private const STATUS = [
         "draft",
+        "queued",
         "archived",
         "validated",
         "banned"
@@ -63,6 +64,7 @@ class AppFixtures extends Fixture
         "humor",
         "spiritual",
     ];
+
 
     public function load(ObjectManager $manager)
     {

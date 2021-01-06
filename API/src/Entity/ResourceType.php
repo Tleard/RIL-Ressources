@@ -6,7 +6,7 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Class ResourceType
+ * Class ResourcesType
  * @package App\Entity
  * @ORM\Table("ressources_types")
  * @ORM\Entity(repositoryClass="App\Repository\ResourcesTypeRepository")
