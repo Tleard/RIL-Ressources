@@ -7,12 +7,12 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
- * Class ResourcesCategory
+ * Class ResourceCategory
  * @package App\Entity
- * @ORM\Table(name="resources_status")
- * @ORM\Entity(repositoryClass="App\Repository\ResourcesStatusRepository")
+ * @ORM\Table(name="resources_categories")
+ * @ORM\Entity(repositoryClass="App\Repository\ResourcesCategoryRepository")
  */
-class ResourcesStatus
+class ResourceCategory
 {
     /**
      * @ORM\Id
@@ -34,7 +34,6 @@ class ResourcesStatus
         return $this->id;
     }
 
-
     /**
      * @return mixed
      */
@@ -45,7 +44,7 @@ class ResourcesStatus
 
     /**
      * @param mixed $name
-     * @return ResourcesStatus
+     * @return ResourceCategory
      */
     public function setName($name)
     {

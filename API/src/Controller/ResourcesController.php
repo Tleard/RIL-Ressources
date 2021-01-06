@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Entity\Resources;
+use App\Entity\Resource;
 use App\Repository\ResourcesRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use FOS\RestBundle\Context\Context;
@@ -25,7 +25,7 @@ class ResourcesController extends AbstractController
      * @param Request $request
      * @return FosRestView|Response
      */
-    public function showAction(Request $request) :Response
+    public function showResourcesAction(Request $request) :Response
     {
         if ($request->get('id') == '{id}') {
             return FosRestView::create(
@@ -37,7 +37,7 @@ class ResourcesController extends AbstractController
         $em = $this->getDoctrine()->getManager();
 
         try {
-            $qb = $em->getRepository(Resources::class)
+            $qb = $em->getRepository(Resource::class)
                 ->createQueryBuilder('r');
 
             $qb->where('r.id = :id')->setParameter('id', $request->get('id'));
@@ -61,12 +61,12 @@ class ResourcesController extends AbstractController
      * @param Request $request
      * @return FosRestView|Response
      */
-    public function listAction(Request $request)
+    public function listResourcesAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
 
         try {
-            $qb = $em->getRepository(Resources::class)
+            $qb = $em->getRepository(Resource::class)
                 ->createQueryBuilder('r');
 
             $resources = $qb->getQuery()->getArrayResult();
@@ -81,4 +81,11 @@ class ResourcesController extends AbstractController
         return $response;
 
     }
+
+    /*public function createRessourcesAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+
+    }*/
 }

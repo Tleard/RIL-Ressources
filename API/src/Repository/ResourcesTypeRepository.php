@@ -2,25 +2,25 @@
 
 namespace App\Repository;
 
-use App\Entity\ResourcesType;
+use App\Entity\ResourceType;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @method ResourcesType|null find($id, $lockMode = null, $lockVersion = null)
- * @method ResourcesType|null findOneBy(array $criteria, array $orderBy = null)
- * @method ResourcesType[]    findAll()
- * @method ResourcesType[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method ResourceType|null find($id, $lockMode = null, $lockVersion = null)
+ * @method ResourceType|null findOneBy(array $criteria, array $orderBy = null)
+ * @method ResourceType[]    findAll()
+ * @method ResourceType[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class ResourcesTypeRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, ResourcesType::class);
+        parent::__construct($registry, ResourceType::class);
     }
 
     // /**
-    //  * @return ResourcesType[] Returns an array of ResourcesType objects
+    //  * @return ResourceType[] Returns an array of ResourceType objects
     //  */
     /*
     public function findByExampleField($value)
@@ -37,7 +37,7 @@ class ResourcesTypeRepository extends ServiceEntityRepository
     */
 
     /*
-    public function findOneBySomeField($value): ?ResourcesType
+    public function findOneBySomeField($value): ?ResourceType
     {
         return $this->createQueryBuilder('u')
             ->andWhere('u.exampleField = :val')
