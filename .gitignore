@@ -8,6 +8,7 @@ API/.env
 /.env.*.local
 /config/secrets/prod/prod.decrypt.private.php
 /public/bundles/
+/public/images/uploads/
 /var/
 /vendor/
 ###< symfony/framework-bundle ###

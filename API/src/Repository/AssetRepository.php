@@ -2,25 +2,25 @@
 
 namespace App\Repository;
 
-use App\Entity\ResourceAsset;
+use App\Entity\Asset;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @method ResourceAsset|null find($id, $lockMode = null, $lockVersion = null)
- * @method ResourceAsset|null findOneBy(array $criteria, array $orderBy = null)
- * @method ResourceAsset[]    findAll()
- * @method ResourceAsset[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Asset|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Asset|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Asset[]    findAll()
+ * @method Asset[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class ResourcesAssetRepository extends ServiceEntityRepository
+class AssetRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, ResourceAsset::class);
+        parent::__construct($registry, Asset::class);
     }
 
     // /**
-    //  * @return ResourceAsset[] Returns an array of ResourceAsset objects
+    //  * @return Asset[] Returns an array of Asset objects
     //  */
     /*
     public function findByExampleField($value)
@@ -37,7 +37,7 @@ class ResourcesAssetRepository extends ServiceEntityRepository
     */
 
     /*
-    public function findOneBySomeField($value): ?ResourceAsset
+    public function findOneBySomeField($value): ?Asset
     {
         return $this->createQueryBuilder('u')
             ->andWhere('u.exampleField = :val')

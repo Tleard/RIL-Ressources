@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Repository\UserRepository;
 use DateTime;
+use Exception;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -67,6 +69,12 @@ class User implements UserInterface
     private $lastName;
 
     /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Asset", cascade={"persist"})
+     */
+    private $profilePicture;
+
+    /**
+     * @Groups({"password-protected"})
      * @ORM\Column(type="string", length=255)
      * @Assert\Regex(
      *     pattern="/(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).{7,}/",
@@ -74,9 +82,9 @@ class User implements UserInterface
      *     message="Password must be seven characters long and contain at least one digit, one upper case letter and one lower case letter",
      * )
      */
-    private $password;
+    protected $password;
 
-    private $retypedPassword;
+    protected $retypedPassword;
 
     /**
      * @Assert\Email(
@@ -100,6 +108,7 @@ class User implements UserInterface
      * @ORM\Column(type="array")
      */
     private $roles;
+
 
     public function getId(): ?string
     {
@@ -140,11 +149,6 @@ class User implements UserInterface
         $this->lastName = $lastName;
 
         return $this;
-    }
-
-    public function getPassword(): ?string
-    {
-        return $this->password;
     }
 
     public function setPassword(string $password): self
@@ -214,6 +218,22 @@ class User implements UserInterface
         return $this;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getProfilePicture()
+    {
+        return $this->profilePicture;
+    }
+
+    /**
+     * @param mixed $profilePicture
+     */
+    public function setProfilePicture($profilePicture): void
+    {
+        $this->profilePicture = $profilePicture;
+    }
+
     public function getSalt()
     {
         // TODO: Implement getSalt() method.
@@ -222,5 +242,13 @@ class User implements UserInterface
     public function eraseCredentials()
     {
         // TODO: Implement eraseCredentials() method.
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getPassword()
+    {
+        //Useless.
     }
 }

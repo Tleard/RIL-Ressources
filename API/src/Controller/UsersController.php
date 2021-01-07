@@ -33,19 +33,21 @@ class UsersController extends AbstractFOSRestController
     {
         $repository = $this->getDoctrine()->getRepository(User::class);
 
+        $em = $this->getDoctrine()->getManager();
         $data = json_decode($request->getContent(), true);
 
         /** @var User $user */
         $user = $repository->findOneBy(["username" => $data['username']]);
 
-        if ($user->getPassword() == $encoder->encodePassword($user, $data['password'])){
+        $userPassword = $em->getRepository(User::class)->findOneByUserForPassword($data['username']);
+
+        if ($userPassword == $encoder->encodePassword($user, $data['password'])){
             return new JsonResponse(['token' => $JWTManager->create($user)]);
         } else {
             return new JsonResponse([
                 'message' => "Invalid Credentials."
                 ], Response::HTTP_UNAUTHORIZED);
         }
-
     }
 
     /**

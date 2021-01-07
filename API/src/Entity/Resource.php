@@ -20,6 +20,7 @@ class Resource
     {
         $this->createdAt = new DateTime();
         $this->categories = new ArrayCollection();
+        $this->assets = new ArrayCollection();
     }
 
 
@@ -47,13 +48,12 @@ class Resource
     private $categories;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\ResourceAsset")
-     * @ORM\JoinColumn(name="assets_id", referencedColumnName="id", nullable=true)
+     * @ORM\ManyToMany(targetEntity="App\Entity\Asset", cascade={"persist"})
      */
     private $assets;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=500)
      */
     private $description;
 
@@ -147,6 +147,12 @@ class Resource
         return $this;
     }
 
+    public function addCategories($categories)
+    {
+        $this->categories->add($categories);
+        return $this;
+    }
+
     /**
      * @return mixed
      */
@@ -162,6 +168,12 @@ class Resource
     public function setAssets($assets): Resource
     {
         $this->assets = $assets;
+        return $this;
+    }
+
+    public function addAssets($assets): Resource
+    {
+        $this->assets->add($assets);
         return $this;
     }
 

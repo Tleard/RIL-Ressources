@@ -2,19 +2,25 @@
 
 namespace App\Controller;
 
+use App\Entity\Asset;
 use App\Entity\Resource;
 use App\Entity\ResourceCategory;
 use App\Entity\ResourceStatus;
 use App\Entity\ResourceType;
 use App\Entity\User;
 use App\Form\ResourcesType;
+use App\Service\FileManager;
 use Doctrine\ORM\NonUniqueResultException;
 use Exception;
-use FOS\RestBundle\Context\Context;
+use Faker\Provider\File;
+use JMS\Serializer\SerializationContext;
+use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Uid\Uuid;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\View\View;
 use FOS\RestBundle\View\View as FosRestView;
 use Symfony\Component\Form\Form;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -58,9 +64,15 @@ class ResourcesController extends AbstractController
             return FosRestView::create(['message' => 'Non unique result'], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
 
-        $response = new Response(json_encode($resources));
-        $response->headers->set('Content-Type', 'application/json');
-        return $response;
+        if (empty($resources))
+        {
+            return New JsonResponse([
+                "Resource " . $request->get('id') ." could not be found"],
+                Response::HTTP_NOT_FOUND);
+        }
+
+        return $this->json($resources,
+            Response::HTTP_CREATED);
     }
 
     /**
@@ -81,7 +93,6 @@ class ResourcesController extends AbstractController
 
             $resources = $qb->getQuery()->getResult();
 
-
         } catch (NonUniqueResultException $nonUniqueResultException) {
             return FosRestView::create(['message' => 'Non unique result'], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
@@ -97,45 +108,59 @@ class ResourcesController extends AbstractController
      *     name = "create_resource"
      * )
      * @param Request $request
+     * @param FileManager $fileUpload
      * @return FosRestView|Response
+     * @throws Exception
      */
-    public function createRessourcesAction(Request $request)
+    public function createRessourcesAction(Request $request, FileManager $fileUpload)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $data = json_decode($request->getContent(), true);
+        $data = $request->request->all();
+
+        /** @var UploadedFile $uploadedAssets */
+        $uploadedAssets = $request->files->all();
 
         $resource = new Resource();
+
+        if ($uploadedAssets['assets'] !== NULL)
+        {
+            foreach ($uploadedAssets['assets'] as $file)
+            {
+                //Set Assets , create file(s) & check Type
+                $assets = $fileUpload->UploadFilesResource($file, $this->getParameter('kernel.project_dir'));
+                $resource->addAssets($assets);
+
+            }
+        }
 
         //Default Status
         $resource->setStatus($em->getRepository(ResourceStatus::class)->findOneBy(['name' => 'queued']));
 
-        //Todo : Improve
+        //Todo : Improve, Create Service
         //Set Data
-        $resource->setCategories($em->getRepository(ResourceCategory::class)->findBy(['name' => $data['categories']]));
+        foreach ($data['categories'] as $categoryName)
+        {
+            $category = $em->getRepository(ResourceCategory::class)->findBy(['name' => $categoryName]);
+            $resource->addCategories($category[0]);
+        }
         $resource->setType($em->getRepository(ResourceType::class)->findOneBy(['type_name' => $data['type']]));
+
+        //Check Constraints for Mime
+        $fileUpload->CheckMimeTypeConstraints($resource);
+
         $resource->setAuthor($this->getUser());
-
         $em = $this->getDoctrine()->getManager();
-
         $resource->setCreatedAt(new \DateTime());
         try {
 
             $form = $this->createForm(ResourcesType::class, $resource);
 
             /** @var Form $form*/
-
-            $data = [
-              'title' => "This is a title",
-              'categories' => ["e04b51e6-5003-11eb-9a4e-f859719570ef"],
-              'description' =>  "Lorem Ipsum",
-              'type' => "1"
-            ];
-            $link = $form->submit($data);
+            $form->submit($data);
 
 
-
-            //Check if form as correct data Todo: Create UtilsFile To check form /!\ Duplicate fragment
+            //Check if form as correct data Todo: Create Service To check form /!\ Duplicate fragment
             if (!$form->isValid())
             {
                 $errors = array();
@@ -170,7 +195,7 @@ class ResourcesController extends AbstractController
 
             //return $user;
         } catch (Exception $exception) {
-            return new JsonResponse(['message' => $exception->getMessage()], $exception->getCode());
+            return new JsonResponse(['message' => $exception->getMessage()], Response::HTTP_BAD_REQUEST);
         }
 
     }
@@ -195,7 +220,7 @@ class ResourcesController extends AbstractController
             $orderBy = explode('=', $query[1]);
         }
 
-        $categoriesArray = explode('&',$authorId);
+        $userArray = explode('&',$authorId);
 
         $em = $this->getDoctrine()->getManager();
 
@@ -207,7 +232,7 @@ class ResourcesController extends AbstractController
         }
 
         try {
-
+            //implement userArray
             if (isset($orderBy))
             {
                 $resources = $em->getRepository(Resource::class)
