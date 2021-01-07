@@ -4,44 +4,42 @@
 namespace App\Form;
 
 
-use App\Entity\User;
-use phpDocumentor\Reflection\DocBlock\Description;
+use App\Entity\ResourceCategory;
+use App\Entity\ResourceType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\EmailType;
-use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class ResourceType extends AbstractType
+class ResourcesType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('type', TextType::class, [
+            ->add('type', EntityType::class, [
+                'class' => ResourceType::class,
                 'required' => true
             ])
-            ->add('categories', TextType::class, [
+            ->add('categories', EntityType::class, [
+                'class' => ResourceCategory::class,
+                'multiple' => true,
                 'required' => true
-            ])
-            ->add('assets', TextType::class, [
-                'required' => false
             ])
             ->add('title', TextType::class, [
                 'required' => true
             ])
             ->add('description', TextType::class, [
                 'required' => true
-            ])
-
-        ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => User::class,
-            'csrf_protection' => false
+            'csrf_protection' => false,
+            'validation_groups' => false,
         ]);
     }
 }

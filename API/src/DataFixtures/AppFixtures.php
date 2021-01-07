@@ -5,6 +5,7 @@ namespace App\DataFixtures;
 use App\Entity\Resource;
 use App\Entity\ResourceCategory;
 use App\Entity\ResourceStatus;
+use App\Entity\ResourceType;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
@@ -27,7 +28,7 @@ class AppFixtures extends Fixture
 
     public function __construct(UserPasswordEncoderInterface $passwordEncoder)
     {
-        $this->faker = Factory::create('fr_FR');
+        $this->faker = Factory::create('fr_CA');
         $this->passwordEncoder = $passwordEncoder;
     }
 
@@ -52,6 +53,7 @@ class AppFixtures extends Fixture
 
     private const STATUS = [
         "draft",
+        "queued",
         "archived",
         "validated",
         "banned"
@@ -64,11 +66,19 @@ class AppFixtures extends Fixture
         "spiritual",
     ];
 
+    private const TYPE = [
+      "text",
+      "video",
+      "audio"
+    ];
+
+
     public function load(ObjectManager $manager)
     {
         $this->loadUsers($manager);
         $this->loadResourcesCategories($manager);
         $this->loadResourcesStatus($manager);
+        $this->loadResourcesType($manager);
         $this->loadResources($manager);
     }
 
@@ -82,6 +92,20 @@ class AppFixtures extends Fixture
             $this->setReference("category_" . $i, $category);
 
             $manager->persist($category);
+        }
+        $manager->flush();
+    }
+
+    public function loadResourcesType(ObjectManager $manager)
+    {
+        $i = 0;
+        foreach (self::TYPE as $resourcesType) {
+            $type = new ResourceType();
+            $type->setTypeName($resourcesType);
+            $i++;
+            $this->setReference("type_" . $i, $type);
+
+            $manager->persist($type);
         }
         $manager->flush();
     }
@@ -108,10 +132,9 @@ class AppFixtures extends Fixture
             $resource->setTitle($this->faker->realText(20, 5));
             $resource->setDescription($this->faker->realText(200, 5));
             $resource->setStatus($this->getReference("status_" . rand(1, sizeof(self::STATUS) -1)));
-
             //Todo: Improve setCategories to have multiple categories
-            $resource->setCategories($this->getReference("category_" . rand(1, sizeof(self::CATEGORIES) -1)));
-
+            $resource->setCategories([$this->getReference("category_" . rand(1, sizeof(self::CATEGORIES) -1))]);
+            $resource->setType($this->getReference("type_" . rand(1, sizeof(self::TYPE) -1)));
             $resource->setAuthor($this->getReference("user_" . rand(1, sizeof(self::USERS) -1)));
             //Todo: Add Template Assets
             $manager->persist($resource);

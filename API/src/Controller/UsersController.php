@@ -5,7 +5,7 @@ namespace App\Controller;
 
 
 use App\Entity\User;
-use App\Form\UserType;
+use App\Form\UsersType;
 use Exception;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
 use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
@@ -42,9 +42,8 @@ class UsersController extends AbstractFOSRestController
             return new JsonResponse(['token' => $JWTManager->create($user)]);
         } else {
             return new JsonResponse([
-                401,
                 'message' => "Invalid Credentials."
-                ]);
+                ], Response::HTTP_UNAUTHORIZED);
         }
 
     }
@@ -76,7 +75,7 @@ class UsersController extends AbstractFOSRestController
         $data['password'] = $encoder->encodePassword($user, $data['password']);
 
         try {
-            $form = $this->createForm(UserType::class, $user);
+            $form = $this->createForm(UsersType::class, $user);
 
             /** @var Form $form*/
             $form->submit($data);
@@ -99,9 +98,8 @@ class UsersController extends AbstractFOSRestController
                 }
 
                 return new JsonResponse([
-                    500,
                     $errors
-                ]);
+                ], Response::HTTP_BAD_REQUEST);
             }
 
             if ($form->isSubmitted())
@@ -111,9 +109,8 @@ class UsersController extends AbstractFOSRestController
             }
 
             return new JsonResponse([
-                200,
-                'User : ' . $data['username'] . ' created'
-            ]);
+                $user
+            ], Response::HTTP_CREATED);
 
             //return $user;
         } catch (\Exception $exception) {

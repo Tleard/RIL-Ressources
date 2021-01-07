@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
- * Class ResourceCategory
+ * Class ResourceStatus
  * @package App\Entity
  * @ORM\Table(name="resources_status")
  * @ORM\Entity(repositoryClass="App\Repository\ResourcesStatusRepository")

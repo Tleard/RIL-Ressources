@@ -20,7 +20,7 @@ class ResourcesTypeRepository extends ServiceEntityRepository
     }
 
     // /**
-    //  * @return ResourceType[] Returns an array of ResourceType objects
+    //  * @return ResourcesType[] Returns an array of ResourcesType objects
     //  */
     /*
     public function findByExampleField($value)
@@ -37,7 +37,7 @@ class ResourcesTypeRepository extends ServiceEntityRepository
     */
 
     /*
-    public function findOneBySomeField($value): ?ResourceType
+    public function findOneBySomeField($value): ?ResourcesType
     {
         return $this->createQueryBuilder('u')
             ->andWhere('u.exampleField = :val')

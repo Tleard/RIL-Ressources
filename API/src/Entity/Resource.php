@@ -4,6 +4,8 @@
 namespace App\Entity;
 
 use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\DBAL\Types\ArrayType;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -16,7 +18,8 @@ class Resource
 {
     public function __construct()
     {
-        $this->creation_date = new DateTime();
+        $this->createdAt = new DateTime();
+        $this->categories = new ArrayCollection();
     }
 
 
@@ -34,12 +37,12 @@ class Resource
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\ResourceType")
+     * @ORM\JoinColumn(name="type_id", referencedColumnName="id")
      */
     private $type;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\ResourceCategory", cascade={"persist"})
-     * @ORM\JoinColumn(name="categories_id", referencedColumnName="id", nullable=true)
+     * @ORM\ManyToMany(targetEntity="App\Entity\ResourceCategory", cascade={"persist"})
      */
     private $categories;
 
@@ -57,7 +60,7 @@ class Resource
     /**
      * @ORM\Column(type="datetime")
      */
-    private $creation_date;
+    private $createdAt;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\ResourceStatus", cascade={"persist"})
@@ -70,6 +73,7 @@ class Resource
      * @ORM\JoinColumn(name="author_id", referencedColumnName="id", nullable=true)
      */
     private $author;
+
 
     /**
      * @return mixed
@@ -182,20 +186,20 @@ class Resource
     /**
      * @return mixed
      */
-    public function getCreationDate(): DateTime
+    public function getCreatedAt()
     {
-        return $this->creation_date;
+        return $this->createdAt;
     }
 
     /**
-     * @param mixed $creation_date
-     * @return Resource
+     * @param mixed $createdAt
      */
-    public function setCreationDate($creation_date): Resource
+    public function setCreatedAt($createdAt): void
     {
-        $this->creation_date = $creation_date;
-        return $this;
+        $this->createdAt = $createdAt;
     }
+
+
 
     /**
      * @return mixed
