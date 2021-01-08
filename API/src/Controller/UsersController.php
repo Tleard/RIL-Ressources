@@ -4,13 +4,16 @@
 namespace App\Controller;
 
 
+use App\Entity\Asset;
 use App\Entity\User;
 use App\Form\UsersType;
+use App\Service\FileManager;
 use Exception;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
 use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -121,6 +124,57 @@ class UsersController extends AbstractFOSRestController
             return new JsonResponse(['message' => $exception->getMessage()], Response::HTTP_BAD_REQUEST);
         }
 
+    }
+
+    /**
+     * @Route(name="register", path="/api/user/profile_picture/{userId}", methods={"POST"})
+     * @param Request $request
+     * @param FileManager $fileManager
+     * @throws Exception
+     */
+    public function addProfilePicture(Request $request, FileManager $fileManager)
+    {
+        $userId= $request->get('userId');
+        $em = $this->getDoctrine()->getManager();
+
+        /** @var User $user */
+        $user =$em->getRepository(User::class)->find($userId);
+
+        if(empty($user))
+        {
+            throw new Exception("Could not find user n°" . $userId , Response::HTTP_NOT_FOUND);
+        }
+
+        if ($this->getUser() != $user|| !in_array('ROLE_ADMIN', $this->getUser()->getRoles()))
+        {
+            throw new Exception("You do not have the authorization to modify this user." , Response::HTTP_UNAUTHORIZED);
+        }
+
+        if (!$request->files->get('asset'))
+        {
+            throw new Exception("Your request was incorrect", Response::HTTP_BAD_REQUEST);
+        }
+
+        /** @var UploadedFile $profilePicture */
+        $profilePicture = $request->files->get('asset');
+        if (!in_array($profilePicture->getMimeType(), $fileManager::AUTHORIZED_IMAGE_TYPE))
+        {
+            throw new Exception("File format '" . $profilePicture->getType() . "' is not valid");
+        }
+
+        $asset = $fileManager->UploadFile($profilePicture, $this->getParameter("kernel.project_dir"));
+
+        if ($user->getProfilePicture() !== NULL)
+        {
+            $profilePicturePath = $this->getParameter('kernel.project_dir') . "/public/uploads/" . $user->getProfilePicture()->getFileName();
+            unlink($profilePicturePath);
+        }
+
+        $user->setProfilePicture($asset);
+        $em->persist($user);
+        $em->flush();
+
+        return $this->json($asset, Response::HTTP_CREATED);
     }
 
 }
