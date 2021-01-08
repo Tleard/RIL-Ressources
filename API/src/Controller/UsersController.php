@@ -33,19 +33,21 @@ class UsersController extends AbstractFOSRestController
     {
         $repository = $this->getDoctrine()->getRepository(User::class);
 
+        $em = $this->getDoctrine()->getManager();
         $data = json_decode($request->getContent(), true);
 
         /** @var User $user */
         $user = $repository->findOneBy(["username" => $data['username']]);
 
-        if ($user->getPassword() == $encoder->encodePassword($user, $data['password'])){
+        $userPassword = $em->getRepository(User::class)->findOneByUserForPassword($data['username']);
+
+        if ($userPassword == $encoder->encodePassword($user, $data['password'])){
             return new JsonResponse(['token' => $JWTManager->create($user)]);
         } else {
             return new JsonResponse([
                 'message' => "Invalid Credentials."
                 ], Response::HTTP_UNAUTHORIZED);
         }
-
     }
 
     /**
@@ -64,6 +66,10 @@ class UsersController extends AbstractFOSRestController
 
         $em = $this->getDoctrine()->getManager();
         $user->setCreatedAt(new \DateTime());
+        //Todo :Improve
+        $user->setIsBanned(false);
+        $user->setRoles([User::ROLE_USER]);
+
 
         //throw Exception if password do not match
         if ($data['password'] != $data['retyped_password'])
@@ -107,10 +113,7 @@ class UsersController extends AbstractFOSRestController
                 $em->persist($user);
                 $em->flush();
             }
-
-            return new JsonResponse([
-                $user
-            ], Response::HTTP_CREATED);
+            return $this->json($user, Response::HTTP_CREATED);
 
             //return $user;
         } catch (\Exception $exception) {
