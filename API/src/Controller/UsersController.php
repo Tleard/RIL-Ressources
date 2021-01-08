@@ -66,6 +66,10 @@ class UsersController extends AbstractFOSRestController
 
         $em = $this->getDoctrine()->getManager();
         $user->setCreatedAt(new \DateTime());
+        //Todo :Improve
+        $user->setIsBanned(false);
+        $user->setRoles([User::ROLE_USER]);
+
 
         //throw Exception if password do not match
         if ($data['password'] != $data['retyped_password'])
@@ -109,10 +113,7 @@ class UsersController extends AbstractFOSRestController
                 $em->persist($user);
                 $em->flush();
             }
-
-            return new JsonResponse([
-                $user
-            ], Response::HTTP_CREATED);
+            return $this->json($user, Response::HTTP_CREATED);
 
             //return $user;
         } catch (\Exception $exception) {

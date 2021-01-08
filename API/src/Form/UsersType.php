@@ -27,9 +27,6 @@ class UsersType extends AbstractType
             ->add('password', PasswordType::class, [
                 'required' => true
             ])
-            ->add('retyped_password', PasswordType::class, [
-                'required' => true
-            ])
             ->add('email', EmailType::class, [
                 'required' => true
             ])
@@ -40,7 +37,8 @@ class UsersType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => User::class,
-            'csrf_protection' => false
+            'csrf_protection' => false,
+            'allow_extra_fields' => true
         ]);
     }
 }

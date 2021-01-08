@@ -84,8 +84,6 @@ class User implements UserInterface
      */
     protected $password;
 
-    protected $retypedPassword;
-
     /**
      * @Assert\Email(
      *     message = "The email '{{ value }}' is not a valid email."
@@ -180,14 +178,6 @@ class User implements UserInterface
         $this->createdAt = $createdAt;
 
         return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getRetypedPassword()
-    {
-        return $this->retypedPassword;
     }
 
     /**
