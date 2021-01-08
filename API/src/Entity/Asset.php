@@ -4,6 +4,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class Asset
@@ -21,6 +22,12 @@ class Asset
     private $id;
 
     /**
+     * @Assert\Length(
+     *      min = 5,
+     *      max = 50,
+     *      minMessage = "Your title must be at least {{ limit }} characters long",
+     *      maxMessage = "Your title cannot be longer than {{ limit }} characters"
+     * )
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $title;

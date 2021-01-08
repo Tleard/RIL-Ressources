@@ -123,7 +123,7 @@ class FileManager
 
                }
 
-               if (!in_array($resource->getType(), $assetType))
+               if (!in_array($resource->getType()->getTypeName(), $assetType))
                {
                    throw new Exception("You need to match the Ressource type and the asset", 500);
                }

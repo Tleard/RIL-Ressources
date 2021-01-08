@@ -7,6 +7,7 @@ use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\DBAL\Types\ArrayType;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class Resource
@@ -32,7 +33,13 @@ class Resource
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @Assert\Length(
+     *      min = 5,
+     *      max = 50,
+     *      minMessage = "Your title must be at least {{ limit }} characters long",
+     *      maxMessage = "Your title cannot be longer than {{ limit }} characters"
+     *)
+     * @ORM\Column(type="string", length=100)
      */
     private $title;
 
@@ -53,7 +60,13 @@ class Resource
     private $assets;
 
     /**
-     * @ORM\Column(type="string", length=500)
+     * @Assert\Length(
+     *      min = 5,
+     *      max = 4000,
+     *      minMessage = "Your title must be at least {{ limit }} characters long",
+     *      maxMessage = "Your title cannot be longer than {{ limit }} characters"
+     *)
+     * @ORM\Column(type="string", length=4000)
      */
     private $description;
 
