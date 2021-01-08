@@ -57,7 +57,7 @@ class ResourcesController extends AbstractController
                 ->createQueryBuilder('r');
 
             $qb->where('r.id = :id')->setParameter('id', $request->get('id'));
-            $resources = $qb->getQuery()->getArrayResult();
+            $resources = $qb->getQuery()->getResult();
 
 
         } catch (NonUniqueResultException $nonUniqueResultException) {

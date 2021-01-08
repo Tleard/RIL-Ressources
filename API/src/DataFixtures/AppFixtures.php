@@ -69,7 +69,8 @@ class AppFixtures extends Fixture
     private const TYPE = [
       "text",
       "video",
-      "audio"
+      "audio",
+      "image"
     ];
 
 
