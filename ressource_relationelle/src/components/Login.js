@@ -55,7 +55,7 @@ const Login  = () => {
             <button onClick={login}>Submit</button>
 
             {loggedIn && (
-                <h1>Logged In Cool</h1>
+                <h1>Logged In Test</h1>
             )}
         </div>
     );

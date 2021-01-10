@@ -1,94 +1,126 @@
-import React from "react";
-import { Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap';
+import React, { useState } from "react";
+import { Redirect } from 'react-router-dom';
+import { Container, Button, Form, FormGroup, Label, Input, FormText } from "reactstrap";
 import "./Register.css";
 
-const Register = () => {
+const Register = (props) => {
+  const [usernameState, setUsernameState] = useState('');
+  const [first_nameState, setFirst_nameState] = useState('');
+  const [last_nameState, setLast_nameState] = useState('');
+  const [emailState, setEmailState] = useState('');
+  const [passwordState, setPasswordState] = useState('');
+  const [retyped_passwordState, setRetyped_passwordState] = useState('');
+
+  const payload = {
+    username:`${usernameState}`,
+    first_name:`${first_nameState}`,
+    last_name:`${last_nameState}`,
+    email:`${emailState}`,
+    password:`${passwordState}`,
+    retyped_password:`${retyped_passwordState}`
+  }
+
+  function register() {
+    fetch('http://localhost:8000/register', {
+        method:'POST',
+        headers:{
+            'Accept':'application/json',
+            'Content-type':'application/json'
+        },
+        body: JSON.stringify(payload)
+    })
+    .then(() => {
+      props.history.push('Login');
+    });
+  }
+
   return (
     <>
-      <Form>
-        <FormGroup>
-          <Label for="exampleEmail">Email</Label>
-          <Input
-            type="email"
-            name="email"
-            id="exampleEmail"
-            placeholder="with a placeholder"
-          />
-        </FormGroup>
-        <FormGroup>
-          <Label for="examplePassword">Password</Label>
-          <Input
-            type="password"
-            name="password"
-            id="examplePassword"
-            placeholder="password placeholder"
-          />
-        </FormGroup>
-        <FormGroup>
-          <Label for="exampleSelect">Select</Label>
-          <Input type="select" name="select" id="exampleSelect">
-            <option>1</option>
-            <option>2</option>
-            <option>3</option>
-            <option>4</option>
-            <option>5</option>
-          </Input>
-        </FormGroup>
-        <FormGroup>
-          <Label for="exampleSelectMulti">Select Multiple</Label>
-          <Input
-            type="select"
-            name="selectMulti"
-            id="exampleSelectMulti"
-            multiple
-          >
-            <option>1</option>
-            <option>2</option>
-            <option>3</option>
-            <option>4</option>
-            <option>5</option>
-          </Input>
-        </FormGroup>
-        <FormGroup>
-          <Label for="exampleText">Text Area</Label>
-          <Input type="textarea" name="text" id="exampleText" />
-        </FormGroup>
-        <FormGroup>
-          <Label for="exampleFile">File</Label>
-          <Input type="file" name="file" id="exampleFile" />
-          <FormText color="muted">
-            This is some placeholder block-level help text for the above input.
-            It's a bit lighter and easily wraps to a new line.
-          </FormText>
-        </FormGroup>
-        <FormGroup tag="fieldset">
-          <legend>Radio Buttons</legend>
-          <FormGroup check>
-            <Label check>
-              <Input type="radio" name="radio1" /> Option one is this and
-              that—be sure to include why it's great
-            </Label>
+      <Container>
+        <Form>
+
+          <FormGroup>
+            <Label for="username">Nom d'utilisateur</Label>
+            <Input
+              type="text"
+              name="username"
+              id="username"
+              placeholder="Nom d'utilisateur"
+              onChange={(e) => {
+                setUsernameState(e.target.value);
+              }}
+            />
           </FormGroup>
-          <FormGroup check>
-            <Label check>
-              <Input type="radio" name="radio1" /> Option two can be something
-              else and selecting it will deselect option one
-            </Label>
+          
+          <FormGroup>
+            <Label for="email">Email</Label>
+            <Input
+              type="email"
+              name="email"
+              id="email"
+              placeholder="Email"
+              onChange={(e) => {
+                setEmailState(e.target.value);
+              }}
+            />
           </FormGroup>
-          <FormGroup check disabled>
-            <Label check>
-              <Input type="radio" name="radio1" disabled /> Option three is
-              disabled
-            </Label>
+
+          <FormGroup>
+            <Label for="first_name">Prénom</Label>
+            <Input
+              type="text"
+              name="first_name"
+              id="first_name"
+              placeholder="Prénom"
+              onChange={(e) => {
+                setFirst_nameState(e.target.value);
+              }}
+            />
           </FormGroup>
-        </FormGroup>
-        <FormGroup check>
-          <Label check>
-            <Input type="checkbox" /> Check me out
-          </Label>
-        </FormGroup>
-        <Button>Submit</Button>
-      </Form>
+
+          <FormGroup>
+            <Label for="last_name">Nom</Label>
+            <Input
+              type="text"
+              name="last_name"
+              id="last_name"
+              placeholder="Nom"
+              onChange={(e) => {
+                setLast_nameState(e.target.value);
+              }}
+            />
+          </FormGroup>
+
+          <FormGroup>
+            <Label for="password">Mot de passe</Label>
+            <Input
+              type="password"
+              name="password"
+              id="examplePassword"
+              placeholder="Mot de passe"
+              onChange={(e) => {
+                setPasswordState(e.target.value);
+              }}
+            />
+          </FormGroup>
+
+          <FormGroup>
+            <Label for="retyped_password">Confirmez votre mot de passe</Label>
+            <Input
+              type="password"
+              name="retyped_password"
+              id="retyped_password"
+              placeholder="Retapez votre mot de passe"
+              onChange={(e) => {
+                setRetyped_passwordState(e.target.value);
+              }}
+            />
+          </FormGroup>
+
+          <Button onClick={() => register()}>S'inscrire</Button>
+
+        </Form>
+      </Container>
     </>
   );
 };
