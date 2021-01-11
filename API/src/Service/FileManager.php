@@ -44,7 +44,7 @@ class FileManager
      * @param string $projectDir
      * @return Asset
      */
-    public function UploadFilesResource(UploadedFile $file, string $projectDir): Asset
+    public function UploadFile(UploadedFile $file, string $projectDir): Asset
     {
 
         //Check if valid MimeType
