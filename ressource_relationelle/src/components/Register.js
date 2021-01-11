@@ -1,26 +1,24 @@
 import React, { useState } from "react";
+import {useForm} from 'react-hook-form';
 import { Redirect } from 'react-router-dom';
-import { Container, Button, Form, FormGroup, Label, Input, FormText } from "reactstrap";
+import { Container, Button, Form, FormGroup, Label, Input, FormText, Alert } from "reactstrap";
 import "./Register.css";
 
+
 const Register = (props) => {
-  const [usernameState, setUsernameState] = useState('');
-  const [first_nameState, setFirst_nameState] = useState('');
-  const [last_nameState, setLast_nameState] = useState('');
-  const [emailState, setEmailState] = useState('');
-  const [passwordState, setPasswordState] = useState('');
-  const [retyped_passwordState, setRetyped_passwordState] = useState('');
+  const {register, handleSubmit, formState, errors, setError} = useForm();
+  const {isSubmitting, isSubmitted, isSubmitSuccessful} = formState;
 
-  const payload = {
-    username:`${usernameState}`,
-    first_name:`${first_nameState}`,
-    last_name:`${last_nameState}`,
-    email:`${emailState}`,
-    password:`${passwordState}`,
-    retyped_password:`${retyped_passwordState}`
-  }
+  const onSubmit = data => {
+    const payload = {
+      username:`${data.username}`,
+      first_name:`${data.first_name}`,
+      last_name:`${data.last_name}`,
+      email:`${data.email}`,
+      password:`${data.password}`,
+      retyped_password:`${data.retyped_password}`
+    }
 
-  function register() {
     fetch('http://localhost:8000/register', {
         method:'POST',
         headers:{
@@ -32,13 +30,14 @@ const Register = (props) => {
     .then(() => {
       props.history.push('Login');
     });
+
   }
 
   return (
     <>
       <Container>
-        <Form>
-
+        <Form onSubmit={handleSubmit(onSubmit)}>
+          
           <FormGroup>
             <Label for="username">Nom d'utilisateur</Label>
             <Input
@@ -46,10 +45,9 @@ const Register = (props) => {
               name="username"
               id="username"
               placeholder="Nom d'utilisateur"
-              onChange={(e) => {
-                setUsernameState(e.target.value);
-              }}
+              innerRef={register({required: 'Vous devez entrez votre nom d\'utilisateur'})}
             />
+            {errors.username && <Alert color="danger">{errors.username.message}</Alert>}
           </FormGroup>
           
           <FormGroup>
@@ -59,9 +57,7 @@ const Register = (props) => {
               name="email"
               id="email"
               placeholder="Email"
-              onChange={(e) => {
-                setEmailState(e.target.value);
-              }}
+              innerRef={register({required: true})}
             />
           </FormGroup>
 
@@ -72,10 +68,9 @@ const Register = (props) => {
               name="first_name"
               id="first_name"
               placeholder="Prénom"
-              onChange={(e) => {
-                setFirst_nameState(e.target.value);
-              }}
+              innerRef={register({required: true, pattern:{value: /^([^0-9]*)$/, message: 'Les chiffes sont interdits'}})}
             />
+            {errors.first_name && <Alert color="danger">{errors.first_name.message}</Alert>}
           </FormGroup>
 
           <FormGroup>
@@ -85,10 +80,9 @@ const Register = (props) => {
               name="last_name"
               id="last_name"
               placeholder="Nom"
-              onChange={(e) => {
-                setLast_nameState(e.target.value);
-              }}
+              innerRef={register({required: true, pattern:{value: /^([^0-9]*)$/, message: 'Les chiffes sont interdits'}})}
             />
+            {errors.last_name && <Alert color="danger">{errors.last_name.message}</Alert>}
           </FormGroup>
 
           <FormGroup>
@@ -98,9 +92,7 @@ const Register = (props) => {
               name="password"
               id="examplePassword"
               placeholder="Mot de passe"
-              onChange={(e) => {
-                setPasswordState(e.target.value);
-              }}
+              innerRef={register({required: true})}
             />
           </FormGroup>
 
@@ -111,13 +103,11 @@ const Register = (props) => {
               name="retyped_password"
               id="retyped_password"
               placeholder="Retapez votre mot de passe"
-              onChange={(e) => {
-                setRetyped_passwordState(e.target.value);
-              }}
+              innerRef={register({required: true})}
             />
           </FormGroup>
 
-          <Button onClick={() => register()}>S'inscrire</Button>
+          <Button disabled={isSubmitting} type="submit">S'inscrire</Button>
 
         </Form>
       </Container>
