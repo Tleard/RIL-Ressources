@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import {useForm} from 'react-hook-form';
 import { Redirect } from 'react-router-dom';
 import { Container, Button, Form, FormGroup, Label, Input, FormText, Alert } from "reactstrap";
@@ -6,8 +6,11 @@ import "./Register.css";
 
 
 const Register = (props) => {
-  const {register, handleSubmit, formState, errors, setError} = useForm();
+  const {register, handleSubmit, formState, errors, setError, watch} = useForm();
   const {isSubmitting, isSubmitted, isSubmitSuccessful} = formState;
+
+  const password = useRef({});
+  password.current = watch("password", "");
 
   const onSubmit = data => {
     const payload = {
@@ -19,7 +22,7 @@ const Register = (props) => {
       retyped_password:`${data.retyped_password}`
     }
 
-    fetch('http://localhost:8000/register', {
+    fetch(`${global.api}/register`, {
         method:'POST',
         headers:{
             'Accept':'application/json',
@@ -53,12 +56,15 @@ const Register = (props) => {
           <FormGroup>
             <Label for="email">Email</Label>
             <Input
-              type="email"
+              type="text"
               name="email"
               id="email"
               placeholder="Email"
-              innerRef={register({required: true})}
+              innerRef={register({
+                required: true, 
+                pattern:{value: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/, message: 'Email invalide'}})}
             />
+            {errors.email && <Alert color="danger">{errors.email.message}</Alert>}
           </FormGroup>
 
           <FormGroup>
@@ -68,7 +74,9 @@ const Register = (props) => {
               name="first_name"
               id="first_name"
               placeholder="Prénom"
-              innerRef={register({required: true, pattern:{value: /^([^0-9]*)$/, message: 'Les chiffes sont interdits'}})}
+              innerRef={register({
+                required: true, 
+                pattern:{value: /^([^0-9]*)$/, message: 'Les chiffes sont interdits'}})}
             />
             {errors.first_name && <Alert color="danger">{errors.first_name.message}</Alert>}
           </FormGroup>
@@ -103,8 +111,9 @@ const Register = (props) => {
               name="retyped_password"
               id="retyped_password"
               placeholder="Retapez votre mot de passe"
-              innerRef={register({required: true})}
+              innerRef={register({required: true, validate:value => value === password.current || "Les mots de passe ne correspondent pas"})}
             />
+            {errors.retyped_password && <Alert color="danger">{errors.retyped_password.message}</Alert>}
           </FormGroup>
 
           <Button disabled={isSubmitting} type="submit">S'inscrire</Button>

@@ -20,9 +20,9 @@ function App() {
         </Container>
 
         <Switch>
+          <Route path='/login' component={Login} />
           <Route path='/home' component={Home} />
           <Route path='/categories' component={Categories} />
-          <Route path='/login' component={Login} />
           <Route path='/register' component={Register} />
           <Route path='/ressourcetest' component={RessourceTest} />
         </Switch>

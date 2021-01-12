@@ -1,9 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import '../global'
 
 const accessToken = JSON.parse(localStorage.getItem('auth_token'));
 //console.log(accessToken);
-
-const apiUrl = 'localhost:8000/api';
 
 
 const RessourceTest = () => {
@@ -12,7 +11,7 @@ const RessourceTest = () => {
     const [requestError, setRequestError] = useState();
     
     useEffect(() => {
-        fetch('http://localhost:8000/api/resources', {
+        fetch(`${global.api}/api/resources`, {
                 method:'get',
                 headers:{
                     'Accept':'application/json',

@@ -1,20 +1,21 @@
 import React, {useState, useEffect, Component} from 'react';
+import '../global';
 import './Login.css';
 
 
-const Login  = () => {
+const Login  = (props) => {
     
     const [usernameState, setUsernameState] = useState('');
     const [passwordState, setPasswordState] = useState('');
-    const [loggedIn, setLoggedIn] = useState(false);
 
     const payload = {
         username:`${usernameState}`,
         password:`${passwordState}`
     }
+    // console.log(payload);
 
     function login() {
-        fetch('http://localhost:8000/log-in', {
+        fetch(`${global.api}/log-in`, {
             method:'POST',
             headers:{
                 'Accept':'application/json',
@@ -28,10 +29,15 @@ const Login  = () => {
             storeTokenInLocalStorage(data.token);
             console.log('token is stored...maybe ?');
         })
+        .then(() => {
+            console.log('dernier then In');
+            props.history.push('Home');
+        });
     }
 
     // Store in localstorage
     function storeTokenInLocalStorage(token) {
+        console.log('storeToken function');
         let local_storage_token;
         if(localStorage.getItem('auth_token') === null){
             local_storage_token = '';
@@ -46,17 +52,17 @@ const Login  = () => {
     return (  
         <div class="login">
             <h1>Login</h1>
-            <input type="text" onChange={(e) => {
-                setUsernameState(e.target.value);
-            }} />
-            <input type="password" onChange={(e) => {
-                setPasswordState(e.target.value);               
-            }}/>
+            <label>Nom d'utilisateur
+                <input type="text" onChange={(e) => {
+                    setUsernameState(e.target.value);
+                }} />
+            </label>
+            <label>Mot de passe
+                <input type="password" onChange={(e) => {
+                    setPasswordState(e.target.value);               
+                }}/>
+            </label>
             <button onClick={login}>Submit</button>
-
-            {loggedIn && (
-                <h1>Logged In Test</h1>
-            )}
         </div>
     );
 }
