@@ -1,19 +1,8 @@
 import React, { useState } from 'react';
-import {
-  Collapse,
-  Navbar,
-  NavbarToggler,
-  NavbarBrand,
-  Nav,
-  NavItem,
-  NavLink,
-  UncontrolledDropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem,
-  NavbarText
-} from 'reactstrap';
-import './Navigation.css'
+import {Collapse, Navbar, NavbarToggler, NavbarBrand, Nav, NavItem, NavLink, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem, NavbarText} from 'reactstrap';
+import auth from '../auth';
+import './Navigation.css';
+import { withRouter } from 'react-router-dom';
 
 const Navigation = (props) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -33,7 +22,14 @@ const Navigation = (props) => {
             <NavItem>
               <NavLink href="">Ressources</NavLink>
             </NavItem>
-            <UncontrolledDropdown nav inNavbar>
+            <button 
+                onClick={() => {
+                    auth.loggedout(() => {
+                        console.log('callback in test');
+                        props.history.push('Login');
+                    });
+            }}>Logout</button>
+            {/* <UncontrolledDropdown nav inNavbar>
               <DropdownToggle nav caret>
                 Options
               </DropdownToggle>
@@ -49,7 +45,7 @@ const Navigation = (props) => {
                   Reset
                 </DropdownItem>
               </DropdownMenu>
-            </UncontrolledDropdown>
+            </UncontrolledDropdown> */}
           </Nav>
           <NavbarText>Autre</NavbarText>
         </Collapse>
@@ -58,4 +54,4 @@ const Navigation = (props) => {
   );
 }
 
-export default Navigation;
+export default withRouter(Navigation);

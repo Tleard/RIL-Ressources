@@ -1,5 +1,7 @@
 import React, {useState, useEffect, Component} from 'react';
+import { withRouter } from 'react-router-dom';
 import '../global';
+import auth from '../auth';
 import './Login.css';
 
 
@@ -25,26 +27,16 @@ const Login  = (props) => {
         })
         .then(res=>res.json())
         .then((data)=>{
-            //console.log(data.token);
             storeTokenInLocalStorage(data.token);
-            console.log('token is stored...maybe ?');
-        })
-        .then(() => {
-            console.log('dernier then In');
-            props.history.push('Home');
+            auth.loggedin();
+            console.log(props);
+            props.history.push('ressourcetest');
         });
     }
 
     // Store in localstorage
     function storeTokenInLocalStorage(token) {
-        console.log('storeToken function');
-        let local_storage_token;
-        if(localStorage.getItem('auth_token') === null){
-            local_storage_token = '';
-        } else {
-            local_storage_token = JSON.parse(localStorage.getItem('token'));
-        }
-
+        localStorage.removeItem('auth_token');
         localStorage.setItem('auth_token', JSON.stringify(token));
     }
 
@@ -67,4 +59,4 @@ const Login  = (props) => {
     );
 }
  
-export default Login;
+export default withRouter(Login);

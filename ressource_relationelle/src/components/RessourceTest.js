@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import auth from '../auth';
 import '../global'
 
-const accessToken = JSON.parse(localStorage.getItem('auth_token'));
-//console.log(accessToken);
+//const accessToken = JSON.parse(localStorage.getItem('auth_token'));
+//console.log(`accessToken test : ${auth.getToken()}`);
+//console.log(`Token test : ${auth.getToken()}`);
 
 
 const RessourceTest = () => {
@@ -16,7 +18,7 @@ const RessourceTest = () => {
                 headers:{
                     'Accept':'application/json',
                     'Content-type':'application/json',
-                    'Authorization':`Bearer ${accessToken}`
+                    'Authorization':`Bearer ${auth.getToken()}`
                 },
                 //body: JSON.stringify(payload)
             })
