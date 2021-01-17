@@ -11,12 +11,12 @@ const ProtectedRoute = ({component: Component, ...rest}) => {
         <Route 
             {...rest} 
             render ={props => {
-                if(auth.getToken() !== null && !isExpired) {
+                if(auth.getToken() !== 'undefined' && !isExpired) {
                     return <Component {...props}/>;
                 } else {
                     return ( <Redirect 
                         to={{
-                            pathname: "Login",
+                            pathname: "login",
                             state: {
                                 form: props.location
                             }

@@ -1,6 +1,8 @@
 class Auth {
     constructor() {
-        this.accessToken = JSON.parse(localStorage.getItem('auth_token'));
+        if(localStorage.getItem('auth_token') !== 'undefined') {
+            this.accessToken = JSON.parse(localStorage.getItem('auth_token'));
+        } 
     }
 
     loggedin() {

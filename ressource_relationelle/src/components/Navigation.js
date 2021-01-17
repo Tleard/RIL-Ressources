@@ -12,21 +12,24 @@ const Navigation = (props) => {
   return (
     <div>
       <Navbar color="light" light expand="md">
-        <NavbarBrand href="/">Re:Relationnelle</NavbarBrand>
+        <NavbarBrand href="/home">Re:Relationnelle</NavbarBrand>
         <NavbarToggler onClick={toggle} />
         <Collapse isOpen={isOpen} navbar>
           <Nav className="mr-auto" navbar>
             <NavItem>
               <NavLink href="/categories">Catégories</NavLink>
             </NavItem>
-            <NavItem>
+            {/* <NavItem>
               <NavLink href="">Ressources</NavLink>
+            </NavItem> */}
+            <NavItem>
+              <NavLink href="/login">Login</NavLink>
             </NavItem>
             <button 
                 onClick={() => {
                     auth.loggedout(() => {
                         console.log('callback in test');
-                        props.history.push('Login');
+                        props.history.push('/login');
                     });
             }}>Logout</button>
             {/* <UncontrolledDropdown nav inNavbar>

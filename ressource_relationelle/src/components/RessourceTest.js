@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import auth from '../auth';
+import { withRouter } from 'react-router-dom';
 import '../global'
 
 //const accessToken = JSON.parse(localStorage.getItem('auth_token'));
@@ -39,5 +40,5 @@ const RessourceTest = () => {
     );
 }
 
-export default RessourceTest;
+export default withRouter(RessourceTest);
 

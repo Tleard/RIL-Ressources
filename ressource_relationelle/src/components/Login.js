@@ -6,7 +6,6 @@ import './Login.css';
 
 
 const Login  = (props) => {
-    
     const [usernameState, setUsernameState] = useState('');
     const [passwordState, setPasswordState] = useState('');
 
@@ -14,7 +13,6 @@ const Login  = (props) => {
         username:`${usernameState}`,
         password:`${passwordState}`
     }
-    // console.log(payload);
 
     function login() {
         fetch(`${global.api}/log-in`, {
@@ -29,7 +27,9 @@ const Login  = (props) => {
         .then((data)=>{
             storeTokenInLocalStorage(data.token);
             auth.loggedin();
-            console.log(props);
+        })
+        .then(() => {
+            console.log('then redirect check');
             props.history.push('ressourcetest');
         });
     }
