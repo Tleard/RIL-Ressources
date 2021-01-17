@@ -1,12 +1,13 @@
 import React, {useState, useEffect, Component} from 'react';
+import { withRouter } from 'react-router-dom';
+import '../global';
+import auth from '../auth';
 import './Login.css';
 
 
-const Login  = () => {
-    
+const Login  = (props) => {
     const [usernameState, setUsernameState] = useState('');
     const [passwordState, setPasswordState] = useState('');
-    const [loggedIn, setLoggedIn] = useState(false);
 
     const payload = {
         username:`${usernameState}`,
@@ -14,7 +15,7 @@ const Login  = () => {
     }
 
     function login() {
-        fetch('http://localhost:8000/log-in', {
+        fetch(`${global.api}/log-in`, {
             method:'POST',
             headers:{
                 'Accept':'application/json',
@@ -24,21 +25,18 @@ const Login  = () => {
         })
         .then(res=>res.json())
         .then((data)=>{
-            //console.log(data.token);
             storeTokenInLocalStorage(data.token);
-            console.log('token is stored...maybe ?');
+            auth.loggedin();
         })
+        .then(() => {
+            console.log('then redirect check');
+            props.history.push('ressourcetest');
+        });
     }
 
     // Store in localstorage
     function storeTokenInLocalStorage(token) {
-        let local_storage_token;
-        if(localStorage.getItem('auth_token') === null){
-            local_storage_token = '';
-        } else {
-            local_storage_token = JSON.parse(localStorage.getItem('token'));
-        }
-
+        localStorage.removeItem('auth_token');
         localStorage.setItem('auth_token', JSON.stringify(token));
     }
 
@@ -46,19 +44,19 @@ const Login  = () => {
     return (  
         <div class="login">
             <h1>Login</h1>
-            <input type="text" onChange={(e) => {
-                setUsernameState(e.target.value);
-            }} />
-            <input type="password" onChange={(e) => {
-                setPasswordState(e.target.value);               
-            }}/>
+            <label>Nom d'utilisateur
+                <input type="text" onChange={(e) => {
+                    setUsernameState(e.target.value);
+                }} />
+            </label>
+            <label>Mot de passe
+                <input type="password" onChange={(e) => {
+                    setPasswordState(e.target.value);               
+                }}/>
+            </label>
             <button onClick={login}>Submit</button>
-
-            {loggedIn && (
-                <h1>Logged In Cool</h1>
-            )}
         </div>
     );
 }
  
-export default Login;
+export default withRouter(Login);

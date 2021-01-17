@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import auth from '../auth';
+import { withRouter } from 'react-router-dom';
+import '../global'
 
-const accessToken = JSON.parse(localStorage.getItem('auth_token'));
-//console.log(accessToken);
-
-const apiUrl = 'localhost:8000/api';
+//const accessToken = JSON.parse(localStorage.getItem('auth_token'));
+//console.log(`accessToken test : ${auth.getToken()}`);
+//console.log(`Token test : ${auth.getToken()}`);
 
 
 const RessourceTest = () => {
@@ -12,12 +14,12 @@ const RessourceTest = () => {
     const [requestError, setRequestError] = useState();
     
     useEffect(() => {
-        fetch('http://localhost:8000/api/resources', {
+        fetch(`${global.api}/api/resources`, {
                 method:'get',
                 headers:{
                     'Accept':'application/json',
                     'Content-type':'application/json',
-                    'Authorization':`Bearer ${accessToken}`
+                    'Authorization':`Bearer ${auth.getToken()}`
                 },
                 //body: JSON.stringify(payload)
             })
@@ -38,5 +40,5 @@ const RessourceTest = () => {
     );
 }
 
-export default RessourceTest;
+export default withRouter(RessourceTest);
 

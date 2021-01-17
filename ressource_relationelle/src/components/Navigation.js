@@ -1,19 +1,8 @@
 import React, { useState } from 'react';
-import {
-  Collapse,
-  Navbar,
-  NavbarToggler,
-  NavbarBrand,
-  Nav,
-  NavItem,
-  NavLink,
-  UncontrolledDropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem,
-  NavbarText
-} from 'reactstrap';
-import './Navigation.css'
+import {Collapse, Navbar, NavbarToggler, NavbarBrand, Nav, NavItem, NavLink, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem, NavbarText} from 'reactstrap';
+import auth from '../auth';
+import './Navigation.css';
+import { withRouter } from 'react-router-dom';
 
 const Navigation = (props) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -23,17 +12,27 @@ const Navigation = (props) => {
   return (
     <div>
       <Navbar color="light" light expand="md">
-        <NavbarBrand href="/">Re:Relationnelle</NavbarBrand>
+        <NavbarBrand href="/home">Re:Relationnelle</NavbarBrand>
         <NavbarToggler onClick={toggle} />
         <Collapse isOpen={isOpen} navbar>
           <Nav className="mr-auto" navbar>
             <NavItem>
               <NavLink href="/categories">Catégories</NavLink>
             </NavItem>
-            <NavItem>
+            {/* <NavItem>
               <NavLink href="">Ressources</NavLink>
+            </NavItem> */}
+            <NavItem>
+              <NavLink href="/login">Login</NavLink>
             </NavItem>
-            <UncontrolledDropdown nav inNavbar>
+            <button 
+                onClick={() => {
+                    auth.loggedout(() => {
+                        console.log('callback in test');
+                        props.history.push('/login');
+                    });
+            }}>Logout</button>
+            {/* <UncontrolledDropdown nav inNavbar>
               <DropdownToggle nav caret>
                 Options
               </DropdownToggle>
@@ -49,7 +48,7 @@ const Navigation = (props) => {
                   Reset
                 </DropdownItem>
               </DropdownMenu>
-            </UncontrolledDropdown>
+            </UncontrolledDropdown> */}
           </Nav>
           <NavbarText>Autre</NavbarText>
         </Collapse>
@@ -58,4 +57,4 @@ const Navigation = (props) => {
   );
 }
 
-export default Navigation;
+export default withRouter(Navigation);
