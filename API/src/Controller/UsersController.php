@@ -67,7 +67,6 @@ class UsersController extends AbstractFOSRestController
         $data = json_decode($request->getContent(), true);
 
         $user = new User;
-        dd($data);
         $em = $this->getDoctrine()->getManager();
         $user->setCreatedAt(new \DateTime());
         //Todo :Improve
