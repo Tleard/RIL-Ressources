@@ -8,7 +8,7 @@ import Register from "./components/Register";
 
 // To remove 
 import RessourceTest from "./components/RessourceTest";
-import TestProtectedRoute from "./components/TestProtectedRoute";
+
 import Footer from "./components/Footer";
 import { Container, Row, Col } from 'reactstrap';
 import { BrowserRouter as Router, Switch, Route, withRouter, BrowserRouter } from 'react-router-dom';
@@ -30,7 +30,6 @@ function App() {
             <ProtectedRoute exact path='/categories' component={Categories} />
             <ProtectedRoute exact path='/register' component={Register} />
             <ProtectedRoute exact path='/ressourcetest' component={RessourceTest} />
-            <ProtectedRoute exact path='/testprotectedroute' component={TestProtectedRoute} />
             <Route path="*" component={NotFound} />
           </Switch>
           
