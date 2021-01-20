@@ -22,6 +22,7 @@ class Resource
         $this->createdAt = new DateTime();
         $this->categories = new ArrayCollection();
         $this->assets = new ArrayCollection();
+        $this->reactions = new ArrayCollection();
     }
 
 
@@ -53,6 +54,11 @@ class Resource
      * @ORM\ManyToMany(targetEntity="App\Entity\ResourceCategory", cascade={"persist"})
      */
     private $categories;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\ResourceReaction", cascade={"persist"})
+     */
+    private $reactions;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Asset", cascade={"persist"})
@@ -184,6 +190,10 @@ class Resource
         return $this;
     }
 
+    /**
+     * @param $assets
+     * @return Resource
+     */
     public function addAssets($assets): Resource
     {
         $this->assets->add($assets);
@@ -258,6 +268,32 @@ class Resource
     public function setAuthor($author): void
     {
         $this->author = $author;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getReactions()
+    {
+        return $this->reactions;
+    }
+
+    /**
+     * @param mixed $reactions
+     */
+    public function setReactions($reactions): void
+    {
+        $this->reactions = $reactions;
+    }
+
+    /**
+     * @param $reactions
+     * @return Resource
+     */
+    public function addReactions($reactions): Resource
+    {
+        $this->reactions->add($reactions);
+        return $this;
     }
 
 }

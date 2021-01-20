@@ -48,8 +48,8 @@ class UserRepository extends ServiceEntityRepository
             ->andWhere('u.username = :val')
             ->setParameter('val', $value)
             ->getQuery()
-            ->getOneOrNullResult()['password'];
-        return $query;
+            ->getOneOrNullResult();
+        return $query['password'];
     }
 
 }
