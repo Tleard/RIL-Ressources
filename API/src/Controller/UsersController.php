@@ -132,7 +132,7 @@ class UsersController extends AbstractFOSRestController
                 $em->flush();
                 $message = (new \Swift_Message('Hello Email'))
                     ->setFrom('ressourcesrelationelle@gmail.com')
-                    ->setTo('barbe.maxime.pro@gmail.com')
+                    ->setTo($user->getEmail())
                     ->setSubject('Veuillez confirmer votre compte')
                     ->setBody("Bienvenue sur Ressources Relationelles veuillez confirmer 
                     votre compte via l'addresse suivante : http://localhost:8000/confirmation/?code=$code");
@@ -180,7 +180,7 @@ class UsersController extends AbstractFOSRestController
 
 
 
-        return $this->json($user, Response::HTTP_CREATED);
+        return $this->json(['message' => 'votre compte a bien ete valide '], Response::HTTP_CREATED);
 
     }
 
