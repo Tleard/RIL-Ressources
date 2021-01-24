@@ -45,6 +45,13 @@ class Report
      */
     private $report_by;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $is_closed;
+
+
+
     public function getId(): ?int
     {
         return $this->id;
@@ -110,4 +117,17 @@ class Report
 
         return $this;
     }
+
+    public function getIsClosed(): ?bool
+    {
+        return $this->is_closed;
+    }
+
+    public function setIsClosed(?bool $is_closed): self
+    {
+        $this->is_closed = $is_closed;
+
+        return $this;
+    }
+
 }
