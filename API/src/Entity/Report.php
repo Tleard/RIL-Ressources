@@ -72,6 +72,7 @@ class Report
 
     public function getReportedUser(): ?User
     {
+
         return $this->reported_user;
     }
 

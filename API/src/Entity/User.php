@@ -23,6 +23,7 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
 class User implements UserInterface
 {
 
+
     const ROLE_USER = 'ROLE_USER';
     const ROLE_ADMIN = 'ROLE_ADMIN';
     const ROLE_MODERATOR = 'ROLE_MODERATOR';
@@ -113,12 +114,6 @@ class User implements UserInterface
     /**
      * @ORM\OneToMany(targetEntity=Report::class, mappedBy="report_by")
      */
-    private $reports;
-
-    public function __construct()
-    {
-        $this->reports = new ArrayCollection();
-    }
 
 
 
@@ -273,18 +268,7 @@ class User implements UserInterface
     /**
      * @return Collection|Report[]
      */
-    public function getReports(): Collection
-    {
-        return $this->reports;
-    }
 
-    public function addReport(Report $report): self
-    {
-        if (!$this->reports->contains($report)) {
-            $this->reports[] = $report;
-            $report->setReportBy($this);
-        }
-    }
 
     public function getCodeConfirmation(): ?string
     {
@@ -300,17 +284,7 @@ class User implements UserInterface
     }
 
 
-    public function removeReport(Report $report): self
-    {
-        if ($this->reports->removeElement($report)) {
-            // set the owning side to null (unless already changed)
-            if ($report->getReportBy() === $this) {
-                $report->setReportBy(null);
-            }
-        }
 
-        return $this;
-    }
 
 
 
