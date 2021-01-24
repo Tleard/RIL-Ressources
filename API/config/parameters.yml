@@ -1,0 +1,5 @@
+# app/confing/parameters.yml
+parameters:
+    #
+    mail_user: 'ressourcesrelationelle@gmail.com'
+    password: '%env(string:MAIL_PASS)%'
