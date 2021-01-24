@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Repository\UserRepository;
 use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Exception;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\ORM\Mapping as ORM;
@@ -107,6 +109,20 @@ class User implements UserInterface
      * @ORM\Column(type="array")
      */
     private $roles;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Report::class, mappedBy="report_by")
+     */
+    private $reports;
+
+    public function __construct()
+    {
+        $this->reports = new ArrayCollection();
+    }
+
+
+
+
 
 
     public function getId(): ?string
@@ -242,4 +258,38 @@ class User implements UserInterface
     {
         //Useless.
     }
+
+    /**
+     * @return Collection|Report[]
+     */
+    public function getReports(): Collection
+    {
+        return $this->reports;
+    }
+
+    public function addReport(Report $report): self
+    {
+        if (!$this->reports->contains($report)) {
+            $this->reports[] = $report;
+            $report->setReportBy($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReport(Report $report): self
+    {
+        if ($this->reports->removeElement($report)) {
+            // set the owning side to null (unless already changed)
+            if ($report->getReportBy() === $this) {
+                $report->setReportBy(null);
+            }
+        }
+
+        return $this;
+    }
+
+
+
+
 }
