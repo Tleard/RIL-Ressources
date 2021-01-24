@@ -46,12 +46,12 @@ class AdminController extends AbstractFOSRestController
     }
 
     /**
-     * @Route(name="showReportRessource", path="/api/admin/reportedRessource", methods={"GET"})
+     * @Route(name="showReportByCase", path="/api/admin/reportByCase", methods={"GET"})
      * @param Request $request
      * @throws Exception
      * @return JsonResponse
      */
-    public function showReportRessource(Request $request){
+    public function showReportByCase(Request $request){
 
         $repId = $request->query->get('report_id');
 
@@ -62,6 +62,63 @@ class AdminController extends AbstractFOSRestController
         ]);
 
         return $this->json($report,Response::HTTP_CREATED);
+    }
+
+    /**
+     * @Route(name="closeReport", path="/api/admin/closeReport", methods={"GET"})
+     * @param Request $request
+     * @throws Exception
+     * @return JsonResponse
+     */
+    public function closeReport(Request $request){
+        $em = $this->getDoctrine()->getManager();
+        $repId = $request->query->get('report_id');
+
+        $report = $em->getRepository(Report::class)->find([
+            'id' => $repId
+        ]);
+
+        $report->setIsClosed(true);
+        $em->flush();
+        $em->persist($report);
+
+
+        return $this->json('Signalement traité');
+
+    }
+
+    /**
+     * @Route(name="closeAndDeleteRessource", path="api/admin/closeanndelres", methods={"POST"})
+     * @param Request $request
+     * @throws Exception
+     * @return JsonResponse
+     *
+     */
+
+    public function closeAndDeleteRessource(Request $request){
+        $em = $this->getDoctrine()->getManager();
+
+        $repId = $request->query->get('report_id');
+        $report = $em->getRepository(Report::class)->find([
+            'id' => $repId
+        ]);
+
+        $resource = $em->getRepository(Resource::class)->find([
+            'id' => $report->getReportRessource()
+        ]);
+
+        $em->remove($resource);
+
+        $report->setIsClosed(true);
+// TODO spécifier si la ressource doit être bloquée ou supprimer
+        $em->flush();
+        $em->persist($resource);
+        $em->persist($report);
+
+
+        return $this->json('Signalement traité, ressource supprimée');
+
+
     }
 
 
