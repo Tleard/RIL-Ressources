@@ -4,8 +4,10 @@ namespace App\DataFixtures;
 
 use App\Entity\Resource;
 use App\Entity\ResourceCategory;
+use App\Entity\ResourceReaction;
 use App\Entity\ResourceStatus;
 use App\Entity\ResourceType;
+use DateTime;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
@@ -69,7 +71,15 @@ class AppFixtures extends Fixture
     private const TYPE = [
       "text",
       "video",
-      "audio"
+      "audio",
+      "image"
+    ];
+
+    private const REACTION = [
+        "like",
+        "care",
+        "sad",
+        "happy"
     ];
 
 
@@ -77,6 +87,7 @@ class AppFixtures extends Fixture
     {
         $this->loadUsers($manager);
         $this->loadResourcesCategories($manager);
+        $this->loadResourcesReactions($manager);
         $this->loadResourcesStatus($manager);
         $this->loadResourcesType($manager);
         $this->loadResources($manager);
@@ -92,6 +103,22 @@ class AppFixtures extends Fixture
             $this->setReference("category_" . $i, $category);
 
             $manager->persist($category);
+        }
+        $manager->flush();
+    }
+
+    public function loadResourcesReactions(ObjectManager $manager)
+    {
+        $i = 0;
+        foreach (self::CATEGORIES as $resourcesReactions) {
+            $reaction = new ResourceReaction();
+            $reaction->setReaction($resourcesReactions);
+            $reaction->setCreationDate(new DateTime());
+            $reaction->setUser($this->getReference("user_" . rand(1, sizeof(self::USERS) -1)));
+            $i++;
+            $this->setReference("reaction_" . $i, $reaction);
+
+            $manager->persist($reaction);
         }
         $manager->flush();
     }
@@ -135,6 +162,7 @@ class AppFixtures extends Fixture
             //Todo: Improve setCategories to have multiple categories
             $resource->setCategories([$this->getReference("category_" . rand(1, sizeof(self::CATEGORIES) -1))]);
             $resource->setType($this->getReference("type_" . rand(1, sizeof(self::TYPE) -1)));
+            $resource->addReactions($this->getReference("reaction_" . rand(1, sizeof(self::REACTION) -1)));
             $resource->setAuthor($this->getReference("user_" . rand(1, sizeof(self::USERS) -1)));
             //Todo: Add Template Assets
             $manager->persist($resource);

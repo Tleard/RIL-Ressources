@@ -70,6 +70,7 @@ class User implements UserInterface
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Asset", cascade={"persist"})
+     * @ORM\JoinColumn(name="asset_id", referencedColumnName="id")
      */
     private $profilePicture;
 

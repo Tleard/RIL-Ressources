@@ -21,9 +21,8 @@ class ResourceReaction
     private $id;
 
     /**
-     * 2D array with user & like type
-     * @ORM\ManyToMany(targetEntity="App\Entity\User")
-     * @ORM\JoinTable()
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", cascade={"persist"})
+     * @ORM\JoinColumn(name="author_id", referencedColumnName="id", nullable=true)
      */
     private $user;
 
@@ -36,5 +35,69 @@ class ResourceReaction
      * @ORM\Column(type="datetime")
      */
     private $creation_date;
+
+    /**
+     * @return mixed
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param mixed $id
+     */
+    public function setId($id): void
+    {
+        $this->id = $id;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * @param mixed $user
+     */
+    public function setUser($user): void
+    {
+        $this->user = $user;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getReaction()
+    {
+        return $this->reaction;
+    }
+
+    /**
+     * @param mixed $reaction
+     */
+    public function setReaction($reaction): void
+    {
+        $this->reaction = $reaction;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCreationDate()
+    {
+        return $this->creation_date;
+    }
+
+    /**
+     * @param mixed $creation_date
+     */
+    public function setCreationDate($creation_date): void
+    {
+        $this->creation_date = $creation_date;
+    }
 
 }

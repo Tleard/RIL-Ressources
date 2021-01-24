@@ -7,6 +7,7 @@ use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\DBAL\Types\ArrayType;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class Resource
@@ -21,6 +22,7 @@ class Resource
         $this->createdAt = new DateTime();
         $this->categories = new ArrayCollection();
         $this->assets = new ArrayCollection();
+        $this->reactions = new ArrayCollection();
     }
 
 
@@ -32,7 +34,13 @@ class Resource
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @Assert\Length(
+     *      min = 5,
+     *      max = 50,
+     *      minMessage = "Your title must be at least {{ limit }} characters long",
+     *      maxMessage = "Your title cannot be longer than {{ limit }} characters"
+     *)
+     * @ORM\Column(type="string", length=100)
      */
     private $title;
 
@@ -48,12 +56,23 @@ class Resource
     private $categories;
 
     /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\ResourceReaction", cascade={"persist"})
+     */
+    private $reactions;
+
+    /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Asset", cascade={"persist"})
      */
     private $assets;
 
     /**
-     * @ORM\Column(type="string", length=500)
+     * @Assert\Length(
+     *      min = 5,
+     *      max = 4000,
+     *      minMessage = "Your title must be at least {{ limit }} characters long",
+     *      maxMessage = "Your title cannot be longer than {{ limit }} characters"
+     *)
+     * @ORM\Column(type="string", length=4000)
      */
     private $description;
 
@@ -171,6 +190,10 @@ class Resource
         return $this;
     }
 
+    /**
+     * @param $assets
+     * @return Resource
+     */
     public function addAssets($assets): Resource
     {
         $this->assets->add($assets);
@@ -245,6 +268,32 @@ class Resource
     public function setAuthor($author): void
     {
         $this->author = $author;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getReactions()
+    {
+        return $this->reactions;
+    }
+
+    /**
+     * @param mixed $reactions
+     */
+    public function setReactions($reactions): void
+    {
+        $this->reactions = $reactions;
+    }
+
+    /**
+     * @param $reactions
+     * @return Resource
+     */
+    public function addReactions($reactions): Resource
+    {
+        $this->reactions->add($reactions);
+        return $this;
     }
 
 }

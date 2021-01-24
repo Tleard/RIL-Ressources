@@ -57,7 +57,7 @@ class ResourcesController extends AbstractController
                 ->createQueryBuilder('r');
 
             $qb->where('r.id = :id')->setParameter('id', $request->get('id'));
-            $resources = $qb->getQuery()->getArrayResult();
+            $resources = $qb->getQuery()->getResult();
 
 
         } catch (NonUniqueResultException $nonUniqueResultException) {
@@ -128,7 +128,7 @@ class ResourcesController extends AbstractController
             foreach ($uploadedAssets['assets'] as $file)
             {
                 //Set Assets , create file(s) & check Type
-                $assets = $fileUpload->UploadFilesResource($file, $this->getParameter('kernel.project_dir'));
+                $assets = $fileUpload->UploadFile($file, $this->getParameter('kernel.project_dir'));
                 $resource->addAssets($assets);
 
             }

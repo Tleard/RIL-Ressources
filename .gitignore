@@ -19,3 +19,5 @@ API/.env
 .idea/
 
 API/.env_example
+.vscode/*
+ressource_relationelle/.eslintcache
