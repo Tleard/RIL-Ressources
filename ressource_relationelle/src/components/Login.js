@@ -42,7 +42,7 @@ const Login  = (props) => {
 
 
     return (  
-        <div class="login">
+        <div className="login">
             <h1>Login</h1>
             <label>Nom d'utilisateur
                 <input type="text" onChange={(e) => {
