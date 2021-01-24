@@ -123,6 +123,16 @@ class User implements UserInterface
 
 
 
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $codeConfirmation;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $is_valid;
+
 
 
     public function getId(): ?string
@@ -259,6 +269,7 @@ class User implements UserInterface
         //Useless.
     }
 
+
     /**
      * @return Collection|Report[]
      */
@@ -273,9 +284,21 @@ class User implements UserInterface
             $this->reports[] = $report;
             $report->setReportBy($this);
         }
+    }
+
+    public function getCodeConfirmation(): ?string
+    {
+        return $this->codeConfirmation;
+    }
+
+    public function setCodeConfirmation(?string $codeConfirmation): self
+    {
+        $this->codeConfirmation = $codeConfirmation;
+
 
         return $this;
     }
+
 
     public function removeReport(Report $report): self
     {
@@ -291,5 +314,18 @@ class User implements UserInterface
 
 
 
+
+
+    public function getIsValid(): ?bool
+    {
+        return $this->is_valid;
+    }
+
+    public function setIsValid(?bool $is_valid): self
+    {
+        $this->is_valid = $is_valid;
+
+        return $this;
+    }
 
 }
