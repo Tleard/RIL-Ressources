@@ -2,4 +2,4 @@
 parameters:
     #
     mail_user: 'ressourcesrelationelle@gmail.com'
-    password: 'Wombat67'
+    password: '%env(string:MAIL_PASS)%'

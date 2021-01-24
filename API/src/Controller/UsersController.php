@@ -165,7 +165,8 @@ class UsersController extends AbstractFOSRestController
      * @param Request $request
      */
     public function confirmation(Request $request){
-        $code = $_GET['code'];
+        $code = $request->query->get('code');
+
 
         $entityManager = $this->getDoctrine()->getManager();
         $user = $entityManager->getRepository(User::class)->findBy([
