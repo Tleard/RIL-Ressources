@@ -55,8 +55,6 @@ class ResourcesCategoryController extends AbstractController
         $em = $this->getDoctrine()->getManager();
         $data = json_decode($request->getContent(), true);
 
-        //dd(gettype($data['name']) !== "string");
-        //dd(gettype($data['name']) !== "string");
 
         if ($data['name'] == null || gettype($data['name']) !== "string")
         {
@@ -91,7 +89,7 @@ class ResourcesCategoryController extends AbstractController
             $category = $em->getRepository(ResourceCategory::class)->find($categoryId);
             if ($category == null)
             {
-                throw new Exception('Category could not be find', Response::HTTP_NOT_FOUND);
+                throw new \Exception('Category could not be find', Response::HTTP_NOT_FOUND);
             }
         } catch (\Exception $exception) {
             throw new \Exception($exception->getMessage(), Response::HTTP_BAD_REQUEST);
