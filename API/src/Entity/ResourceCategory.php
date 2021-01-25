@@ -27,6 +27,11 @@ class ResourceCategory
     private $name;
 
     /**
+     * @ORM\Column(type="boolean", options={"default" : true})
+     */
+    private $status;
+
+    /**
      * @return mixed
      */
     public function getId()
@@ -50,6 +55,22 @@ class ResourceCategory
     {
         $this->name = $name;
         return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
+
+    /**
+     * @param mixed $status
+     */
+    public function setStatus($status): void
+    {
+        $this->status = $status;
     }
 
 
