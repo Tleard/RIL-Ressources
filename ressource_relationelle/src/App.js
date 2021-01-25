@@ -4,6 +4,7 @@ import ProtectedRoute from "./ProtectedRoute";
 import Navigation from "./components/Navigation";
 import Home from "./components/Home";
 import Categories from "./components/Categories";
+import Category from "./components/Category";
 import Login from "./components/Login";
 import Register from "./components/Register";
 import Footer from "./components/Footer";
@@ -28,6 +29,7 @@ function App() {
             <Route exact path='/login' component={Login} />
             <ProtectedRoute exact path='/home' component={Home} />
             <ProtectedRoute exact path='/categories' component={Categories} />
+            <ProtectedRoute exact path='/category' component={Category} />
             <ProtectedRoute exact path='/register' component={Register} />
             <Route exact path='/testallresources' component={TestAllResources} title="This is a test"/>
             <Route path="*" component={NotFound} />
