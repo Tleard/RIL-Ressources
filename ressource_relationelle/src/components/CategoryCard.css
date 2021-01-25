@@ -1,0 +1,12 @@
+.category-card {
+    margin: 1rem;
+    text-align: center;
+    vertical-align: center;
+    line-height: 250px;
+    font-size: 3rem;
+    border: 1px solid black;
+    border-radius: 30px;
+    /* width: 500px; */
+    height: 250px;
+
+}
