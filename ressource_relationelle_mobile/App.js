@@ -2,14 +2,14 @@ import * as React from "react";
 import { Button, View, Text, TouchableOpacity, Image } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import LogInScreen from "./screens/login";
+import logInScreen from "./screens/logInScreen";
 function HomeScreen({ navigation }) {
   return (
     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
       <Text>Home Screen</Text>
       <Button
         title="Go to LogIn"
-        onPress={() => navigation.navigate("LogIn")}
+        onPress={() => navigation.navigate("login")}
       />
     </View>
   );
@@ -46,7 +46,7 @@ function App() {
             ),
           }}
         />
-        <Stack.Screen name="LogIn" component={LogInScreen} />
+        <Stack.Screen name="login" component={logInScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
