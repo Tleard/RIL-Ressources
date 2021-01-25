@@ -91,11 +91,13 @@ class ResourcesCategoryController extends AbstractController
             {
                 throw new \Exception('Category could not be find', Response::HTTP_NOT_FOUND);
             }
+            /** @var ResourceCategory $category*/
+            $category->setStatus(false);
         } catch (\Exception $exception) {
             throw new \Exception($exception->getMessage(), Response::HTTP_BAD_REQUEST);
         }
 
-        $em->remove($category);
+        $em->persist($category);
         $em->flush();
 
         return $this->json($category,
