@@ -21,3 +21,7 @@ API/.env
 API/.env_example
 .vscode/*
 ressource_relationelle/.eslintcache
+
+ressource_relationelle_mobile/.expo/
+
+ressource_relationelle_mobile/node_modules/.bin/

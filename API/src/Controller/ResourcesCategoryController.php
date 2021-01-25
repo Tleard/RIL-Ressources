@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\ResourceCategory;
 use Doctrine\ORM\NonUniqueResultException;
 use FOS\RestBundle\View\View as FosRestView;
+use mysql_xdevapi\Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,7 +22,7 @@ class ResourcesCategoryController extends AbstractController
      * @param Request $request
      * @return FosRestView|Response
      */
-    public function listResourcesAction(Request $request)
+    public function listCategoriesAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
 
@@ -36,7 +37,70 @@ class ResourcesCategoryController extends AbstractController
         }
 
         return $this->json($resources,
-            Response::HTTP_CREATED);
+            Response::HTTP_FOUND);
 
+    }
+
+    /**
+     * @Rest\Post (
+     *     path = "/api/resources_category",
+     *     name = "create_resource_category"
+     * )
+     * @param Request $request
+     * @return FosRestView|Response
+     * @throws \Exception
+     */
+    public function createCategoriesAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $data = json_decode($request->getContent(), true);
+
+        //dd(gettype($data['name']) !== "string");
+        //dd(gettype($data['name']) !== "string");
+
+        if ($data['name'] == null || gettype($data['name']) !== "string")
+        {
+            throw new \Exception('You should provide a name to the category', Response::HTTP_BAD_REQUEST);
+        }
+
+        $category = new ResourceCategory();
+        $category->setName($data['name']);
+
+        $em->persist($category);
+        $em->flush();
+
+        return $this->json($category,
+            Response::HTTP_CREATED);
+    }
+
+    /**
+     * @Rest\Delete(
+     *     path = "/api/resources_category/{categoryId}",
+     *     name = "delete_resource_category"
+     * )
+     * @param Request $request
+     * @return FosRestView|Response
+     * @throws \Exception
+     */
+    public function deleteCategoriesAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $categoryId = $request->get('categoryId');
+
+        try {
+            $category = $em->getRepository(ResourceCategory::class)->find($categoryId);
+            if ($category == null)
+            {
+                throw new Exception('Category could not be find', Response::HTTP_NOT_FOUND);
+            }
+        } catch (\Exception $exception) {
+            throw new \Exception($exception->getMessage(), Response::HTTP_BAD_REQUEST);
+        }
+
+        $em->remove($category);
+        $em->flush();
+
+        return $this->json($category,
+            Response::HTTP_FOUND);
     }
 }
