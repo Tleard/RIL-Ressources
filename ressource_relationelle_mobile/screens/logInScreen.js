@@ -24,6 +24,7 @@ class logInScreen extends React.Component {
             username : '',
             password : '',
             token :'',
+            user : '',
             id:'',
             error_message:'',
         }
@@ -36,19 +37,15 @@ class logInScreen extends React.Component {
             await LoginAttempt(this.state.username, this.state.password).then(data =>
                 this.setState({
                     token: data.token,
+                    user: data.user,
                     error_message: JSON.stringify(data.message)
                 })
             );
         } else if (typeof this.state.error_message !== 'undefined') {
             alert(this.state.error_message)
         }
-        //Store Token
-        await TokenHandler.storeToken(this.state.token, this.state.id);
-        /*const parent = this.props.navigation.dangerouslyGetParent();
-        parent.setOptions({
-            tabBarVisible: false
-        });*/
-        console.log(this.state.token)
+        //Store Token & Current User
+        await TokenHandler.storeToken(this.state.token, this.state.user);
     };
 
 

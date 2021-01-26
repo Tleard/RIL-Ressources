@@ -7,9 +7,6 @@ import {getUrl} from "./RequestHandler";
 
 export function LoginAttempt(username, password) {
     let urlBase = getUrl();
-    console.log(urlBase)
-    console.log(username)
-    console.log(password)
 
     return fetch(urlBase +"/log-in", {
         method: 'POST',
@@ -26,5 +23,3 @@ export function LoginAttempt(username, password) {
             console.error("Error Manual : " +error.message)
         })
 }
-
-
