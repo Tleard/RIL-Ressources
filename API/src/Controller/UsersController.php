@@ -66,7 +66,10 @@ class UsersController extends AbstractFOSRestController
         $userPassword = $em->getRepository(User::class)->findOneByUserForPassword($data['username']);
 
         if ($userPassword == $encoder->encodePassword($user, $data['password'])){
-            return new JsonResponse(['token' => $JWTManager->create($user)]);
+            return $this->json([
+                'token' => $JWTManager->create($user),
+                'user' => $user
+            ]);
         } else {
             return new JsonResponse([
                 'message' => "Invalid Credentials."
