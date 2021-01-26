@@ -24,4 +24,4 @@ ressource_relationelle/.eslintcache
 
 ressource_relationelle_mobile/.expo/
 
-ressource_relationelle_mobile/node_modules/.bin/
+ressource_relationelle_mobile/node_modules/*
