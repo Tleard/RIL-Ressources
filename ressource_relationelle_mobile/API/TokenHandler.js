@@ -15,7 +15,6 @@ export class TokenHandler extends React.Component {
         try {
             AsyncStorage.getItem("userToken")
                 .then((responseJson) => {
-                    console.log("responseJSON" +responseJson);
                     return responseJson;
                 })
         } catch (error) {
@@ -23,10 +22,11 @@ export class TokenHandler extends React.Component {
         }
     }
 
-    static async storeToken(token, id) {
+    static async storeToken(token, user) {
         try {
             await AsyncStorage.setItem("userToken", token);
-            await AsyncStorage.setItem("userId", id);
+            await AsyncStorage.setItem("user", token);
+            //await AsyncStorage.setItem("userId", id);
         } catch (error) {
             console.log("Something went wrong", error);
         }
