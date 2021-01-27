@@ -437,4 +437,38 @@ class UsersController extends AbstractFOSRestController
 
     }
 
+    /**
+     * @Route (name="saveResInLib", path="/api/user/saveResInLib", methods={"POST"})
+     * @param Request $request
+     * @throws Exception
+     */
+
+    public function saveResInLib(Request $request){
+        $em = $this->getDoctrine()->getManager();
+
+        $ressId = $request->get('ressource_id');
+        $ressource = $em->getRepository(Resource::class)->find([
+            'id' => $ressId
+        ]);
+
+        $userId = $this->getUser()->getId();
+
+        $user = $em->getRepository(User::class)->find([
+            'id' => $userId
+        ]);
+
+        $user->addLibrary($ressource);
+
+        $em->persist($user);
+        $em->flush();
+
+        return $this->json(['message' => 'ressource ajoutée à la bibliothèque'], Response::HTTP_CREATED);
+
+
+
+
+
+
+    }
+
 }
