@@ -99,6 +99,7 @@ class AppFixtures extends Fixture
         foreach (self::CATEGORIES as $resourcesCategories) {
             $category = new ResourceCategory();
             $category->setName($resourcesCategories);
+            $category->setStatus(true);
             $i++;
             $this->setReference("category_" . $i, $category);
 
