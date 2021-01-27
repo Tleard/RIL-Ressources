@@ -150,7 +150,7 @@ class UsersController extends AbstractFOSRestController
                     ->setSubject('Veuillez confirmer votre compte')
                     ->setBody("Bienvenue sur Ressources Relationelles veuillez confirmer 
                     votre compte via l'addresse suivante : http://localhost:8000/confirmation/?code=$code");
-                ;
+
 
 
                 $mailer->send($message);
@@ -158,7 +158,7 @@ class UsersController extends AbstractFOSRestController
 
 
 
-                ;
+
 
 
             }

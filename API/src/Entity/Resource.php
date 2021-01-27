@@ -100,6 +100,11 @@ class Resource
      */
     private $reports;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $is_blocked;
+
 
     /**
      * @return mixed
@@ -329,6 +334,18 @@ class Resource
                 $report->setReportRessource(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getIsBlocked(): ?bool
+    {
+        return $this->is_blocked;
+    }
+
+    public function setIsBlocked(?bool $is_blocked): self
+    {
+        $this->is_blocked = $is_blocked;
 
         return $this;
     }

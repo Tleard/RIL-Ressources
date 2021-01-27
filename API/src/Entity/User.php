@@ -128,6 +128,16 @@ class User implements UserInterface
      */
     private $is_valid;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Warning::class, mappedBy="user_warned")
+     */
+    private $warnings;
+
+    public function __construct()
+    {
+        $this->warnings = new ArrayCollection();
+    }
+
 
 
     public function getId(): ?string
@@ -298,6 +308,36 @@ class User implements UserInterface
     public function setIsValid(?bool $is_valid): self
     {
         $this->is_valid = $is_valid;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Warning[]
+     */
+    public function getWarnings(): Collection
+    {
+        return $this->warnings;
+    }
+
+    public function addWarning(Warning $warning): self
+    {
+        if (!$this->warnings->contains($warning)) {
+            $this->warnings[] = $warning;
+            $warning->setUserWarned($this);
+        }
+
+        return $this;
+    }
+
+    public function removeWarning(Warning $warning): self
+    {
+        if ($this->warnings->removeElement($warning)) {
+            // set the owning side to null (unless already changed)
+            if ($warning->getUserWarned() === $this) {
+                $warning->setUserWarned(null);
+            }
+        }
 
         return $this;
     }

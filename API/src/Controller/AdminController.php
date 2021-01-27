@@ -6,6 +6,8 @@ namespace App\Controller;
 
 use App\Entity\Report;
 use App\Entity\Resource;
+use App\Entity\User;
+use App\Entity\Warning;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
 use JMS\Serializer\Exception\Exception;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -88,14 +90,14 @@ class AdminController extends AbstractFOSRestController
     }
 
     /**
-     * @Route(name="closeAndDeleteRessource", path="api/admin/closeanndelres", methods={"POST"})
+     * @Route(name="closeAndDeleteRessource", path="api/admin/closeandblockres", methods={"POST"})
      * @param Request $request
      * @throws Exception
      * @return JsonResponse
      *
      */
 
-    public function closeAndDeleteRessource(Request $request){
+    public function closeAndBlockRessource(Request $request){
         $em = $this->getDoctrine()->getManager();
 
         $repId = $request->query->get('report_id');
@@ -107,20 +109,71 @@ class AdminController extends AbstractFOSRestController
             'id' => $report->getReportRessource()
         ]);
 
-        $em->remove($resource);
-
+        $resource->setIsBlocked(true);
         $report->setIsClosed(true);
-// TODO spécifier si la ressource doit être bloquée ou supprimer
+
         $em->flush();
         $em->persist($resource);
         $em->persist($report);
 
 
-        return $this->json('Signalement traité, ressource supprimée');
+        return $this->json('Signalement traité, ressource bloquée');
 
 
     }
 
+    /**
+     * @Route(name="closeAndWarnUser", path="/api/admin/closeAndWarnUser", methods={"POST"})
+     * @param Request $request
+     * @param $mailer
+     * @throws Exception
+     * @return JsonResponse
+     */
+
+    public function closeAndWarnUser(Request $request, \Swift_Mailer $mailer){
+        $em = $this->getDoctrine()->getManager();
+
+        $repId = $request->query->get('report_id');
+        $report = $em->getRepository(Report::class)->find([
+            'id' => $repId
+        ]);
+
+        $user = $em->getRepository(User::class)->find([
+            'id' => $report->getReportedUser()
+        ]);
+
+        $warn = new Warning();
+
+        $warn->setCreatedAt(new \DateTime());
+        $warn->setUserWarned($user);
+
+        $message = (new \Swift_Message('Hello Email'))
+            ->setFrom('ressourcesrelationelle@gmail.com')
+            ->setTo($user->getEmail())
+            ->setSubject('Nouvel Avertissement')
+            ->setBody("Votre activité sur l'application resosurce relationnelle a été signalé, suite à l'observation de ce signalement nous avons décidé de vous faire 
+            écoper d'un avertissement, veuillez désormais prêter attention à vos agissements ou nous serons contraints d'apporter des sanctions plus lourdes, veuillez noter 
+            que tout les incidents sont conservés en vu de possibles poursuites
+            
+            Cordialement l'équipe de Ressource Relationnelle ");
+
+
+
+
+        $mailer->send($message);
+        $report->setIsClosed(true);
+
+        $em->persist($user);
+        $em->persist($warn);
+        $em->persist($report);
+
+        $em->flush();
+
+        return $this->json("Singalement traité, utilisateur averti");
+
+
+
+    }
 
 
 }
