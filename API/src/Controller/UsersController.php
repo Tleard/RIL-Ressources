@@ -498,4 +498,39 @@ class UsersController extends AbstractFOSRestController
 
     }
 
+    /**
+     * @Route(name="removeFromLib", path="/api/user/removeFromLib", methods={"POST"})
+     * @param Request $request
+     * @return JsonResponse
+     */
+
+    public function removeFromLib(Request $request){
+        $resId = $request->get('ressource_id');
+        $userId = $this->getUser()->getId();
+        $em = $this->getDoctrine()->getManager();
+
+        $user = $em->getRepository(User::class)->find([
+            'id' => $userId
+        ]);
+
+        $res = $em->getRepository(Resource::class)->find([
+            'id' => $resId
+        ]);
+
+
+
+        $user->removeLibrary($res);
+
+        $em->persist($user);
+
+        $em->flush();
+
+
+        return $this->json(['message' => 'ressource retirée de la bibliothèque']);
+
+
+
+
+    }
+
 }
