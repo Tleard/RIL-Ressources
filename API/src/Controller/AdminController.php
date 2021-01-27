@@ -175,5 +175,48 @@ class AdminController extends AbstractFOSRestController
 
     }
 
+    /**
+     * @Route(name="closeAndBlockUser", path="/api/admin/closeAndBlockUser", methods={"POST"})
+     * @param Request $request
+     * @param $mailer
+     * @throws Exception
+     * @return JsonResponse
+     */
+    public function closeAndBlockUser(Request $request, \Swift_Mailer $mailer){
+        $em = $this->getDoctrine()->getManager();
 
+        $repId = $request->query->get('report_id');
+        $report = $em->getRepository(Report::class)->find([
+            'id' => $repId
+        ]);
+
+        $user = $em->getRepository(User::class)->find([
+            'id' => $report->getReportedUser()
+        ]);
+
+        $user->setIsBanned(true);
+        $message = (new \Swift_Message('Hello Email'))
+            ->setFrom('ressourcesrelationelle@gmail.com')
+            ->setTo($user->getEmail())
+            ->setSubject('Nouvel Avertissement')
+            ->setBody("Votre activité sur l'application resosurce relationnelle a été signalé, suite à l'observation de ce signalement nous avons décidé de bloquer l'accès à votre 
+            compte, veuillez noter que si vous avez enfreint la loi, ce blocage peut faire l'objet de poursuite judiciaire
+            
+            Cordialement l'équipe de Ressource Relationnelle ");
+
+
+
+
+        $mailer->send($message);
+        $report->setIsClosed(true);
+
+        $em->persist($user);
+
+        $em->persist($report);
+
+        $em->flush();
+
+        return $this->json("Singalement traité, utilisateur bloqué");
+
+    }
 }
