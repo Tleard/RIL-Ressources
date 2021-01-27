@@ -5,6 +5,7 @@ namespace App\Entity;
 
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\ArrayType;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -23,6 +24,7 @@ class Resource
         $this->categories = new ArrayCollection();
         $this->assets = new ArrayCollection();
         $this->reactions = new ArrayCollection();
+        $this->reports = new ArrayCollection();
     }
 
 
@@ -92,6 +94,16 @@ class Resource
      * @ORM\JoinColumn(name="author_id", referencedColumnName="id", nullable=true)
      */
     private $author;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Report::class, mappedBy="report_ressource")
+     */
+    private $reports;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $is_blocked;
 
 
     /**
@@ -293,6 +305,48 @@ class Resource
     public function addReactions($reactions): Resource
     {
         $this->reactions->add($reactions);
+        return $this;
+    }
+
+    /**
+     * @return Collection|Report[]
+     */
+    public function getReports(): Collection
+    {
+        return $this->reports;
+    }
+
+    public function addReport(Report $report): self
+    {
+        if (!$this->reports->contains($report)) {
+            $this->reports[] = $report;
+            $report->setReportRessource($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReport(Report $report): self
+    {
+        if ($this->reports->removeElement($report)) {
+            // set the owning side to null (unless already changed)
+            if ($report->getReportRessource() === $this) {
+                $report->setReportRessource(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getIsBlocked(): ?bool
+    {
+        return $this->is_blocked;
+    }
+
+    public function setIsBlocked(?bool $is_blocked): self
+    {
+        $this->is_blocked = $is_blocked;
+
         return $this;
     }
 

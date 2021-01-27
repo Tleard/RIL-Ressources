@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Repository\UserRepository;
 use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Exception;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\ORM\Mapping as ORM;
@@ -20,6 +22,7 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
  */
 class User implements UserInterface
 {
+
 
     const ROLE_USER = 'ROLE_USER';
     const ROLE_ADMIN = 'ROLE_ADMIN';
@@ -109,6 +112,13 @@ class User implements UserInterface
     private $roles;
 
     /**
+     * @ORM\OneToMany(targetEntity=Report::class, mappedBy="report_by")
+     */
+
+
+
+
+    /**
      * @ORM\Column(type="text", nullable=true)
      */
     private $codeConfirmation;
@@ -117,6 +127,17 @@ class User implements UserInterface
      * @ORM\Column(type="boolean", nullable=true)
      */
     private $is_valid;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Warning::class, mappedBy="user_warned")
+     */
+    private $warnings;
+
+    public function __construct()
+    {
+        $this->warnings = new ArrayCollection();
+    }
+
 
 
     public function getId(): ?string
@@ -253,6 +274,12 @@ class User implements UserInterface
         //Useless.
     }
 
+
+    /**
+     * @return Collection|Report[]
+     */
+
+
     public function getCodeConfirmation(): ?string
     {
         return $this->codeConfirmation;
@@ -262,8 +289,16 @@ class User implements UserInterface
     {
         $this->codeConfirmation = $codeConfirmation;
 
+
         return $this;
     }
+
+
+
+
+
+
+
 
     public function getIsValid(): ?bool
     {
@@ -276,4 +311,35 @@ class User implements UserInterface
 
         return $this;
     }
+
+    /**
+     * @return Collection|Warning[]
+     */
+    public function getWarnings(): Collection
+    {
+        return $this->warnings;
+    }
+
+    public function addWarning(Warning $warning): self
+    {
+        if (!$this->warnings->contains($warning)) {
+            $this->warnings[] = $warning;
+            $warning->setUserWarned($this);
+        }
+
+        return $this;
+    }
+
+    public function removeWarning(Warning $warning): self
+    {
+        if ($this->warnings->removeElement($warning)) {
+            // set the owning side to null (unless already changed)
+            if ($warning->getUserWarned() === $this) {
+                $warning->setUserWarned(null);
+            }
+        }
+
+        return $this;
+    }
+
 }

@@ -9,6 +9,8 @@ use ApiPlatform\Core\EventListener\EventPriorities;
 
 use App\Entity\Asset;
 
+use App\Entity\Report;
+use App\Entity\Resource;
 use App\Entity\User;
 use App\Form\UsersPatchType;
 use App\Form\UsersType;
@@ -151,7 +153,7 @@ class UsersController extends AbstractFOSRestController
                     ->setSubject('Veuillez confirmer votre compte')
                     ->setBody("Bienvenue sur Ressources Relationelles veuillez confirmer 
                     votre compte via l'addresse suivante : http://localhost:8000/confirmation/?code=$code");
-                ;
+
 
 
                 $mailer->send($message);
@@ -159,7 +161,7 @@ class UsersController extends AbstractFOSRestController
 
 
 
-                ;
+
 
 
             }
@@ -356,7 +358,7 @@ class UsersController extends AbstractFOSRestController
 
 
         $user[0]->setIsValid(true);
-
+        $entityManager->persist($user);
         $entityManager->flush();
 
 
@@ -365,24 +367,74 @@ class UsersController extends AbstractFOSRestController
         return $this->json(['message' => 'votre compte a bien ete valide '], Response::HTTP_CREATED);
 
     }
-
-/*
     /**
-     * @Route(name="testMail", path="/testMail", methods={"POST"})
-     * @param $mailer
+     * @Route(name="report_user", path="/api/user/report_user", methods={"POST"})
+     * @param Request $request
+     * @throws Exception
+     */
+    public function reportUser(Request $request){
+        $em = $this->getDoctrine()->getManager();
+        $userId = $request->get('user_id');
+        $userReported = $em->getRepository(User::class)->findBy([
+            'id' => $userId
+        ]);
 
-    public function testMail(\Swift_Mailer $mailer){
-        $message = (new \Swift_Message('Hello Email'))
-            ->setFrom('ressourcerelationelle@gmail.com')
-            ->setTo('barbe.maxime.pro@gmail.com')
-            ->setBody('You should see me from the profiler!')
-        ;
+        if ($request->get('comment') != ""){
+            $comment = $request->get('comment');
+        }
+       $reporterId = $this->getUser()->getId();
 
-        $mailer->send($message);
+       $reporter = $em->getRepository(User::class)->findBy([
+           'id' => $reporterId
+       ]);
 
+       $report = new Report();
+       $report->setDate(new \DateTime());
+       $report->setReportedUser($userReported[0]);
+       $report->setReportBy($reporter[0]);
+       if ($comment){
+           $report->setComment($comment);
+       }
+       $em->persist($report);
+       $em->flush();
 
+        return $this->json(['message' => 'Merci pour votre signalement'], Response::HTTP_CREATED);
     }
 
-*/
+    /**
+     * @Route (name="report_ressource", path="/api/user/report_ressource", methods="POST")
+     * @param Request $request
+     * @throws Exception
+     */
+
+    public function reportRessource(Request $request){
+        $em = $this->getDoctrine()->getManager();
+
+        $ressId = $request->get('ressource_id');
+        $ressource = $em->getRepository(Resource::class)->findBy([
+            'id' => $ressId
+        ]);
+        if ($request->get('comment') != ""){
+            $comment = $request->get('comment');
+        }
+        $reporterId = $this->getUser()->getId();
+
+        $reporter = $em->getRepository(User::class)->findBy([
+            'id' => $reporterId
+        ]);
+
+        $report = new Report();
+        $report->setDate(new \DateTime());
+        $report->setReportRessource($ressource[0]);
+        $report->setReportBy($reporter[0]);
+        if ($comment){
+            $report->setComment($comment);
+        }
+        $em->persist($report);
+        $em->flush();
+
+        return $this->json(['message' => 'Merci pour votre signalement'], Response::HTTP_CREATED);
+
+    }
 
 }
