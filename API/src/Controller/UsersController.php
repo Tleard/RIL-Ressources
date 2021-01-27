@@ -406,7 +406,6 @@ class UsersController extends AbstractFOSRestController
      * @param Request $request
      * @throws Exception
      */
-
     public function reportRessource(Request $request){
         $em = $this->getDoctrine()->getManager();
         $ressId = $request->get('ressource_id');
@@ -438,7 +437,6 @@ class UsersController extends AbstractFOSRestController
      * @param Request $request
      * @throws Exception
      */
-
     public function saveResInLib(Request $request){
         $em = $this->getDoctrine()->getManager();
         $ressId = $request->get('ressource_id');
@@ -479,7 +477,6 @@ class UsersController extends AbstractFOSRestController
      * @param Request $request
      * @return JsonResponse
      */
-
     public function removeFromLib(Request $request){
         $resId = $request->get('ressource_id');
         $userId = $this->getUser()->getId();
