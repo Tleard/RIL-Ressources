@@ -406,10 +406,8 @@ class UsersController extends AbstractFOSRestController
      * @param Request $request
      * @throws Exception
      */
-
     public function reportRessource(Request $request){
         $em = $this->getDoctrine()->getManager();
-
         $ressId = $request->get('ressource_id');
         $ressource = $em->getRepository(Resource::class)->findBy([
             'id' => $ressId
@@ -422,7 +420,6 @@ class UsersController extends AbstractFOSRestController
         $reporter = $em->getRepository(User::class)->findBy([
             'id' => $reporterId
         ]);
-
         $report = new Report();
         $report->setDate(new \DateTime());
         $report->setReportRessource($ressource[0]);
@@ -432,8 +429,68 @@ class UsersController extends AbstractFOSRestController
         }
         $em->persist($report);
         $em->flush();
-
         return $this->json(['message' => 'Merci pour votre signalement'], Response::HTTP_CREATED);
+    }
+
+    /**
+     * @Route (name="saveResInLib", path="/api/user/saveResInLib", methods={"POST"})
+     * @param Request $request
+     * @throws Exception
+     */
+    public function saveResInLib(Request $request){
+        $em = $this->getDoctrine()->getManager();
+        $ressId = $request->get('ressource_id');
+        $ressource = $em->getRepository(Resource::class)->find([
+            'id' => $ressId
+        ]);
+        $userId = $this->getUser()->getId();
+        $user = $em->getRepository(User::class)->find([
+            'id' => $userId
+        ]);
+        $user->addLibrary($ressource);
+        $em->persist($user);
+        $em->flush();
+        return $this->json(['message' => 'ressource ajoutée à la bibliothèque'], Response::HTTP_CREATED);
+    }
+
+    /**
+     * @Route(name="getLibrary", path="/api/user/getLib", methods={"POST"})
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function getMyLib(Request $request){
+        $userId = $this->getUser()->getId();
+        $em = $this->getDoctrine()->getManager();
+        $user = $em->getRepository(User::class)->find([
+            'id' => $userId
+        ]);
+        $lib = $user->getLibrary();
+        if (count($lib) > 0){
+            return $this->json($lib, Response::HTTP_CREATED);
+        } else {
+            return $this->json(['message' => "vous n'avez aucune ressource enregistrée"]);
+        }
+    }
+
+    /**
+     * @Route(name="removeFromLib", path="/api/user/removeFromLib", methods={"POST"})
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function removeFromLib(Request $request){
+        $resId = $request->get('ressource_id');
+        $userId = $this->getUser()->getId();
+        $em = $this->getDoctrine()->getManager();
+        $user = $em->getRepository(User::class)->find([
+            'id' => $userId
+        ]);
+        $res = $em->getRepository(Resource::class)->find([
+            'id' => $resId
+        ]);
+        $user->removeLibrary($res);
+        $em->persist($user);
+        $em->flush();
+        return $this->json(['message' => 'ressource retirée de la bibliothèque']);
 
     }
 

@@ -25,6 +25,7 @@ class Resource
         $this->assets = new ArrayCollection();
         $this->reactions = new ArrayCollection();
         $this->reports = new ArrayCollection();
+        $this->users = new ArrayCollection();
     }
 
 
@@ -104,6 +105,11 @@ class Resource
      * @ORM\Column(type="boolean", nullable=true)
      */
     private $is_blocked;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=User::class, mappedBy="library")
+     */
+    private $users;
 
 
     /**
@@ -349,5 +355,7 @@ class Resource
 
         return $this;
     }
+
+
 
 }

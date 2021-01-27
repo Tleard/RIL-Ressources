@@ -133,9 +133,15 @@ class User implements UserInterface
      */
     private $warnings;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Resource::class, inversedBy="users")
+     */
+    private $library;
+
     public function __construct()
     {
         $this->warnings = new ArrayCollection();
+        $this->library = new ArrayCollection();
     }
 
 
@@ -338,6 +344,30 @@ class User implements UserInterface
                 $warning->setUserWarned(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Resource[]
+     */
+    public function getLibrary(): Collection
+    {
+        return $this->library;
+    }
+
+    public function addLibrary(Resource $library): self
+    {
+        if (!$this->library->contains($library)) {
+            $this->library[] = $library;
+        }
+
+        return $this;
+    }
+
+    public function removeLibrary(Resource $library): self
+    {
+        $this->library->removeElement($library);
 
         return $this;
     }
