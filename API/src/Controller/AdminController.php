@@ -151,8 +151,10 @@ class AdminController extends AbstractFOSRestController
             ->setFrom('ressourcesrelationelle@gmail.com')
             ->setTo($user->getEmail())
             ->setSubject('Nouvel Avertissement')
-            ->setBody("Votre activité sur l'application resosurce relationnelle a été signalé, suite à l'observation de ce signalement nous avons décidé de vous faire 
-            écoper d'un avertissement, veuillez désormais prêter attention à vos agissements ou nous serons contraints d'apporter des sanctions plus lourdes, veuillez noter 
+            ->setBody("Votre activité sur l'application resosurce relationnelle a 
+            été signalé, suite à l'observation de ce signalement nous avons décidé de vous faire 
+            écoper d'un avertissement, veuillez désormais prêter attention à vos agissements 
+            ou nous serons contraints d'apporter des sanctions plus lourdes, veuillez noter 
             que tout les incidents sont conservés en vu de possibles poursuites
             
             Cordialement l'équipe de Ressource Relationnelle ");
@@ -199,10 +201,12 @@ class AdminController extends AbstractFOSRestController
             ->setFrom('ressourcesrelationelle@gmail.com')
             ->setTo($user->getEmail())
             ->setSubject('Nouvel Avertissement')
-            ->setBody("Votre activité sur l'application resosurce relationnelle a été signalé, suite à l'observation de ce signalement nous avons décidé de bloquer l'accès à votre 
-            compte, veuillez noter que si vous avez enfreint la loi, ce blocage peut faire l'objet de poursuite judiciaire
-            
-            Cordialement l'équipe de Ressource Relationnelle ");
+            ->setBody("Votre activité sur l'application resosurce relationnelle a été signalé, 
+                             suite à l'observation de ce signalement nous avons décidé 
+                            de bloquer l'accès à votre compte, veuillez noter que si vous avez enfreint la loi, 
+                            ce blocage peut faire l'objet de poursuite judiciaire
+                            
+                            Cordialement l'équipe de Ressource Relationnelle ");
 
 
 
