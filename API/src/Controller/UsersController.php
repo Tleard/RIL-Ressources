@@ -471,4 +471,31 @@ class UsersController extends AbstractFOSRestController
 
     }
 
+    /**
+     * @Route(name="getLibrary", path="/api/user/getLib", methods={"POST"})
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function getMyLib(Request $request){
+
+        $userId = $this->getUser()->getId();
+        $em = $this->getDoctrine()->getManager();
+
+        $user = $em->getRepository(User::class)->find([
+            'id' => $userId
+        ]);
+
+        $lib = $user->getLibrary();
+
+        if (count($lib) > 0){
+
+
+            return $this->json($lib, Response::HTTP_CREATED);
+        } else {
+            return $this->json(['message' => "vous n'avez aucune ressource enregistrée"]);
+        }
+
+
+    }
+
 }
