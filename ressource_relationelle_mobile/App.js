@@ -3,6 +3,7 @@ import { Button, View, Text, TouchableOpacity, Image } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import logInScreen from "./screens/logInScreen";
+import RegisterScreen from "./screens/RegisterScreen";
 function HomeScreen({ navigation }) {
   return (
     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
@@ -10,6 +11,10 @@ function HomeScreen({ navigation }) {
       <Button
         title="Go to LogIn"
         onPress={() => navigation.navigate("login")}
+      />
+      <Button
+        title="Go to Register"
+        onPress={() => navigation.navigate("Register")}
       />
     </View>
   );
@@ -46,6 +51,7 @@ function App() {
             ),
           }}
         />
+        <Stack.Screen name="Register" component={RegisterScreen} />
         <Stack.Screen name="login" component={logInScreen} />
       </Stack.Navigator>
     </NavigationContainer>

@@ -1,0 +1,12 @@
+
+ The following SQL statements will be executed:
+
+     CREATE TABLE resource_resource_reaction (resource_id CHAR(36) NOT NULL COMMENT '(DC2Type:guid)', resource_reaction_id CHAR(36) NOT NULL COMMENT '(DC2Type:guid)', INDEX IDX_9876030689329D25 (resource_id), INDEX IDX_9876030685874F23 (resource_reaction_id), PRIMARY KEY(resource_id, resource_reaction_id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB;
+     ALTER TABLE resource_resource_reaction ADD CONSTRAINT FK_9876030689329D25 FOREIGN KEY (resource_id) REFERENCES resources (id) ON DELETE CASCADE;
+     ALTER TABLE resource_resource_reaction ADD CONSTRAINT FK_9876030685874F23 FOREIGN KEY (resource_reaction_id) REFERENCES ressources_reactions (id) ON DELETE CASCADE;
+     ALTER TABLE resources_categories ADD status TINYINT(1) DEFAULT '1' NOT NULL;
+     CREATE UNIQUE INDEX UNIQ_40381E3B5E237E06 ON resources_categories (name);
+     ALTER TABLE user ADD code_confirmation LONGTEXT DEFAULT NULL, ADD is_valid TINYINT(1) DEFAULT NULL;
+     ALTER TABLE ressources_reactions ADD author_id CHAR(36) DEFAULT NULL COMMENT '(DC2Type:guid)';
+     ALTER TABLE ressources_reactions ADD CONSTRAINT FK_3003ABB2F675F31B FOREIGN KEY (author_id) REFERENCES user (id);
+     CREATE INDEX IDX_3003ABB2F675F31B ON ressources_reactions (author_id);
