@@ -10,6 +10,8 @@ use App\Entity\ResourceType;
 use App\Entity\User;
 use App\Form\ResourcesType;
 use App\Service\FileManager;
+use Doctrine\ORM\Id\AssignedGenerator;
+use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\NonUniqueResultException;
 use Exception;
 use Faker\Provider\File;
