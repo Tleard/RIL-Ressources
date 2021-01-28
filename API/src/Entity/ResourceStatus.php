@@ -27,6 +27,16 @@ class ResourceStatus
     private $name;
 
     /**
+     * @param mixed $id
+     * @return ResourceStatus
+     */
+    public function setId($id): ResourceStatus
+    {
+        $this->id = $id;
+        return $this;
+    }
+
+    /**
      * @return mixed
      */
     public function getId()

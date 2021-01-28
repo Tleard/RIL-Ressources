@@ -32,6 +32,16 @@ class ResourceCategory
     private $status;
 
     /**
+     * @param mixed $id
+     * @return ResourceCategory
+     */
+    public function setId($id): ResourceCategory
+    {
+        $this->id = $id;
+        return $this;
+    }
+
+    /**
      * @return mixed
      */
     public function getId()
