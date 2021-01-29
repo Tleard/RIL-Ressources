@@ -3,7 +3,7 @@ import { Button, View, Text, TouchableOpacity, Image } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import logInScreen from "./screens/logInScreen";
-import RegisterScreen from "./screens/RegisterScreen";
+import profileScreen from "./screens/profileScreen";
 function HomeScreen({ navigation }) {
   return (
     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
