@@ -13,6 +13,8 @@ use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
 use Faker\Factory as Faker;
 use App\Entity\User;
+use Faker\Provider\Uuid;
+use PhpParser\Node\Expr\New_;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class AppFixtures extends Fixture
@@ -98,6 +100,7 @@ class AppFixtures extends Fixture
         $i = 0;
         foreach (self::CATEGORIES as $resourcesCategories) {
             $category = new ResourceCategory();
+            $category->setId(Uuid::uuid());
             $category->setName($resourcesCategories);
             $category->setStatus(true);
             $i++;
@@ -113,6 +116,7 @@ class AppFixtures extends Fixture
         $i = 0;
         foreach (self::CATEGORIES as $resourcesReactions) {
             $reaction = new ResourceReaction();
+            $reaction->setId(Uuid::uuid());
             $reaction->setReaction($resourcesReactions);
             $reaction->setCreationDate(new DateTime());
             $reaction->setUser($this->getReference("user_" . rand(1, sizeof(self::USERS) -1)));
@@ -129,6 +133,7 @@ class AppFixtures extends Fixture
         $i = 0;
         foreach (self::TYPE as $resourcesType) {
             $type = new ResourceType();
+            $type->setId(Uuid::uuid());
             $type->setTypeName($resourcesType);
             $i++;
             $this->setReference("type_" . $i, $type);
@@ -143,6 +148,7 @@ class AppFixtures extends Fixture
         $i = 0;
         foreach (self::STATUS as $resourcesStatus) {
             $status = new ResourceStatus();
+            $status->setId(Uuid::uuid());
             $status->setName($resourcesStatus);
             $this->setReference("status_" . $i, $status);
             $i++;
@@ -165,7 +171,6 @@ class AppFixtures extends Fixture
             $resource->setType($this->getReference("type_" . rand(1, sizeof(self::TYPE) -1)));
             $resource->addReactions($this->getReference("reaction_" . rand(1, sizeof(self::REACTION) -1)));
             $resource->setAuthor($this->getReference("user_" . rand(1, sizeof(self::USERS) -1)));
-            //Todo: Add Template Assets
             $manager->persist($resource);
         }
         $manager->flush();
@@ -178,6 +183,7 @@ class AppFixtures extends Fixture
             $user = new User();
             $password = $this->passwordEncoder->encodePassword($user, $userFixture['password']);
 
+            $user->setId(Uuid::uuid());
             $user->setUsername($userFixture['username']);
             $user->setFirstName($userFixture['first_name']);
             $user->setLastName($userFixture['last_name']);

@@ -17,7 +17,7 @@ class AssetController extends AbstractController
 {
     /**
      * @Rest\Get(
-     *     path = "/api/asset/file/{asset_id}",
+     *     path = "/asset/file/{asset_id}",
      *     name = "get_resource_asset_file"
      * )
      * @param Request $request
