@@ -1,4 +1,4 @@
-// Carte simple pour placer une image avec Overlay d'un texte
+// Simple Card with a picture and an overlay text
 
 import React from 'react';
 import {

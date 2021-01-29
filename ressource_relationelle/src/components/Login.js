@@ -1,5 +1,5 @@
 import React, {useState, useEffect, Component} from 'react';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Redirect } from 'react-router-dom';
 import '../global';
 import auth from '../auth';
 import './Login.css';
@@ -30,7 +30,8 @@ const Login  = (props) => {
         })
         .then(() => {
             console.log('then redirect check');
-            props.history.push('ressourcetest');
+            //props.history.push('home');
+            return <Redirect to="home"/>
         });
     }
 

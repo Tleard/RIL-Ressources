@@ -57,9 +57,9 @@ function Home() {
         </Container>
       </ContentContainer>
 
-      <ContentContainer>
-          <Newsletter />
-      </ContentContainer>
+      
+      <Newsletter />
+
     </>
   );
 }

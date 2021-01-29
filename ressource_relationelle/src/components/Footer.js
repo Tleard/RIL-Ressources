@@ -9,18 +9,18 @@ import './Footer.css';
 
 const Footer = (props) => {
   return (
-    <div>
+    <div className="footer">
         <Row>
             <Col>
-                <p>Logo</p>
+                <h2>Logo</h2>
                 <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui possimus, placeat maxime nam numquam natus commodi doloribus voluptatum ipsum est nesciunt fugiat dolorum sed illum earum ullam debitis eveniet! Autem.</p>
             </Col>
             <Col>
-                <p>Citation</p>
+                <h2>Citation</h2>
                 <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur asperiores ullam debitis ducimus doloremque ab in cumque animi. Accusantium iure eligendi, minus voluptatibus molestias distinctio quas tenetur perspiciatis in incidunt!</p>
             </Col>
             <Col>
-                <p>Contact</p>
+                <h2>Contact</h2>
                 <Form>
                     <FormGroup>
                         <Input type="email" name="email" id="email" placeholder="Email" />

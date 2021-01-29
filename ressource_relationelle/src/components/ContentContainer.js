@@ -1,4 +1,4 @@
-// Component pour régler le padding des autres composants 
+// Component to set the padding for other contents
 
 import React from 'react';
 import './ContentContainer.css';

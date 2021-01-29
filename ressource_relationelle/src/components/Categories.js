@@ -46,7 +46,7 @@ function Categories() {
         <Row>
           {categories.map((category) => (
             <Col sm="6">
-              <Link to={{pathname: "/category", state: {category: category}}}>
+              <Link key={category.id} to={{pathname: "categories/category", state: {category: category}, category_name:{category_name: category.name}}}>
                 <CategoryCard
                   key={category.id}
                   id={category.id}

@@ -3,7 +3,7 @@ import React from 'react'
 import './CategoryCard.css'
 
 function CategoryCard({ name, id}) {
-    //console.log(name);
+    
     return (
         <div className="category-card">
             <p>{name}</p>

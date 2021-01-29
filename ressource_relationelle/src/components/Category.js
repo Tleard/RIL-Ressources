@@ -1,13 +1,17 @@
 // This compenent contains the resources of a category
-import React from 'react'
-import auth from '../auth'
-import { useState, useEffect } from 'react'
+import React from 'react';
+import auth from '../auth';
+import { useState, useEffect } from 'react';
+import { Container, Row, Col, Alert } from 'reactstrap';
+import ResourceCard from './ResourceCard';
 
 function Category(props) {
+  // The category object that we get is used to get the correct resources
   const { category } = props.location.state;
-  //console.log(category);
 
   const [resources, setResources] = useState([]);
+  const [categoryTitle, setCategoryTitle] = useState([]);
+
 
   useEffect(() => {
     if (localStorage.getItem("auth_token")) {
@@ -16,8 +20,10 @@ function Category(props) {
         setResources(resourcesFromServer);
       };
 
-      getResources();
+      setCategoryTitle(category.name);
 
+      getResources();
+      
     }
   }, []);
 
@@ -39,15 +45,28 @@ function Category(props) {
   console.log(resources);
   
   return (
-    <div>
-      <h1>This is a Category for now !</h1>
-      {resources.map((resource) => (
-          <div>
-            <p>{resource.title}</p>
-            <p>{resource.description}</p>
-          </div>
-      ))}
-    </div>
+    <>
+      <Container>
+        <h1>This is Category Page for : {categoryTitle} </h1>
+        <Row>
+          <Col>
+            {typeof resources[0] !== "string" ?
+              resources.map((resource) => (
+                <ResourceCard 
+                  key={resource.id}
+                  id={resource.id}
+                  username={resource.author.username}
+                  createdAt={resource.createdAt}
+                  title={resource.title}
+                  description={resource.description}
+                />
+              ))
+              : <Alert color="secondary">Cette catégorie n'a pas encore de ressource</Alert>
+            }
+          </Col>
+        </Row>
+      </Container>
+    </>
   );
 }
 
