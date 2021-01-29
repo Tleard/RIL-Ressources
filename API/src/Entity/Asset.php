@@ -40,7 +40,12 @@ class Asset
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $FileName;
+    private $fullPath;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $fileName;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -116,16 +121,33 @@ class Asset
      */
     public function getFileName()
     {
-        return $this->FileName;
+        return $this->fileName;
     }
 
     /**
-     * @param mixed $FileName
+     * @param mixed $fileName
      */
-    public function setFileName($FileName): void
+    public function setFileName($fileName): void
     {
-        $this->FileName = $FileName;
+        $this->fileName = $fileName;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getFullPath()
+    {
+        return $this->fullPath;
+    }
+
+    /**
+     * @param mixed $fullPath
+     */
+    public function setFullPath($fullPath): void
+    {
+        $this->fullPath = $fullPath;
+    }
+
 
 
 }

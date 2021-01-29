@@ -3,6 +3,7 @@ import { Button, View, Text, TouchableOpacity, Image } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import logInScreen from "./screens/logInScreen";
+import profileScreen from "./screens/profileScreen";
 function HomeScreen({ navigation }) {
   return (
     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
@@ -47,6 +48,7 @@ function App() {
           }}
         />
         <Stack.Screen name="login" component={logInScreen} />
+        <Stack.Screen name="profile" component={profileScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
