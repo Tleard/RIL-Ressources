@@ -144,28 +144,6 @@ class User implements UserInterface
         $this->library = new ArrayCollection();
     }
 
-
-
-    public function __construct()
-    {
-        $this->warnings = new ArrayCollection();
-    }
-
-    /**
-     * @param mixed $id
-     * @return User
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-        return $this;
-    }
-
-    public function __construct()
-    {
-        $this->warnings = new ArrayCollection();
-    }
-
     /**
      * @param mixed $id
      * @return User
