@@ -53,6 +53,7 @@ function App() {
         />
         <Stack.Screen name="Register" component={RegisterScreen} />
         <Stack.Screen name="login" component={logInScreen} />
+        <Stack.Screen name="profile" component={profileScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

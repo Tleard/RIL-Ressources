@@ -4,6 +4,7 @@ import {
     View,
     Text,
     StyleSheet,
+    AsyncStorage,
     TextInput,
     TouchableOpacity,
     Image,
@@ -14,16 +15,16 @@ import { createStackNavigator } from "@react-navigation/stack";
 import {TokenHandler} from "../API/TokenHandler";
 import {LoginAttempt} from "../API/LoginAttempt";
 import {UserHandler} from "../API/UserHandler";
+import {getUrl} from "../API/RequestHandler";
 
 class profileScreen extends React.Component {
 
     constructor(props) {
         super(props)
         this.state = {
-            username : '',
-            firstName : '',
-            token :'',
-            LastName : '',
+            userData:'',
+            profilePicture:'',
+            token: '',
             id:'',
             error_message:'',
         }
@@ -34,55 +35,113 @@ class profileScreen extends React.Component {
     }
 
     _fetchUserInfo = async() => {
-        try{
-            await UserHandler.getCurrentUser()
+        try {
+            let userId = this.props.route.params['userId'];
+            await AsyncStorage.getItem("userToken")
                 .then((responseJson) => {
-                console.log(responseJson)
-                })
+                    try{
+                        let url = getUrl() +"/api/user/" + userId;
+                        return fetch(url, {
+                            method: 'GET',
+                            headers: new Headers({
+                                'Content-Type': 'application/json',
+                                'Accept': 'application/json',
+                                'Authorization': 'Bearer '+ responseJson,
+                            }),
+                        })
+                            .then((response) => response.json())
+                            .then((responseText) => {
+                                console.log("ResponseText : " + JSON.stringify(responseText))
+                                this.setState({userData: responseText})
+                                if (responseText.profilePicture !== null)
+                                {
+                                    this.setState({profilePicture : responseText.profilePicture.id})
+                                    console.log(responseText.profilePicture.id)
+                                }
+                            })
+                            .catch((error) => {
+                                console.error(error.message)
+                            })
 
+                    } catch (e) {
+                        console.error("Something went wrong" + e)
+                    }
+                })
         } catch (e) {
             console.error("Somenting went wrong" + e)
         }
     }
 
+
     render() {
+        const image = getUrl() + "/asset/file/" +this.state.profilePicture;
         return (
-            <View style={styles.container}>
-                <Image style={styles.logo} source={require("../assets/logo.png")} />
-
-                <View style={styles.inputView}>
-                    <TextInput
-                        style={styles.inputText}
-                        placeholder="Pseudo..."
-                        placeholderTextColor="#003f5c"
-                        onChangeText={(username) =>this.setState({username})}
-                    />
+            <View>
+                <View style={{alignItems: 'center', paddingTop: 80, backgroundColor: '#0F72AC'}}>
+                    <View style={{alignItems : 'center', backgroundColor: '#0F72AC'}}>
+                        <Image source={{uri: 'https://reactnative.dev/img/tiny_logo.png'}}/>
+                        <Text>{this.state.userData.username}</Text>
+                        <Text>Hello There</Text>
+                    </View>
                 </View>
-                <View style={styles.inputView}>
-                    <TextInput
-                        style={styles.inputText}
-                        placeholder="Password..."
-                        placeholderTextColor="#003f5c"
-                        secureTextEntry={true}
-                        onChangeText={(password) => this.setState({password})}
-                    />
+                <View>
+                    <Text>{image}</Text>
+                    <Image source={{uri : image}} style={styles.image_logo} />
+                    <Text>Hello There</Text>
                 </View>
 
-                <TouchableOpacity
-                    style={styles.loginBtn}
-                    title='Connexion'
-                    onPress={this._login}
-                >
-                    <Text style={styles.loginText}>Connexion</Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity
-                    //onPress={this._Create}>
-                >
-                    <Text style={styles.loginText}>Créer un compte</Text>
-                </TouchableOpacity>
+                {/*<View style={{paddingTop: 80, paddingLeft: 30}}>
+                    <Text style={{fontSize : 15}}> <FontAwesome name="comments" size={50} color="black"/> Nombre de messages envoyés : {this.state.userData.comments}</Text>
+                    <Text style={{fontSize : 15, paddingTop: 15}}> <FontAwesome name="users" size={50} color="black"/> Rôle de l'utilisateur : {this.state.userData.userRole}</Text>
+                    <Text style={{fontSize : 15, paddingTop: 15}}> <FontAwesome name="pencil-square-o" size={50} color="black"/> Nombre d'annonces postés : {this.state.userData.posts}</Text>
+                </View>*/}
             </View>
         );
     }
 
 }
+const styles = StyleSheet.create({
+    username: {
+        fontSize: 18,
+        paddingTop: 20,
+        color: '#ffffff'
+    },
+    logo: {},
+    email: {
+        fontSize: 15,
+        color: '#ffffff'
+    },
+    image_logo: {
+        height: 150,
+        resizeMode: 'contain',
+        borderRadius: 100
+    },
+    container: {
+        flex: 1,
+        backgroundColor: '#fafafa',
+    },
+    contentContainer: {
+        paddingTop: 15,
+    },
+    optionIconContainer: {
+        marginRight: 12,
+    },
+    option: {
+        backgroundColor: '#fdfdfd',
+        paddingHorizontal: 15,
+        paddingVertical: 15,
+        borderWidth: StyleSheet.hairlineWidth,
+        borderBottomWidth: 0,
+        borderColor: '#ededed',
+    },
+    lastOption: {
+        borderBottomWidth: StyleSheet.hairlineWidth,
+    },
+    optionText: {
+        fontSize: 15,
+        alignSelf: 'flex-start',
+        marginTop: 1,
+    },
+});
+
+export default profileScreen;

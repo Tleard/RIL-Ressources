@@ -60,6 +60,7 @@ class FileManager
         $this->checkType($file->getMimeType());
         $asset->setAssetType($fileType);
         $file->move($projectDir . '/public/uploads', $fileName);
+        $asset->setFullPath($projectDir . '/public/uploads' . $fileName);
         return $asset;
     }
 

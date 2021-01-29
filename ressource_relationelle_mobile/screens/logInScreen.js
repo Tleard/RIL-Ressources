@@ -46,6 +46,8 @@ class logInScreen extends React.Component {
         }
         //Store Token & Current User
         await TokenHandler.storeToken(this.state.token, this.state.user);
+        alert("Bienvenue " + this.state.user.username)
+        this.props.navigation.navigate("profile", {userId: this.state.user.id})
     };
 
 
