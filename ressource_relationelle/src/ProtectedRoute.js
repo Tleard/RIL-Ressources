@@ -1,3 +1,4 @@
+// We make use of the library react-jwt to check if a token is still valid or not
 import React from 'react';
 import {Route, Redirect} from 'react-router-dom';
 import {useJwt} from 'react-jwt';

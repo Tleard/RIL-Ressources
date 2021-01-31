@@ -1,9 +1,26 @@
-// This compenent contains the resources of a category
+// This compenent contains the resources of ONE chosen category 
 import React from 'react';
 import auth from '../auth';
 import { useState, useEffect } from 'react';
-import { Container, Row, Col, Alert } from 'reactstrap';
-import ResourceCard from './ResourceCard';
+import { Link } from "react-router-dom";
+
+// MaterialUI import
+import Grid from "@material-ui/core/Grid";
+import Card from "@material-ui/core/Card";
+import CardHeader from "@material-ui/core/CardHeader"
+import CardContent from "@material-ui/core/CardContent";
+import CardActions from "@material-ui/core/CardActions"
+import IconButton from "@material-ui/core/IconButton"
+import Typography from "@material-ui/core/Typography";
+import Button from "@material-ui/core/Button";
+
+
+// MaterialUI Icon Import
+import FavoriteIcon from "@material-ui/icons/Favorite"
+import ShareIcon from "@material-ui/icons/Share"
+
+// MaterialUI Lab 
+import { Alert, AlertTitle } from "@material-ui/lab";
 
 function Category(props) {
   // The category object that we get is used to get the correct resources
@@ -45,27 +62,58 @@ function Category(props) {
   console.log(resources);
   
   return (
+    
     <>
-      <Container>
-        <h1>This is Category Page for : {categoryTitle} </h1>
-        <Row>
-          <Col>
-            {typeof resources[0] !== "string" ?
-              resources.map((resource) => (
-                <ResourceCard 
-                  key={resource.id}
-                  id={resource.id}
-                  username={resource.author.username}
-                  createdAt={resource.createdAt}
-                  title={resource.title}
-                  description={resource.description}
-                />
-              ))
-              : <Alert color="secondary">Cette catégorie n'a pas encore de ressource</Alert>
+      <Typography variant="h2" component="h1" style={{margin:"4% 0 4% 0"}}>
+        Ressources pour : {categoryTitle}
+      </Typography>
+      <Grid container spacing={3}>
+          {typeof resources[0] !== "string" ?
+              resources.map((resource) => {
+                // To format the Date to dd/mm/YYYY
+                const date = new Date(resource.createdAt);
+                const day = date.getDate();
+                const month = ("0" + date.getMonth()).slice(-1) + 1;
+                const year = date.getFullYear();
+
+                return (
+                  <Grid item xs={12}>
+                    <Card variant="outlined">
+                      <CardHeader
+                        title={resource.title}
+                        subheader={`${resource.author.username} - ${day}/${month}/${year}`}
+                        
+                      />
+                      <CardContent>
+                        {resource.description}
+                      </CardContent>
+                      <CardActions style={{justifyContent:'flex-end'}}>
+                        <IconButton aria-label="add to favorites">
+                          <FavoriteIcon />
+                        </IconButton>
+                        <IconButton aria-label="share">
+                          <ShareIcon />
+                        </IconButton>
+                        <Button size="medium" color="primary">
+                          <Link
+                            key={resource.id}
+                            to={{pathname: "category/resource", state: {id: resource.id}}}
+                          >
+                            Consulter
+                          </Link> 
+                        </Button>
+                      </CardActions>
+                    </Card>
+                  </Grid>
+                );
+                      
+              })
+              : <Alert severity="info">
+                  <AlertTitle>Attention</AlertTitle>
+                  Cette catégorie n'a pas encore de ressource
+                </Alert>
             }
-          </Col>
-        </Row>
-      </Container>
+      </Grid>
     </>
   );
 }

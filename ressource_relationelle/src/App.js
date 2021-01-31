@@ -1,6 +1,12 @@
 import React from "react";
 import { useState, useEffect } from "react";
+
+// Import that manage the authentification system
 import ProtectedRoute from "./ProtectedRoute";
+import auth from './auth';
+
+
+// Component that render some View
 import Navigation from "./components/Navigation";
 import Home from "./components/Home";
 import Categories from "./components/Categories";
@@ -8,28 +14,25 @@ import Category from "./components/Category";
 import Resource from "./components/Resource"
 import Login from "./components/Login";
 import Register from "./components/Register";
-import Footer from "./components/Footer";
-import { Container, Row, Col } from 'reactstrap';
 import { BrowserRouter as Router, Switch, Route, withRouter, BrowserRouter } from 'react-router-dom';
-import ContentContainer from "./components/ContentContainer";
+
 import "./App.css";
-import auth from './auth';
 
+// Material UI Import
+import Container from "@material-ui/core/Container"
 
-// Test Pages
-import TestAllResources from "./components/TestAllResources";
 
 function App() {
   
   return (
     <>
-      <div className="page-container">
-        <BrowserRouter>
-          <Router>
-            <Navigation />
-
+      <BrowserRouter>
+        <Router>
+          <Navigation />
+          <Container maxWidth="lg">
             <Switch>
               <Route exact path="/login" component={Login} />
+              <Route exact path="/register" component={Register} />
               <ProtectedRoute exact path="/home" component={Home} />
               <ProtectedRoute exact path="/categories" component={Categories} />
               <ProtectedRoute
@@ -42,21 +45,11 @@ function App() {
                 path="/categories/category/resource"
                 component={Resource}
               />
-              <ProtectedRoute exact path="/register" component={Register} />
-              <Route
-                exact
-                path="/categories/testallresources"
-                component={TestAllResources}
-                title="This is a test"
-              />
               <Route path="*" component={NotFound} />
             </Switch>
-          </Router>
-        <Footer />
-        </BrowserRouter>
-        
-      </div>
-      
+          </Container>
+        </Router>
+      </BrowserRouter>
     </>
   );
 }

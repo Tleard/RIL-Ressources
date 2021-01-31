@@ -1,11 +1,15 @@
 // Component which contains all the categories
 import React from "react";
 import { useState, useEffect } from "react";
-import { BrowserRouter as Router, Route, Link } from "react-router-dom"
+import { Link } from "react-router-dom"
 import auth from "../auth";
-import { Container, Row, Col } from "reactstrap";
-import CategoryCard from "./CategoryCard";
-import "./Categories.css";
+
+// MaterialUI import
+import Grid from "@material-ui/core/Grid";
+import Card from "@material-ui/core/Card";
+import CardContent from "@material-ui/core/CardContent";
+import Typography from '@material-ui/core/Typography';
+
 
 function Categories() {
   const [categories, setCategories] = useState([]);
@@ -41,23 +45,36 @@ function Categories() {
 
   return (
     <>
-      <Container>
-        <h1>C'est bien la page catégorie !</h1>
-        <Row>
-          {categories.map((category) => (
-            <Col sm="6">
-              <Link key={category.id} to={{pathname: "categories/category", state: {category: category}, category_name:{category_name: category.name}}}>
-                <CategoryCard
-                  key={category.id}
-                  id={category.id}
-                  name={category.name}
-                  status={category.status}
-                />
-              </Link>
-            </Col>
-          ))}
-        </Row>
-      </Container>
+    <Typography variant="h2" component="h1" style={{margin:"4% 0 4% 0"}}>
+      Categories
+    </Typography>
+      <Grid container spacing={3}>
+        {categories.map((category) => (
+          <Grid item xs={12} sm={6}>
+            <Card variant="outlined">
+              <CardContent>
+                <Typography
+                  variant="h3"
+                  component="h2"
+                  style={{ textAlign: "center" }}
+                >
+                  <Link
+                    key={category.id}
+                    to={{
+                      pathname: "categories/category",
+                      state: { category: category },
+                      category_name: { category_name: category.name },
+                    }}
+                    style={{ textDecoration: "none" }}
+                  >
+                    {category.name.toUpperCase()}
+                  </Link>
+                </Typography>
+              </CardContent>
+            </Card>
+          </Grid>
+        ))}
+      </Grid>
     </>
   );
 }

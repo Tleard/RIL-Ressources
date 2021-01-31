@@ -1,3 +1,4 @@
+// Might be necessary to remove later. 
 import React from 'react'
 import "./ResourceCardDetail.css"
 
