@@ -1,44 +1,53 @@
 import React from "react";
+import { useState, useEffect } from "react";
+
+// Import that manage the authentification system
 import ProtectedRoute from "./ProtectedRoute";
+import auth from './auth';
+
+
+// Component that render some View
 import Navigation from "./components/Navigation";
 import Home from "./components/Home";
 import Categories from "./components/Categories";
+import Category from "./components/Category";
+import Resource from "./components/Resource"
 import Login from "./components/Login";
 import Register from "./components/Register";
-
-// To remove 
-import RessourceTest from "./components/RessourceTest";
-
-import Footer from "./components/Footer";
-import { Container, Row, Col } from 'reactstrap';
 import { BrowserRouter as Router, Switch, Route, withRouter, BrowserRouter } from 'react-router-dom';
-import ContentContainer from "./components/ContentContainer";
+
 import "./App.css";
 
+// Material UI Import
+import Container from "@material-ui/core/Container"
+
+
 function App() {
+  
   return (
     <>
       <BrowserRouter>
         <Router>
-          <Container>
-            <Navigation />
+          <Navigation />
+          <Container maxWidth="lg">
+            <Switch>
+              <Route exact path="/login" component={Login} />
+              <Route exact path="/register" component={Register} />
+              <ProtectedRoute exact path="/home" component={Home} />
+              <ProtectedRoute exact path="/categories" component={Categories} />
+              <ProtectedRoute
+                exact
+                path="/categories/category"
+                component={Category}
+              />
+              <ProtectedRoute
+                exact
+                path="/categories/category/resource"
+                component={Resource}
+              />
+              <Route path="*" component={NotFound} />
+            </Switch>
           </Container>
-
-          <Switch>
-            <Route exact path='/login' component={Login} />
-            <ProtectedRoute exact path='/home' component={Home} />
-            <ProtectedRoute exact path='/categories' component={Categories} />
-            <ProtectedRoute exact path='/register' component={Register} />
-            <ProtectedRoute exact path='/ressourcetest' component={RessourceTest} />
-            <Route path="*" component={NotFound} />
-          </Switch>
-          
-
-          <ContentContainer>
-            <Container>
-              <Footer />
-            </Container>
-          </ContentContainer>
         </Router>
       </BrowserRouter>
     </>

@@ -1,59 +1,67 @@
 import React, { useState } from 'react';
-import {Collapse, Navbar, NavbarToggler, NavbarBrand, Nav, NavItem, NavLink, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem, NavbarText} from 'reactstrap';
+import { Link } from 'react-router-dom';
 import auth from '../auth';
-import './Navigation.css';
 import { withRouter } from 'react-router-dom';
 
-const Navigation = (props) => {
-  const [isOpen, setIsOpen] = useState(false);
+// Import from MaterialUI
+import { makeStyles } from '@material-ui/core/styles';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
+import IconButton from '@material-ui/core/IconButton';
+import MenuIcon from '@material-ui/icons/Menu';
 
-  const toggle = () => setIsOpen(!isOpen);
+const Navigation = (props) => {
+
+// MaterialUI logic
+const useStyles = makeStyles((theme) => ({
+  root: {
+    flexGrow: 1,
+  },
+  menuButton: {
+    marginRight: theme.spacing(2),
+  },
+  title: {
+    flexGrow: 1,
+  },
+}));
+
+
+const classes = useStyles();
 
   return (
-    <div>
-      <Navbar color="light" light expand="md">
-        <NavbarBrand href="/home">Re:Relationnelle</NavbarBrand>
-        <NavbarToggler onClick={toggle} />
-        <Collapse isOpen={isOpen} navbar>
-          <Nav className="mr-auto" navbar>
-            <NavItem>
-              <NavLink href="/categories">Catégories</NavLink>
-            </NavItem>
-            {/* <NavItem>
-              <NavLink href="">Ressources</NavLink>
-            </NavItem> */}
-            <NavItem>
-              <NavLink href="/login">Login</NavLink>
-            </NavItem>
-            <button 
-                onClick={() => {
-                    auth.loggedout(() => {
-                        console.log('callback in test');
-                        props.history.push('/login');
-                    });
-            }}>Logout</button>
-            {/* <UncontrolledDropdown nav inNavbar>
-              <DropdownToggle nav caret>
-                Options
-              </DropdownToggle>
-              <DropdownMenu right>
-                <DropdownItem>
-                  Option 1
-                </DropdownItem>
-                <DropdownItem>
-                  Option 2
-                </DropdownItem>
-                <DropdownItem divider />
-                <DropdownItem>
-                  Reset
-                </DropdownItem>
-              </DropdownMenu>
-            </UncontrolledDropdown> */}
-          </Nav>
-          <NavbarText>Autre</NavbarText>
-        </Collapse>
-      </Navbar>
-    </div>
+    <>
+      <AppBar position="static">
+        <Toolbar>
+          <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
+            <MenuIcon />
+          </IconButton>
+          <Typography component={Link} to="/home" variant="h6" className={classes.title}>
+            Accueil
+          </Typography>
+          <Typography component={Link} to="/" variant="h6" className={classes.title}>
+            Fil d'actualité
+          </Typography>
+          <Typography component={Link} to="/categories" variant="h6" className={classes.title}>
+            Catégories
+          </Typography>
+          <Typography component={Link} to="/" variant="h6" className={classes.title}>
+            Publier
+          </Typography>
+          <Typography component={Link} to="/" variant="h6" className={classes.title}>
+            Aide
+          </Typography>
+          <Button color="inherit" component={Link} to="/login">Login</Button>
+          <Button color="inherit" onClick={() => {
+                      auth.loggedout(() => {
+                          console.log('callback in test');
+                          props.history.push('/login');
+                      });
+            }}>Logout</Button>
+        </Toolbar>
+      </AppBar>
+    </>
   );
 }
 

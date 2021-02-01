@@ -1,5 +1,5 @@
-import React, {useState, useEffect, Component} from 'react';
-import { withRouter } from 'react-router-dom';
+import React, {useState} from 'react';
+import { withRouter, Redirect } from 'react-router-dom';
 import '../global';
 import auth from '../auth';
 import './Login.css';
@@ -30,7 +30,10 @@ const Login  = (props) => {
         })
         .then(() => {
             console.log('then redirect check');
-            props.history.push('ressourcetest');
+            //props.history.push('home');
+            //return <Redirect to="home"/>
+            // !!! The window.location.href is bad. But I couldn't find any fix yet. !!! The page need to be refresh to be logged. 
+            window.location.href = "http://localhost:3000/home";
         });
     }
 
@@ -42,7 +45,7 @@ const Login  = (props) => {
 
 
     return (  
-        <div class="login">
+        <div className="login">
             <h1>Login</h1>
             <label>Nom d'utilisateur
                 <input type="text" onChange={(e) => {
