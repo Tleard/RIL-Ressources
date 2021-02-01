@@ -31,7 +31,7 @@ const Login  = (props) => {
         .then(() => {
             console.log('then redirect check');
             //props.history.push('home');
-            //return <Redirect to="home"/>
+            // return <Redirect to="home"/>
             // !!! The window.location.href is bad. But I couldn't find any fix yet. !!! The page need to be refresh to be logged. 
             window.location.href = "http://localhost:3000/home";
         });
