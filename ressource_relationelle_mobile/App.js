@@ -4,6 +4,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import logInScreen from "./screens/logInScreen";
 import profileScreen from "./screens/profileScreen";
+import RegisterScreen from "./screens/RegisterScreen";
 function HomeScreen({ navigation }) {
   return (
     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
