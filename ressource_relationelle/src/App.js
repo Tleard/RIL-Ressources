@@ -23,35 +23,63 @@ import Container from "@material-ui/core/Container"
 
 
 function App() {
-  
-  return (
-    <>
-      <BrowserRouter>
-        <Router>
-          <Navigation />
-          <Container maxWidth="lg">
-            <Switch>
-              <Route exact path="/login" component={Login} />
-              <Route exact path="/register" component={Register} />
-              <ProtectedRoute exact path="/home" component={Home} />
-              <ProtectedRoute exact path="/categories" component={Categories} />
-              <ProtectedRoute
-                exact
-                path="/categories/category"
-                component={Category}
-              />
-              <ProtectedRoute
-                exact
-                path="/categories/category/resource"
-                component={Resource}
-              />
-              <Route path="*" component={NotFound} />
-            </Switch>
-          </Container>
-        </Router>
-      </BrowserRouter>
-    </>
-  );
+  if (localStorage.auth_token !== undefined) {
+    console.log('connecté')
+  } else {
+    console.log('hors ligne')
+  }
+console.log(localStorage.auth_token);
+    if (localStorage.auth_token !== undefined) {
+        return (
+
+            <>
+                <BrowserRouter>
+                    <Router>
+                        <Navigation/>
+                        <Container maxWidth="lg">
+                            <Switch>
+                                <Route exact path="/login" component={Login}/>
+                                <Route exact path="/register" component={Register}/>
+                                <ProtectedRoute exact path="/home" component={Home}/>
+                                <ProtectedRoute exact path="/categories" component={Categories}/>
+                                <ProtectedRoute
+                                    exact
+                                    path="/categories/category"
+                                    component={Category}
+                                />
+                                <ProtectedRoute
+                                    exact
+                                    path="/categories/category/resource"
+                                    component={Resource}
+                                />
+                                <Route path="*" component={NotFound}/>
+                            </Switch>
+                        </Container>
+                    </Router>
+                </BrowserRouter>
+            </>
+        );
+    } else {
+        return (
+            <>
+                <BrowserRouter>
+                    <Router>
+                        <Navigation/>
+                        <Container maxWidth="lg">
+                            <Switch>
+                                <Route exact path="/login" component={Login}/>
+                                <Route exact path="/register" component={Register}/>
+                                 <Route path="/" component={Login}/>
+
+                            </Switch>
+                        </Container>
+                    </Router>
+                </BrowserRouter>
+            </>
+        )
+    }
+
+
 }
 
 // Not found component

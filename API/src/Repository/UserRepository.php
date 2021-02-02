@@ -51,5 +51,16 @@ class UserRepository extends ServiceEntityRepository
             ->getOneOrNullResult();
         return $query['password'];
     }
+/*
+    public function findAdmin()
+    {
+        $query = $this->createQueryBuilder('u')
+            ->select('u.roles')
+            ->andWhere('u.roles IN (:role)');
 
+
+        return $query;
+
+    }
+*/
 }

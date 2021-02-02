@@ -29,8 +29,9 @@ const useStyles = makeStyles((theme) => ({
 
 
 const classes = useStyles();
-
+  if (localStorage.auth_token !== undefined) {
   return (
+
     <>
       <AppBar position="static">
         <Toolbar>
@@ -63,6 +64,20 @@ const classes = useStyles();
       </AppBar>
     </>
   );
+} else  {
+    return(
+    <>
+    <AppBar position="static">
+      <Toolbar>
+        <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
+          <MenuIcon />
+        </IconButton>
+        <Button color="inherit" component={Link} to="/login">Login</Button>
+        <Button color="inherit" component={Link} to="/register">S'inscrire</Button>
+      </Toolbar>
+    </AppBar>
+  </>)
+  }
 }
 
 export default withRouter(Navigation);
