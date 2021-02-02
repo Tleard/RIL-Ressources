@@ -46,7 +46,7 @@ if (props.role === 'admin') {
               <Button color="inherit" onClick={() => {
                 auth.loggedout(() => {
                   console.log('callback in test');
-                    window.location.href = "http://localhost:3000/login"
+                    window.location.assign("http://localhost:3000/login");
                 });
               }}>Logout</Button>
             </Toolbar>
@@ -80,7 +80,7 @@ if (props.role === 'admin') {
                   <Button color="inherit" onClick={() => {
                       auth.loggedout(() => {
                           console.log('callback in test');
-                          window.location.href = "http://localhost:3000/login"
+                          window.location.assign("http://localhost:3000/login");
                       });
                   }}>Logout</Button>
               </Toolbar>
