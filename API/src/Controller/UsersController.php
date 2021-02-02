@@ -494,4 +494,17 @@ class UsersController extends AbstractFOSRestController
 
     }
 
+    /**
+     * @Route(name="getRoles", path="/api/user/getRoles", methods={"POST"})
+     * @return JsonResponse
+     */
+    public function getRoles(){
+        $role = $this->getUser()->getRoles();
+        if ($role[0] == "ROLE_ADMIN"){
+            return $this->json(['roles' => 'admin']);
+        } else {
+            return $this->json(['roles' => 'user']);
+        }
+    }
+
 }

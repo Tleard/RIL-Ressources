@@ -1,5 +1,4 @@
 import React from "react";
-import { useState, useEffect } from "react";
 
 // Import that manage the authentification system
 import ProtectedRoute from "./ProtectedRoute";
@@ -14,73 +13,119 @@ import Category from "./components/Category";
 import Resource from "./components/Resource"
 import Login from "./components/Login";
 import Register from "./components/Register";
-import { BrowserRouter as Router, Switch, Route, withRouter, BrowserRouter } from 'react-router-dom';
+import {useEffect, useState} from "react";
+import {BrowserRouter as Router, BrowserRouter, Route, Switch, withRouter} from 'react-router-dom';
 
 import "./App.css";
 
 // Material UI Import
 import Container from "@material-ui/core/Container"
+export function getRole() {
 
+    return   fetch(`${global.api}/api/user/getRoles`, {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-type': 'application/json',
+            Authorization: `Bearer ${auth.getToken()}`,
+        },
 
-function App() {
-  if (localStorage.auth_token !== undefined) {
-    console.log('connecté')
-  } else {
-    console.log('hors ligne')
-  }
-console.log(localStorage.auth_token);
-    if (localStorage.auth_token !== undefined) {
-        return (
-
-            <>
-                <BrowserRouter>
-                    <Router>
-                        <Navigation/>
-                        <Container maxWidth="lg">
-                            <Switch>
-                                <Route exact path="/login" component={Login}/>
-                                <Route exact path="/register" component={Register}/>
-                                <ProtectedRoute exact path="/home" component={Home}/>
-                                <ProtectedRoute exact path="/categories" component={Categories}/>
-                                <ProtectedRoute
-                                    exact
-                                    path="/categories/category"
-                                    component={Category}
-                                />
-                                <ProtectedRoute
-                                    exact
-                                    path="/categories/category/resource"
-                                    component={Resource}
-                                />
-                                <Route path="*" component={NotFound}/>
-                            </Switch>
-                        </Container>
-                    </Router>
-                </BrowserRouter>
-            </>
-        );
-    } else {
-        return (
-            <>
-                <BrowserRouter>
-                    <Router>
-                        <Navigation/>
-                        <Container maxWidth="lg">
-                            <Switch>
-                                <Route exact path="/login" component={Login}/>
-                                <Route exact path="/register" component={Register}/>
-                                 <Route path="/" component={Login}/>
-
-                            </Switch>
-                        </Container>
-                    </Router>
-                </BrowserRouter>
-            </>
-        )
-    }
+    })
+        .then(res => res.json())
 
 
 }
+
+function App() {
+    const [roleTab, setRoleTab] = useState(
+        null
+    )
+    useEffect(() => {
+        if (localStorage.auth_token !== undefined) {
+            getRole().then(({roles}) => setRoleTab(roles))
+        }
+    }, [])
+
+        if (roleTab === 'admin') {
+            return (
+                <>
+                    <BrowserRouter>
+                        <Router>
+                            <Navigation role={roleTab}/>
+                            <Container maxWidth="lg">
+                                <Switch>
+                                    <ProtectedRoute exact path="/home" component={Home}/>
+                                    <ProtectedRoute exact path="/categories" component={Categories}/>
+                                    <ProtectedRoute
+                                        exact
+                                        path="/categories/category"
+                                        component={Category}
+                                    />
+                                    <ProtectedRoute
+                                        exact
+                                        path="/categories/category/resource"
+                                        component={Resource}
+                                    />
+
+                                    <Route path="*" component={NotFound}/>
+                                </Switch>
+                            </Container>
+                        </Router>
+                    </BrowserRouter>
+                </>
+
+            )
+        } else if (roleTab === 'user') {
+            return (
+                <>
+                    <BrowserRouter>
+                        <Router>
+                            <Navigation role={roleTab}/>
+                            <Container maxWidth="lg">
+                                <Switch>
+                                    <ProtectedRoute exact path="/home" component={Home}/>
+                                    <ProtectedRoute exact path="/categories" component={Categories}/>
+                                    <ProtectedRoute
+                                        exact
+                                        path="/categories/category"
+                                        component={Category}
+                                    />
+                                    <ProtectedRoute
+                                        exact
+                                        path="/categories/category/resource"
+                                        component={Resource}
+                                    />
+
+                                    <Route path="*" component={NotFound}/>
+                                </Switch>
+                            </Container>
+                        </Router>
+                    </BrowserRouter>
+                </>
+
+            );
+        }
+        else {
+            return(
+
+                <BrowserRouter>
+                    <Router>
+                        <Navigation/>
+                        <Container maxWidth="lg">
+                            <Switch>
+                                <Route exact path="/login" component={Login}/>
+                                <Route exact path="/register" component={Register}/>
+                                <Route path="/" component={Login}/>
+
+                            </Switch>
+                        </Container>
+                    </Router>
+                </BrowserRouter>
+
+        )
+}
+}
+
 
 // Not found component
 function NotFound() {

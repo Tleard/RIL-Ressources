@@ -1,3 +1,5 @@
+import {getRole} from "./App";
+
 class Auth {
     constructor() {
         if(localStorage.getItem('auth_token') !== 'undefined') {
@@ -11,8 +13,9 @@ class Auth {
     }
 
     loggedout(callback) {
+        let roleTab = getRole();
         console.log('loggedout');
-        localStorage.removeItem('auth_token');
+        localStorage.auth_token = undefined;
         callback();
     }
 
