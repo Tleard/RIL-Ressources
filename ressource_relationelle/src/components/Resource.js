@@ -18,24 +18,22 @@ import Button from "@material-ui/core/Button";
 // MaterialUI Icon Import
 import FavoriteIcon from "@material-ui/icons/Favorite"
 import ShareIcon from "@material-ui/icons/Share"
-
-
-import ResourceCardDetail from './ResourceCardDetail'
+import ReportIcon from '@material-ui/icons/Report';
 
 function Resource(props) {
-    const {id}  = props.location.state;
-    console.log(id);
+    //const {id}  = props.location.state;
+    const id = props.location.hash.substring(1);
 
-    const [resource, setResource] = useState();
+    const [resource, setResource] = useState([]);
 
     useEffect(() => {
         if (localStorage.getItem("auth_token")) {
-          const getResources = async () => {
-            const resourcesFromServer = await fetchResource();
-            setResource(resourcesFromServer);
+          const getResource = async () => {
+            const resourceFromServer = await fetchResource();
+            setResource(resourceFromServer);
           };
     
-          getResources();
+          getResource();
           
         }
       }, []);
@@ -54,35 +52,38 @@ function Resource(props) {
     
         return data;
     }
-    console.log(resource);
-    //console.log(resource[0].id);
-
-    // To format the Date to dd/mm/YYYY
-    // const date = new Date(resource.createdAt);
-    // const day = date.getDate();
-    // const month = ("0" + date.getMonth()).slice(-1) + 1;
-    // const year = date.getFullYear();
 
     return (
       <>
         <h1>This is only ONE resource.</h1>
-        <Card variant="outlined">
-          <CardHeader
-            //title={resource[0].title}
-            // subheader={`${resource.author.username} - ${day}/${month}/${year}`}
-          />
-          {/* <CardContent>{resource[0].description}</CardContent> */}
-          <CardActions style={{ justifyContent: "flex-end" }}>
-            <IconButton aria-label="add to favorites">
-              <FavoriteIcon />
-            </IconButton>
-            <IconButton aria-label="share">
-              <ShareIcon />
-            </IconButton>
-          </CardActions>
-        </Card>
-
-        {/* <ResourceCardDetail {...resource[0]}/> */}
+        {resource.map((resource) => {
+          // To format the Date to dd/mm/YYYY
+          const date = new Date(resource.createdAt);
+          const day = date.getDate();
+          const month = ("0" + date.getMonth()).slice(-1) + 1;
+          const year = date.getFullYear();
+          return (
+            <Card variant="outlined">
+              <CardHeader
+                key={resource.id}
+                title={resource.title}
+                subheader={`${resource.author.username} - ${day}/${month}/${year}`}
+              />
+              <CardContent>{resource.description}</CardContent>
+              <CardActions style={{ justifyContent: "flex-end" }}>
+                <IconButton aria-label="add to favorites">
+                  <FavoriteIcon />
+                </IconButton>
+                <IconButton aria-label="share">
+                  <ShareIcon />
+                </IconButton>
+                <IconButton aria-label="report">
+                  <ReportIcon />
+                </IconButton>
+              </CardActions>
+            </Card>
+          );
+        })}
       </>
     );
 }
