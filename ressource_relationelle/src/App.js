@@ -15,11 +15,14 @@ import Login from "./components/Login";
 import Register from "./components/Register";
 import {useEffect, useState} from "react";
 import {BrowserRouter as Router, BrowserRouter, Route, Switch, withRouter} from 'react-router-dom';
+import Loader from "react-loader-spinner";
 
 import "./App.css";
 
 // Material UI Import
 import Container from "@material-ui/core/Container"
+
+export  const loaderStyle = { position: "fixed", top: "50%", left: "50%", transform: "translate(-50%, -50%)" };
 export function getRole() {
 
     return   fetch(`${global.api}/api/user/getRoles`, {
@@ -36,104 +39,120 @@ export function getRole() {
 
 }
 
+
 function App() {
     const [roleTab, setRoleTab] = useState(
-        null
+        'undef'
     )
     useEffect(() => {
         if (localStorage.auth_token !== undefined) {
             getRole().then(({roles}) => setRoleTab(roles))
+        } else {
+            setRoleTab(null);
         }
     }, [])
 
-        if (roleTab === 'admin') {
-            return (
-                <>
-                    <BrowserRouter>
-                        <Router>
-                            <Navigation role={roleTab}/>
-                            <Container maxWidth="lg">
-                                <Switch>
-                                    <ProtectedRoute exact path="/home" component={Home}/>
-                                    <ProtectedRoute exact path="/categories" component={Categories}/>
-                                    <ProtectedRoute
-                                        exact
-                                        path="/categories/category"
-                                        component={Category}
-                                    />
-                                    <ProtectedRoute
-                                        exact
-                                        path="/categories/category/resource"
-                                        component={Resource}
-                                    />
-
-                                    <Route path="*" component={NotFound}/>
-                                </Switch>
-                            </Container>
-                        </Router>
-                    </BrowserRouter>
-                </>
-
-            )
-        } else if (roleTab === 'user') {
-            return (
-                <>
-                    <BrowserRouter>
-                        <Router>
-                            <Navigation role={roleTab}/>
-                            <Container maxWidth="lg">
-                                <Switch>
-                                    <ProtectedRoute exact path="/home" component={Home}/>
-                                    <ProtectedRoute exact path="/categories" component={Categories}/>
-                                    <ProtectedRoute
-                                        exact
-                                        path="/categories/category"
-                                        component={Category}
-                                    />
-                                    <ProtectedRoute
-                                        exact
-                                        path="/categories/category/resource"
-                                        component={Resource}
-                                    />
-
-                                    <Route path="*" component={NotFound}/>
-                                </Switch>
-                            </Container>
-                        </Router>
-                    </BrowserRouter>
-                </>
-
-            );
-        }
-        else {
-            return(
-
+    if (roleTab === 'admin') {
+        return (
+            <>
                 <BrowserRouter>
                     <Router>
-                        <Navigation/>
+                        <Navigation role={roleTab}/>
                         <Container maxWidth="lg">
                             <Switch>
-                                <Route exact path="/login" component={Login}/>
-                                <Route exact path="/register" component={Register}/>
-                                <Route path="/" component={Login}/>
+                                <ProtectedRoute exact path="/home" component={Home}/>
+                                <ProtectedRoute exact path="/categories" component={Categories}/>
+                                <ProtectedRoute
+                                    exact
+                                    path="/categories/category"
+                                    component={Category}
+                                />
+                                <ProtectedRoute
+                                    exact
+                                    path="/categories/category/resource"
+                                    component={Resource}
+                                />
 
+                                <Route path="*" component={Home}/>
                             </Switch>
                         </Container>
                     </Router>
                 </BrowserRouter>
+            </>
 
         )
-}
+    } else if (roleTab === 'user') {
+        return (
+            <>
+                <BrowserRouter>
+                    <Router>
+                        <Navigation role={roleTab}/>
+                        <Container maxWidth="lg">
+                            <Switch>
+                                <ProtectedRoute exact path="/home" component={Home}/>
+                                <ProtectedRoute exact path="/categories" component={Categories}/>
+                                <ProtectedRoute
+                                    exact
+                                    path="/categories/category"
+                                    component={Category}
+                                />
+                                <ProtectedRoute
+                                    exact
+                                    path="/categories/category/resource"
+                                    component={Resource}
+                                />
+
+                                <Route path="*" component={Home}/>
+                            </Switch>
+                        </Container>
+                    </Router>
+                </BrowserRouter>
+            </>
+
+        );
+    }
+    else if (roleTab == null){
+
+        return(
+
+            <BrowserRouter>
+                <Router>
+                    <Navigation/>
+                    <Container maxWidth="lg">
+                        <Switch>
+                            <Route exact path="/login" component={Login}/>
+                            <Route exact path="/register" component={Register}/>
+                            <Route path="*" component={Login}/>
+
+                        </Switch>
+                    </Container>
+                </Router>
+            </BrowserRouter>
+
+        )
+    } else {
+
+        return(
+            <Loader
+                style={loaderStyle}
+                type="Puff"
+                color="#00BFFF"
+                height={100}
+                width={100}
+                timeout={3000} //3 secs
+            />
+        )
+    }
 }
 
 
 // Not found component
 function NotFound() {
-  return(
-    <div>
-      <h1>Not Found</h1>
-    </div>
-  )
+    return(
+        <div>
+            <h1>Not Found</h1>
+        </div>
+    )
 }
 
 export default withRouter(App);

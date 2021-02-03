@@ -1,4 +1,4 @@
-import {getRole} from "./App";
+
 
 class Auth {
     constructor() {
@@ -8,12 +8,12 @@ class Auth {
     }
 
     loggedin() {
-        console.log('loggedin and token is stored');
+        window.location.href = "http://localhost:3000/home";
         //this.accessToken = JSON.parse(localStorage.getItem('auth_token'));
     }
 
     loggedout(callback) {
-        let roleTab = getRole();
+
         console.log('loggedout');
         localStorage.auth_token = undefined;
         callback();
