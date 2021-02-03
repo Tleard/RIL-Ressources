@@ -3,6 +3,7 @@ import "./Home.css";
 import {getRole} from "../App";
 import Loader from "react-loader-spinner";
 import {loaderStyle} from "../App";
+import AdminDash from "./AdminDash";
 
 function Home() {
 
@@ -21,7 +22,10 @@ function Home() {
             return (
 
                 <>
-                    <h1>This is the AdminPage</h1>
+                    <AdminDash>
+                        
+                        
+                    </AdminDash>
 
                 </>
             );
