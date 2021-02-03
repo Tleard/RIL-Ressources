@@ -41,8 +41,6 @@ function Categories() {
   return data;
   }
 
-  console.log(categories);
-
   return (
     <>
     <Typography variant="h2" component="h1" style={{margin:"4% 0 4% 0"}}>
