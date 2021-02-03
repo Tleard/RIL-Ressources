@@ -46,7 +46,11 @@ class logInScreen extends React.Component {
         //Store Token & Current User
         await TokenHandler.storeToken(this.state.token, this.state.user);
         alert("Bienvenue " + this.state.user.username)
-        this.props.navigation.navigate("profile", {userId: this.state.user.id})
+        //this.props.navigation.navigate("profile", {userId: this.state.user.id})
+        this.props.navigation.navigate('Root', {
+            screen: 'Profile',
+            params: {userId: this.state.user.id}
+        });
     };
 
 
@@ -92,7 +96,7 @@ class logInScreen extends React.Component {
                      mode="contained"
                      title="Créer un compte"
                      style={styles.loginBtn}
-                     //onPress={this._Create}>
+                     onPress={() => this.props.navigation.navigate('Register')}
                  >
                    <Text style={styles.loginText}>Créer un compte</Text>
                  </Button>
