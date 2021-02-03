@@ -33,8 +33,13 @@ const mt5 = {
     marginTop: '5%'
 }
 
-const txtWhite = {
-    textColor : 'white',
+const txtCenter = {
+    textAlign : 'center',
+}
+
+const card = {
+    width : '41%',
+    height : '120px',
 }
 
 const AdminDash = (props) => {
@@ -43,9 +48,9 @@ const AdminDash = (props) => {
        <h1> Espace Adminsitration</h1>
 
            <div style={dFlexAround}>
-               <Card>
+               <Card style={card}>
                    <CardContent>
-                   <Typography variant="p" component="p">
+                   <Typography style={txtCenter} variant="p" component="p">
                       Consultez les signalements des ressources
                    </Typography>
                        <div style={displayBtn}>
@@ -59,10 +64,10 @@ const AdminDash = (props) => {
                        </div>
                </CardContent>
                </Card>
-               <Card>
+               <Card style={card}>
                    <CardContent>
-                       <Typography variant="p" component="p">
-                           Consultez les signalements des ressources
+                       <Typography style={txtCenter} variant="p" component="p">
+                           Consultez les ressources bloquées
                        </Typography>
                        <div style={displayBtn}>
                        <CardActions>
@@ -77,10 +82,10 @@ const AdminDash = (props) => {
                </Card>
            </div>
            <div style={Object.assign(dFlexAround, mt5)}>
-               <Card>
+               <Card style={card}>
                    <CardContent>
-                       <Typography variant="p" component="p">
-                           Consultez les signalements des ressources
+                       <Typography style={txtCenter} variant="p" component="p">
+                           Consultez les signalements des utilisateurs
                        </Typography>
                        <div style={displayBtn}>
                            <CardActions>
@@ -93,9 +98,9 @@ const AdminDash = (props) => {
                        </div>
                    </CardContent>
                </Card>
-               <Card>
+               <Card style={card}>
                    <CardContent>
-                       <Typography variant="p" component="p">
+                       <Typography style={txtCenter} variant="p" component="p">
                            Consultez les signalements des ressources
                        </Typography>
                        <div style={displayBtn}>
@@ -111,10 +116,10 @@ const AdminDash = (props) => {
                </Card>
            </div>
            <div style={Object.assign(dFlexAround, mt5)}>
-               <Card>
+               <Card style={card}>
                    <CardContent>
-                       <Typography variant="p" component="p">
-                           Consultez les Avertissements des utilisateurs
+                       <Typography style={txtCenter} variant="p" component="p">
+                           Consultez les Avertissements
                        </Typography>
                        <div style={displayBtn}>
                            <CardActions>
@@ -127,10 +132,10 @@ const AdminDash = (props) => {
                        </div>
                    </CardContent>
                </Card>
-               <Card>
+               <Card style={card}>
                    <CardContent>
-                       <Typography variant="p" component="p">
-                           Ajout, Suppression, Activation des catégories
+                       <Typography style={txtCenter} variant="p" component="p">
+                           Gestion des catégories
                        </Typography>
                        <div style={displayBtn}>
                            <CardActions>
