@@ -21,6 +21,7 @@ import "./App.css";
 
 // Material UI Import
 import Container from "@material-ui/core/Container"
+import CategTools from "./components/CategTools";
 
 export  const loaderStyle = { position: "fixed", top: "50%", left: "50%", transform: "translate(-50%, -50%)" };
 export function getRole() {
@@ -60,18 +61,7 @@ function App() {
                         <Navigation role={roleTab}/>
                         <Container maxWidth="lg">
                             <Switch>
-                                <ProtectedRoute exact path="/home" component={Home}/>
-                                <ProtectedRoute exact path="/categories" component={Categories}/>
-                                <ProtectedRoute
-                                    exact
-                                    path="/categories/category"
-                                    component={Category}
-                                />
-                                <ProtectedRoute
-                                    exact
-                                    path="/categories/category/resource"
-                                    component={Resource}
-                                />
+                                <ProtectedRoute exact path="/categTools" component={CategTools}/>
 
                                 <Route path="*" component={Home}/>
                             </Switch>

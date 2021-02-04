@@ -43,7 +43,7 @@ class ResourcesCategoryController extends AbstractController
 
     /**
      * @Rest\Post (
-     *     path = "/api/resources_category",
+     *     path = "/api/admin/addCategory",
      *     name = "create_resource_category"
      * )
      * @param Request $request
@@ -63,6 +63,7 @@ class ResourcesCategoryController extends AbstractController
 
         $category = new ResourceCategory();
         $category->setName($data['name']);
+        $category->setStatus(0);
 
         $em->persist($category);
         $em->flush();

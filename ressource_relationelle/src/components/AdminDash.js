@@ -15,6 +15,11 @@ const dFlexAround = {
     justifyContent : 'space-around'
 }
 
+const dFlexCenter = {
+    display : 'flex',
+    justifyContent : 'center'
+}
+
 const btnStyle = {
     backgroundColor : 'blue',
     borderColor : 'white',
@@ -26,7 +31,8 @@ const btnStyle = {
 }
 
 const displayBtn = {
-    marginLeft : '30%'
+    textAlign: 'center',
+
 }
 
 const mt5 = {
@@ -54,7 +60,7 @@ const AdminDash = (props) => {
                       Consultez les signalements des ressources
                    </Typography>
                        <div style={displayBtn}>
-                       <CardActions>
+                           <CardActions style={dFlexCenter}>
 
                            <Button style={btnStyle} variant="contained" color="primary" href="#contained-buttons">
                                Consulter
@@ -70,7 +76,7 @@ const AdminDash = (props) => {
                            Consultez les ressources bloquées
                        </Typography>
                        <div style={displayBtn}>
-                       <CardActions>
+                       <CardActions style={dFlexCenter}>
 
                            <Button style={btnStyle} variant="contained" color="primary" href="#contained-buttons">
                                Consulter
@@ -88,7 +94,7 @@ const AdminDash = (props) => {
                            Consultez les signalements des utilisateurs
                        </Typography>
                        <div style={displayBtn}>
-                           <CardActions>
+                           <CardActions style={dFlexCenter}>
 
                                <Button style={btnStyle} variant="contained" color="primary" href="#contained-buttons">
                                    Consulter
@@ -104,7 +110,7 @@ const AdminDash = (props) => {
                            Consultez les signalements des ressources
                        </Typography>
                        <div style={displayBtn}>
-                           <CardActions>
+                           <CardActions style={dFlexCenter}>
 
                                <Button style={btnStyle} variant="contained" color="primary" href="#contained-buttons">
                                    Consulter
@@ -122,7 +128,7 @@ const AdminDash = (props) => {
                            Consultez les Avertissements
                        </Typography>
                        <div style={displayBtn}>
-                           <CardActions>
+                           <CardActions style={dFlexCenter}>
 
                                <Button style={btnStyle} variant="contained" color="primary" href="#contained-buttons">
                                    Consulter
@@ -138,9 +144,9 @@ const AdminDash = (props) => {
                            Gestion des catégories
                        </Typography>
                        <div style={displayBtn}>
-                           <CardActions>
+                           <CardActions style={dFlexCenter}>
 
-                               <Button style={btnStyle} variant="contained" color="primary" href="#contained-buttons">
+                               <Button style={btnStyle} variant="contained" color="primary" href="/categTools">
                                    Consulter
                                </Button>
 
