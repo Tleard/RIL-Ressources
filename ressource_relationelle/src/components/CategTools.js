@@ -1,10 +1,19 @@
 import auth from "../auth";
-import {useEffect, useState} from "react";
+import {Component, useEffect, useState} from "react";
 import Container from "@material-ui/core/Container";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
-import {CardActions, FormControl, FormHelperText, Input, InputLabel} from "@material-ui/core";
+import {
+    CardActions,
+    FormControl, FormControlLabel,
+    FormHelperText,
+    Input,
+    InputLabel,
+    List,
+    ListItem, ListItemIcon, ListItemSecondaryAction, ListItemText,
+    ListSubheader, Switch
+} from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import {useForm} from "react-hook-form";
 
@@ -33,6 +42,11 @@ const submitBtn = {
 }
 
 
+class BluetoothIcon extends Component {
+    render() {
+        return null;
+    }
+}
 
 function CategTools() {
 
@@ -79,7 +93,8 @@ function CategTools() {
         });
         return await res.json()
     }
-
+    let status = ""
+    console.log(categories);
     return (
         <Container style={stylesContainer}>
             <h1> Gestion des catégories</h1>
@@ -90,7 +105,56 @@ function CategTools() {
                 <Input style={submitBtn} type={"submit"} value={'ajouter'}/>
                 </div>
             </form>
+            <div style={mt4}>
+                <h3> Supprimer, Activer des catégories </h3>
+                <List subheader={<ListSubheader>Liste des catégories</ListSubheader>}>
+                    {categories.map((c) =>
+                    <ListItem>
+                        <ListItemText id="switch-list-label-wifi" primary={c.name} />
+                        <ListItemSecondaryAction>
+                            {(() => {
+                                switch (c.status) {
+                                    case true:   return status =   <FormControlLabel
+                                        control={
+                                            <Switch
+                                                checked={true}
+                                                name="checkedB"
+                                                color="primary"
+                                            />
+                                        }
+                                        label=""
+                                    />;
+                                    case false: return status =   <FormControlLabel
+                                        control={
+                                            <Switch
+                                                checked={false}
+                                                name="checkedB"
+                                                color="disabled"
+                                            />
+                                        }
+                                        label=""
+                                    />
+                                    default:  return status =   <FormControlLabel
+                                        control={
+                                            <Switch
+                                                name="checkedB"
+                                                color="disabled"
+                                            />
+                                        }
+                                        label=""
+                                    />;
+                                }
+                            })()}
+
+                        </ListItemSecondaryAction>
+
+                    </ListItem>
+                    )}
+                </List>
+            </div>
         </Container>
+
+
     )
 }
 export default CategTools;

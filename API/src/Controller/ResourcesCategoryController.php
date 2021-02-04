@@ -72,6 +72,7 @@ class ResourcesCategoryController extends AbstractController
             Response::HTTP_CREATED);
     }
 
+
     /**
      * @Rest\Delete(
      *     path = "/api/resources_category/{categoryId}",
