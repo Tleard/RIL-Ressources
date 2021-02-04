@@ -106,6 +106,7 @@ function CategTools() {
     }
 
     const desactiveCateg = (idSe) =>{
+
        // console.log(idSe.target.name)
         const name = idSe.target.name
 
@@ -113,7 +114,7 @@ function CategTools() {
            c : name
        }
        fetch(
-           `${global.api}/api/admin/active_category`,{
+           `${global.api}/api/admin/delete_category`,{
                method : 'POST',
                headers: {
                    Accept: "application/json",
@@ -196,7 +197,7 @@ function CategTools() {
                                                     case true:   return <Input type={"submit"} onClick={(e) => desactiveCateg(e)} name={c.id}  style={btnStyleDes}  value={'DESACTIVER'}/>
 
 
-                                                    case false:      return <Input type={"submit"} name={c.id} onClick={(e) => activeCateg(e)}  style={btnStyleAct} variant="contained" color="primary" href="#contained-buttons" value={'ACTIVER'}/>
+                                                    case false:      return <Input type={"submit"}  onClick={(e) => activeCateg(e)} name={c.id}  style={btnStyleAct} variant="contained" color="primary" href="#contained-buttons" value={'ACTIVER'}/>
 
                                                 }
                                             })()}

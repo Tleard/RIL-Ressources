@@ -10,9 +10,15 @@ import {CardActions, Divider} from "@material-ui/core";
 const stylesContainer = {
     marginTop: '10%',
 }
+const dFlexAroundmt5 = {
+    display : 'flex',
+    justifyContent : 'space-around',
+    marginTop: '5%'
+}
+
 const dFlexAround = {
     display : 'flex',
-    justifyContent : 'space-around'
+    justifyContent : 'space-around',
 }
 
 const dFlexCenter = {
@@ -87,7 +93,7 @@ const AdminDash = (props) => {
                    </CardContent>
                </Card>
            </div>
-           <div style={Object.assign(dFlexAround, mt5)}>
+           <div style={dFlexAroundmt5}>
                <Card style={card}>
                    <CardContent>
                        <Typography style={txtCenter} variant="p" component="p">
@@ -121,7 +127,7 @@ const AdminDash = (props) => {
                    </CardContent>
                </Card>
            </div>
-           <div style={Object.assign(dFlexAround, mt5)}>
+           <div style= {dFlexAroundmt5}>
                <Card style={card}>
                    <CardContent>
                        <Typography style={txtCenter} variant="p" component="p">

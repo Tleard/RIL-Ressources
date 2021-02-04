@@ -42,6 +42,10 @@ if (props.role === 'admin') {
               <Typography component={Link} to="/" variant="h6" className={classes.title}>
                 Aide
               </Typography>
+                    <Typography component={Link} to="/home" variant="h6" className={classes.title}>
+                Panneau d'administration
+              </Typography>
+
 
               <Button color="inherit" onClick={() => {
                 auth.loggedout(() => {

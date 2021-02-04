@@ -84,6 +84,8 @@ class ResourcesCategoryController extends AbstractController
      */
     public function deleteCategoriesAction(Request $request)
     {
+
+
         $em = $this->getDoctrine()->getManager();
         $data = json_decode($request->getContent(), true);
 
@@ -119,6 +121,7 @@ class ResourcesCategoryController extends AbstractController
      */
     public function activeCategoriesAction(Request $request)
     {
+
         $em = $this->getDoctrine()->getManager();
         $data = json_decode($request->getContent(), true);
 
