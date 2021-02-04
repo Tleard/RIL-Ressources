@@ -74,8 +74,8 @@ class ResourcesCategoryController extends AbstractController
 
 
     /**
-     * @Rest\Delete(
-     *     path = "/api/resources_category/{categoryId}",
+     * @Rest\Post(
+     *     path = "/api/admin/delete_category",
      *     name = "delete_resource_category"
      * )
      * @param Request $request
@@ -85,16 +85,53 @@ class ResourcesCategoryController extends AbstractController
     public function deleteCategoriesAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-        $categoryId = $request->get('categoryId');
+        $data = json_decode($request->getContent(), true);
 
-        try {
-            $category = $em->getRepository(ResourceCategory::class)->find($categoryId);
+
+        //  return $this->json($categoryId);
+      try {
+            $category = $em->getRepository(ResourceCategory::class)->find($data['c']);
             if ($category == null)
             {
                 throw new \Exception('Category could not be find', Response::HTTP_NOT_FOUND);
             }
             /** @var ResourceCategory $category*/
-            $category->setStatus(false);
+           $category->setStatus(false);
+        } catch (\Exception $exception) {
+            throw new \Exception($exception->getMessage(), Response::HTTP_BAD_REQUEST);
+        }
+
+        $em->persist($category);
+        $em->flush();
+
+        return $this->json($category,
+            Response::HTTP_FOUND);
+
+    }
+    /**
+     * @Rest\Post (
+     *     path = "/api/admin/active_category",
+     *     name = "active_resource_category"
+     * )
+     * @param Request $request
+     * @return FosRestView|Response
+     * @throws \Exception
+     */
+    public function activeCategoriesAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $data = json_decode($request->getContent(), true);
+
+
+        //  return $this->json($categoryId);
+        try {
+            $category = $em->getRepository(ResourceCategory::class)->find($data['c']);
+            if ($category == null)
+            {
+                throw new \Exception('Category could not be find', Response::HTTP_NOT_FOUND);
+            }
+            /** @var ResourceCategory $category*/
+            $category->setStatus(true);
         } catch (\Exception $exception) {
             throw new \Exception($exception->getMessage(), Response::HTTP_BAD_REQUEST);
         }

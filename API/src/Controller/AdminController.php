@@ -36,54 +36,6 @@ class AdminController extends AbstractFOSRestController
         ]);
     }
     */
-    /**
-     * @Route(name="logAdmin", path="/log-admin", methods={"POST"})
-     * @param JWTTokenManagerInterface $JWTManager
-     * @return JsonResponse
-     *
-     */
-    public function loginAdmin(JWTTokenManagerInterface $JWTManager)
-
-    {
-
-        $em = $this->getDoctrine()->getManager();
-        $userName = $_POST['username'];
-        $query = $em
-            ->createQuery(
-                'SELECT u FROM App:User u WHERE u.username = :username AND u.roles LIKE :role'
-            )->setParameter('role', '%"ROLE_ADMIN"%')
-            ->setParameter('username', $userName);
-        $admin = $query->getResult();
-
-        $adminAccount = $em->getRepository(User::class)->findBy(
-            ['username' => $userName]
-        );
-        if (count($admin) == 0) {
-            return new JsonResponse([
-                'message' => "Invalid Credentials."
-            ], Response::HTTP_UNAUTHORIZED);
-        }
-        if (count($admin) > 0 && hash('sha512', $_POST['password']) != $adminAccount[0]->getPassword()) {
-
-            return new JsonResponse([
-                'message' => "Invalid Credentials."
-            ], Response::HTTP_UNAUTHORIZED);
-        }
-        if (count($admin) > 0 && hash('sha512', $_POST['password']) == $adminAccount[0]->getPassword()) {
-
-             return $this->json([
-                'token' => $JWTManager->create($adminAccount[0]),
-                'user' => $adminAccount[0]
-            ]);
-
-
-
-
-        }
-
-
-    }
-
 
 
 

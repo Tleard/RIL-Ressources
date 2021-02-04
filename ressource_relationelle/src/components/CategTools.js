@@ -35,22 +35,19 @@ const submitBtn = {
     borderColor : 'white',
     borderRadius : '0%',
     borderStyle : 'solid',
-    boxShadow : '1px',
     width : '10rem',
     color : "white",
 
 }
 
 
-class BluetoothIcon extends Component {
-    render() {
-        return null;
-    }
-}
+
 
 function CategTools() {
 
+
     const addCategory = (e) => {
+        e.default()
         const {name} = e.target.elements
         const playload = {
             name : name.value
@@ -65,13 +62,92 @@ function CategTools() {
             },
             body: JSON.stringify(playload),
         }).then(() => {
-            window.location.href('window.location.assign("http://localhost:3000/categTools");')
+            console.log(playload)
+            //  window.location.href('window.location.assign("http://localhost:3000/categTools");')
         })
+    }
+
+    const displayBtn = {
+        textAlign: 'center',
+
+    }
 
 
 
+    const btnStyleDes = {
+        backgroundColor : 'green',
+
+        borderRadius : '0%',
+
+        width : '10rem',
+        color : "white",
+        boxShadow : "0px 3px 1px -2px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12)",
+        fontWeight: "500",
+        lineHeight: "1.75",
+        letterSpacing: "0.02857em",
 
 
+
+    }
+
+    const btnStyleAct = {
+        backgroundColor : 'red',
+        borderRadius : '0%',
+
+        width : '10rem',
+        color : "white",
+        boxShadow : "0px 3px 1px -2px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12)",
+        fontWeight: "500",
+        lineHeight: "1.75",
+        letterSpacing: "0.02857em",
+
+
+
+    }
+
+    const desactiveCateg = (idSe) =>{
+       // console.log(idSe.target.name)
+        const name = idSe.target.name
+
+       const playload = {
+           c : name
+       }
+       fetch(
+           `${global.api}/api/admin/active_category`,{
+               method : 'POST',
+               headers: {
+                   Accept: "application/json",
+                   "Content-type": "application/json",
+                   Authorization: `Bearer ${auth.getToken()}`
+
+               },
+               body: JSON.stringify(playload),
+           }).then((res) => {
+
+        window.location.assign("http://localhost:3000/categTools");
+       })
+    }
+
+    const activeCateg = (idSe) => {
+        const name = idSe.target.name
+
+        const playload = {
+            c : name
+        }
+        fetch(
+            `${global.api}/api/admin/active_category`,{
+                method : 'POST',
+                headers: {
+                    Accept: "application/json",
+                    "Content-type": "application/json",
+                    Authorization: `Bearer ${auth.getToken()}`
+
+                },
+                body: JSON.stringify(playload),
+            }).then((res) => {
+
+               window.location.assign("http://localhost:3000/categTools");
+        })
     }
 
     const [categories, setCategories] = useState([])
@@ -108,48 +184,28 @@ function CategTools() {
             <div style={mt4}>
                 <h3> Supprimer, Activer des catégories </h3>
                 <List subheader={<ListSubheader>Liste des catégories</ListSubheader>}>
-                    {categories.map((c) =>
+                    {categories.map((c, i = 0) =>
+
                     <ListItem>
                         <ListItemText id="switch-list-label-wifi" primary={c.name} />
                         <ListItemSecondaryAction>
-                            {(() => {
-                                switch (c.status) {
-                                    case true:   return status =   <FormControlLabel
-                                        control={
-                                            <Switch
-                                                checked={true}
-                                                name="checkedB"
-                                                color="primary"
-                                            />
-                                        }
-                                        label=""
-                                    />;
-                                    case false: return status =   <FormControlLabel
-                                        control={
-                                            <Switch
-                                                checked={false}
-                                                name="checkedB"
-                                                color="disabled"
-                                            />
-                                        }
-                                        label=""
-                                    />
-                                    default:  return status =   <FormControlLabel
-                                        control={
-                                            <Switch
-                                                name="checkedB"
-                                                color="disabled"
-                                            />
-                                        }
-                                        label=""
-                                    />;
-                                }
-                            })()}
+
+                               {
+                                            (() => {
+                                                switch (c.status) {
+                                                    case true:   return <Input type={"submit"} onClick={(e) => desactiveCateg(e)} name={c.id}  style={btnStyleDes}  value={'DESACTIVER'}/>
+
+
+                                                    case false:      return <Input type={"submit"} name={c.id} onClick={(e) => activeCateg(e)}  style={btnStyleAct} variant="contained" color="primary" href="#contained-buttons" value={'ACTIVER'}/>
+
+                                                }
+                                            })()}
+
 
                         </ListItemSecondaryAction>
 
                     </ListItem>
-                    )}
+                     )}
                 </List>
             </div>
         </Container>
