@@ -1,7 +1,6 @@
 import React, {useState, createRef} from 'react';
 import {
   StyleSheet,
-  TextInput,
   View,
   Text,
   Image,
@@ -10,6 +9,7 @@ import {
   TouchableOpacity,
   ScrollView,
 } from 'react-native';
+import { Button, TextInput } from 'react-native-paper';
  import Loader from './Components/Loader';
  import{getUrl} from '../API/RequestHandler'
 
@@ -37,39 +37,39 @@ const RegisterScreen = (props) => {
     const handleSubmitButton = () => {
         setErrortext('');
         if (!userName) {
-          alert('Please fill Name');
+          alert('Veuillez renseigner le pseudo');
           return;
         }
         if (!firstName) {
-          alert('Please fill Name');
+          alert('Veuillez renseigner le prénom');
           return;
         }
         if (!lastName) {
-          alert('Please fill Name');
+          alert('Veuillez renseigner le nom de famille');
           return;
         }
         if (!userEmail) {
-          alert('Please fill Email');
+          alert('Veuillez renseigner le courriel');
           return;
         }
         if (!userPassword) {
-          alert('Please fill Password');
+          alert('Veuillez renseigner le mot de passe');
           return;
         }
         if (!retypedPassword) {
-          alert('Please fill Password');
+          alert('Veuillez confirmer le mot de passe');
           return;
         }
         if ( retypedPassword!=  userPassword)  {
-          alert('Retyped password is not the same');
+          alert('Les mot de passe ne correspondent pas');
           return;
         }
 
         //Show Loader
         setLoading(true);
-        
+
         let urlBase = getUrl();
-       
+
         fetch(urlBase +'/register', {
           method: 'POST',
           body: JSON.stringify({
@@ -80,7 +80,7 @@ const RegisterScreen = (props) => {
           password: userPassword,
           retyped_password:retypedPassword,
         }),
-        
+
         }) .then((response) => response.json(),
            setIsRegistraionSuccess(true))
         .catch((error) => {
@@ -104,13 +104,13 @@ const RegisterScreen = (props) => {
               }}
             />
             <Text style={styles.successTextStyle}>
-              Registration Successful
+              Compte créer avec sucés
             </Text>
             <TouchableOpacity
               style={styles.buttonStyle}
               activeOpacity={0.5}
-              onPress={() => props.navigation.navigate('LoginScreen')}>
-              <Text style={styles.buttonTextStyle}>Login Now</Text>
+              onPress={() => props.navigation.navigate('login')}>
+              <Text style={styles.buttonTextStyle}>Se connecter</Text>
             </TouchableOpacity>
           </View>
         );
@@ -124,118 +124,105 @@ const RegisterScreen = (props) => {
               justifyContent: 'center',
               alignContent: 'center',
             }}>
-            <View style={{alignItems: 'center'}}>
-              <Image
-                source={require('../assets/logo.png')}
-                style={{
-                  width: '50%',
-                  height: 100,
-                  resizeMode: 'contain',
-                  margin: 30,
-                }}
-              />
-            </View>
             <KeyboardAvoidingView enabled>
               <View style={styles.SectionStyle}>
-                <TextInput
-                  style={styles.inputStyle}
-                  onChangeText={(UserName) => setUserName(UserName)}
-                  underlineColorAndroid="#f000"
-                  placeholder="Enter user name"
-                  placeholderTextColor="#FFFF"
-                  autoCapitalize="sentences"
-                  returnKeyType="next"
-                  onSubmitEditing={() =>
-                    firstNameInputRef.current && firstNameInputRef.current.focus()
-                  }
-                  blurOnSubmit={false}
-                />
+                  <TextInput
+                      style={styles.inputStyle}
+                      theme={{ colors: { placeholder: 'white', text: 'white', primary: '#833ec9',underlineColor:'transparent',background : '#003489'}}}
+                      label="Pseudo"
+                      mode="outlined"
+                      placeholder="Pseudo..."
+                      placeholderTextColor="#ffffff"
+                      returnKeyType="next"
+                      onSubmitEditing={() =>
+                          firstNameInputRef.current && firstNameInputRef.current.focus()
+                      }
+                      blurOnSubmit={false}
+                      onChangeText={(UserName) => setUserName(UserName)}
+                  />
               </View>
               <View style={styles.SectionStyle}>
-                <TextInput
-                  style={styles.inputStyle}
-                  onChangeText={(FirstName) => setFirstName(FirstName)}
-                  underlineColorAndroid="#f000"
-                  placeholder="Enter first name"
-                  ref={firstNameInputRef}
-                  placeholderTextColor="#FFFF"
-                  autoCapitalize="sentences"
-                  returnKeyType="next"
-                  onSubmitEditing={() =>
-                    lastNameInputRef.current && lastNameInputRef.current.focus()
-                  }
-                  blurOnSubmit={false}
-                />
+                  <TextInput
+                      style={styles.inputStyle}
+                      theme={{ colors: { placeholder: 'white', text: 'white', primary: '#833ec9',underlineColor:'transparent',background : '#003489'}}}
+                      label="Prénom"
+                      mode="outlined"
+                      placeholder="Prénom"
+                      placeholderTextColor="#ffffff"
+                      returnKeyType="next"
+                      onSubmitEditing={() =>
+                          firstNameInputRef.current && firstNameInputRef.current.focus()
+                      }
+                      blurOnSubmit={false}
+                      onChangeText={(FirstName) => setFirstName(FirstName)}
+                  />
               </View>
               <View style={styles.SectionStyle}>
-                <TextInput
-                  style={styles.inputStyle}
-                  onChangeText={(LastName) => setLastName(LastName)}
-                  underlineColorAndroid="#f000"
-                  placeholder="Enter last name"
-                  ref={lastNameInputRef}
-                  placeholderTextColor="#FFFF"
-                  autoCapitalize="sentences"
-                  returnKeyType="next"
-                  onSubmitEditing={() =>
-                    emailInputRef.current && emailInputRef.current.focus()
-                  }
-                  blurOnSubmit={false}
-                />
+                  <TextInput
+                      style={styles.inputStyle}
+                      theme={{ colors: { placeholder: 'white', text: 'white', primary: '#833ec9',underlineColor:'transparent',background : '#003489'}}}
+                      label="Nom de famille"
+                      mode="outlined"
+                      placeholder="Nom de famille"
+                      placeholderTextColor="#ffffff"
+                      returnKeyType="next"
+                      onSubmitEditing={() =>
+                          lastNameInputRef.current && lastNameInputRef.current.focus()
+                      }
+                      blurOnSubmit={false}
+                      onChangeText={(LastName) => setLastName(LastName)}
+                  />
               </View>
               <View style={styles.SectionStyle}>
-                <TextInput
-                  style={styles.inputStyle}
-                  onChangeText={(UserEmail) => setUserEmail(UserEmail)}
-                  underlineColorAndroid="#f000"
-                  placeholder="Enter email"
-                  placeholderTextColor="#FFFF"
-                  keyboardType="email-address"
-                  ref={emailInputRef}
-                  returnKeyType="next"
-                  onSubmitEditing={() =>
-                    passwordInputRef.current &&
-                    passwordInputRef.current.focus()
-                  }
-                  blurOnSubmit={false}
-                />
+                  <TextInput
+                      style={styles.inputStyle}
+                      theme={{ colors: { placeholder: 'white', text: 'white', primary: '#833ec9',underlineColor:'transparent',background : '#003489'}}}
+                      label="Courriel"
+                      mode="outlined"
+                      placeholder="Courriel"
+                      placeholderTextColor="#ffffff"
+                      returnKeyType="next"
+                      onSubmitEditing={() =>
+                          emailInputRef.current && emailInputRef.current.focus()
+                      }
+                      blurOnSubmit={false}
+                      onChangeText={(UserEmail) => setUserEmail(UserEmail)}
+                  />
               </View>
               <View style={styles.SectionStyle}>
-                <TextInput
-                  style={styles.inputStyle}
-                  onChangeText={(UserPassword) =>
-                    setUserPassword(UserPassword)
-                  }
-                  underlineColorAndroid="#f000"
-                  placeholder="Enter password"
-                  placeholderTextColor="#FFFF"
-                  ref={passwordInputRef}
-                  returnKeyType="next"
-                  secureTextEntry={true}
-                  onSubmitEditing={() =>
-                    retypedPasswordInputRef.current &&
-                    retypedPasswordInputRef.current.focus()
-                  }
-                  blurOnSubmit={false}
-                />
+                  <TextInput
+                      style={styles.inputStyle}
+                      theme={{ colors: { placeholder: 'white', text: 'white', primary: '#833ec9',underlineColor:'transparent',background : '#003489'}}}
+                      label="Mot de passe"
+                      mode="outlined"
+                      placeholder="Mot de passe"
+                      placeholderTextColor="#ffffff"
+                      returnKeyType="next"
+                      secureTextEntry={true}
+                      onSubmitEditing={() =>
+                          passwordInputRef.current && passwordInputRef.current.focus()
+                      }
+                      blurOnSubmit={false}
+                      onChangeText={(UserPassword) => setUserPassword(UserPassword)}
+                  />
               </View>
               <View style={styles.SectionStyle}>
-                <TextInput
-                  style={styles.inputStyle}
-                  onChangeText={(RetypedPassword) =>
-                    setRetypedPassword(RetypedPassword)
-                  }
-                  underlineColorAndroid="#f000"
-                  placeholder="Retype password"
-                  placeholderTextColor="#FFFF"
-                  ref={retypedPasswordInputRef}
-                  returnKeyType="next"
-                  secureTextEntry={true}
-                  blurOnSubmit={false}
-                />
+                  <TextInput
+                      style={styles.inputStyle}
+                      theme={{ colors: { placeholder: 'white', text: 'white', primary: '#833ec9',underlineColor:'transparent',background : '#003489'}}}
+                      label="Confirmation du Mot de passe"
+                      mode="outlined"
+                      placeholder="Confirmation du Mot de passe"
+                      placeholderTextColor="#ffffff"
+                      returnKeyType="next"
+                      secureTextEntry={true}
+                      onSubmitEditing={() =>
+                          passwordInputRef.current && passwordInputRef.current.focus()
+                      }
+                      blurOnSubmit={false}
+                      onChangeText={(RetypedPassword) => setRetypedPassword(RetypedPassword)}
+                  />
               </View>
-              
-             
               {errortext != '' ? (
                 <Text style={styles.errorTextStyle}>
                   {errortext}
@@ -245,15 +232,15 @@ const RegisterScreen = (props) => {
                 style={styles.buttonStyle}
                 activeOpacity={0.5}
                 onPress={handleSubmitButton}>
-                <Text style={styles.buttonTextStyle}>REGISTER</Text>
+                <Text style={styles.buttonTextStyle}>Créer le compte</Text>
               </TouchableOpacity>
             </KeyboardAvoidingView>
           </ScrollView>
         </View>
       );
     };
-   
-    
+
+
     const styles = StyleSheet.create({
       SectionStyle: {
         flexDirection: 'row',
@@ -261,6 +248,7 @@ const RegisterScreen = (props) => {
         marginTop: 20,
         marginLeft: 35,
         marginRight: 35,
+        marginBottom: 25,
         margin: 10,
       },
       buttonStyle: {
@@ -282,13 +270,9 @@ const RegisterScreen = (props) => {
         fontSize: 16,
       },
       inputStyle: {
-        flex: 1,
-        color: 'white',
-        paddingLeft: 15,
-        paddingRight: 15,
-        borderWidth: 1,
-        borderRadius: 30,
-        borderColor: '#dadae8',
+          backgroundColor : '#003f5c',
+          color : '#833ec9',
+          flex : 1
       },
       errorTextStyle: {
         color: 'red',

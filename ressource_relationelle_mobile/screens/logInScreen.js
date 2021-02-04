@@ -1,15 +1,14 @@
 import * as React from "react";
 import {
-  Button,
   View,
   Text,
   StyleSheet,
-  TextInput,
   TouchableOpacity,
   Image,
   ImageBackground,
 } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
+import { Button, TextInput } from 'react-native-paper';
 import { createStackNavigator } from "@react-navigation/stack";
 import {TokenHandler} from "../API/TokenHandler";
 import {LoginAttempt} from "../API/LoginAttempt";
@@ -47,7 +46,11 @@ class logInScreen extends React.Component {
         //Store Token & Current User
         await TokenHandler.storeToken(this.state.token, this.state.user);
         alert("Bienvenue " + this.state.user.username)
-        this.props.navigation.navigate("profile", {userId: this.state.user.id})
+        //this.props.navigation.navigate("profile", {userId: this.state.user.id})
+        this.props.navigation.navigate('Root', {
+            screen: 'Profile',
+            params: {userId: this.state.user.id}
+        });
     };
 
 
@@ -58,35 +61,45 @@ class logInScreen extends React.Component {
 
                  <View style={styles.inputView}>
                    <TextInput
-                       style={styles.inputText}
+                       style={{backgroundColor : '#003f5c', color : '#833ec9'}}
+                       theme={{ colors: { placeholder: 'white', text: 'white', primary: '#833ec9',underlineColor:'transparent',background : '#003489'}}}
+                       label="Pseudo"
+                       mode="outlined"
                        placeholder="Pseudo..."
-                       placeholderTextColor="#003f5c"
+                       placeholderTextColor="#ffffff"
                        onChangeText={(username) =>this.setState({username})}
                    />
                  </View>
                  <View style={styles.inputView}>
                    <TextInput
-                       style={styles.inputText}
+                       style={{backgroundColor : '#003f5c', color : '#833ec9'}}
+                       mode="outlined"
+                       label="Mot de passe"
                        placeholder="Password..."
-                       placeholderTextColor="#003f5c"
+                       theme={{ colors: { placeholder: 'white', text: 'white', primary: '#833ec9',underlineColor:'transparent',background : '#003489'}}}
+                       placeholderTextColor="#ffffff"
                        secureTextEntry={true}
                        onChangeText={(password) => this.setState({password})}
                    />
                  </View>
 
-                 <TouchableOpacity
-                     style={styles.loginBtn}
+                 <Button icon="account" mode="contained"
                      title='Connexion'
                      onPress={this._login}
+                     style={styles.loginBtn}
                  >
                    <Text style={styles.loginText}>Connexion</Text>
-                 </TouchableOpacity>
+                 </Button>
 
-                 <TouchableOpacity
-                     //onPress={this._Create}>
+                 <Button
+                     icon="account-plus"
+                     mode="contained"
+                     title="Créer un compte"
+                     style={styles.loginBtn}
+                     onPress={() => this.props.navigation.navigate('Register')}
                  >
                    <Text style={styles.loginText}>Créer un compte</Text>
-                 </TouchableOpacity>
+                 </Button>
                </View>
            );
      }
@@ -102,14 +115,17 @@ const styles = StyleSheet.create({
   },
   logo: {},
   inputView: {
-    width: "80%",
-    backgroundColor: "#465881",
-    borderRadius: 25,
-    height: 50,
-    marginBottom: 20,
+    width: "90%",
+    marginBottom: 0,
     justifyContent: "center",
-    padding: 20,
+    paddingRight: 15,
+    paddingLeft: 15,
+    paddingTop : 10,
+    paddingBottom : 10,
   },
+  buttonForm: {
+    backgroundColor: "#003f5c",
+},
   inputText: {
     height: 50,
     color: "white",
@@ -119,13 +135,10 @@ const styles = StyleSheet.create({
     fontSize: 11,
   },
   loginBtn: {
-    width: "80%",
     backgroundColor: "#fb5b5a",
-    borderRadius: 25,
-    height: 50,
     alignItems: "center",
     justifyContent: "center",
-    marginTop: 40,
+    marginTop: 10,
     marginBottom: 10,
   },
   loginText: {
