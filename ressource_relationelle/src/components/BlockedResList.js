@@ -2,6 +2,7 @@ import auth from "../auth";
 import {useEffect, useState} from "react";
 import Container from "@material-ui/core/Container";
 import {Input, List, ListItem, ListItemText, ListSubheader, Typography} from "@material-ui/core";
+import Link from "@material-ui/core/Link";
 
 
 function BlockedResList(){
@@ -71,6 +72,33 @@ function BlockedResList(){
 
 
     }
+    const btnStyleLink = {
+        backgroundColor : 'blue',
+        textAlign : 'center',
+        borderRadius : '0%',
+
+        width : '10rem',
+        color : "white",
+        boxShadow : "0px 3px 1px -2px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12)",
+        fontWeight: "500",
+        lineHeight: "1.75",
+        letterSpacing: "0.02857em",
+        marginRight : "2rem",
+        height : '2rem',
+        paddingTop : '0.45rem'
+
+
+
+    }
+
+    const dFlexAround = {
+        display : 'flex',
+        justifyContent : 'space-around'
+    }
+
+    const dContent = {
+
+    }
 
     console.log(blockedList)
     if (blockedList.length === 0) {
@@ -89,11 +117,14 @@ function BlockedResList(){
                 <h1> Gestion des ressources bloquées</h1>
                 <List subheader={<ListSubheader> Liste des utilisateurs bloqués</ListSubheader>}>
                     {blockedList.map((l) =>
-                        <ListItem>
+                        <ListItem style={dFlexAround}>
+
                             <ListItemText primary={l.title} />
+                            <Link style={btnStyleLink} href="#" color="inherit">
+                               VOIR
+                            </Link>
 
                             <Input type={"submit"} onClick={(e) => deblockRes(e)} name={l.id}  style={btnStyleDes}  value={'DEBLOQUER'}/>
-
                         </ListItem>
                     )}
                 </List>
