@@ -17,6 +17,7 @@ import {useEffect, useState} from "react";
 import {BrowserRouter as Router, BrowserRouter, Route, Switch, withRouter} from 'react-router-dom';
 import Loader from "react-loader-spinner";
 import BlockedUserList from "./components/BlockedUserList";
+import BlockedResList from "./components/BlockedResList";
 
 import "./App.css";
 
@@ -65,6 +66,8 @@ function App() {
                                 <ProtectedRoute exact path="/categTools" component={CategTools}/>
                                 <ProtectedRoute exact path="/home" component={Home}/>
                                 <ProtectedRoute exact path='/blockedUser' component={BlockedUserList}/>
+                                <ProtectedRoute exact path='/blockedRes' component={BlockedResList}/>
+
                                 <Route path="*" component={Home}/>
                             </Switch>
                         </Container>

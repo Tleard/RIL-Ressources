@@ -4,7 +4,7 @@ import Container from "@material-ui/core/Container";
 import {Input, List, ListItem, ListItemText, ListSubheader, Typography} from "@material-ui/core";
 
 
-function BlockedUserList(){
+function BlockedResList(){
 
 
     const [blockedList, setBlockedList] = useState([])
@@ -17,7 +17,7 @@ function BlockedUserList(){
     }, [])
     const fetchList = async () => {
         const res = await fetch(
-            `${global.api}/api/admin/getUserBlockedList`, {
+            `${global.api}/api/admin/getResBlockedList`, {
                 method: 'POST',
                 headers: {
                     Accept: "application/json",
@@ -28,14 +28,15 @@ function BlockedUserList(){
         return await res.json()
     }
 
-    const deblockUser = (e) => {
+    const deblockRes = (e) => {
+        console.log(e)
         const name = e.target.name
 
         const playload = {
-            u : name
+            r : name
         }
         fetch(
-            `${global.api}/api/admin/deblockUser`,{
+            `${global.api}/api/admin/deblockRes`,{
                 method : 'POST',
                 headers: {
                     Accept: "application/json",
@@ -46,9 +47,11 @@ function BlockedUserList(){
                 body: JSON.stringify(playload),
             }).then((res) => {
 
-            window.location.assign("http://localhost:3000/blockedUser");
+            window.location.assign("http://localhost:3000/blockedRes");
         })
     }
+
+
 
     const stylesContainer = {
         marginTop: '10%',
@@ -73,31 +76,31 @@ function BlockedUserList(){
     if (blockedList.length === 0) {
         return (
             <Container style={stylesContainer}>
-                <h1> Gestion des utilisateurs bloqués</h1>
+                <h1> Gestion des ressources bloquées</h1>
                 <Typography variant={'p'}>
-                    Aucun utilisateur n'a été bloqué pour le moment
+                    Aucune ressource n'a été bloquée pour le moment
                 </Typography>
             </Container>
 
         )
     } else {
         return (
-        <Container style={stylesContainer}>
-            <h1> Gestion des utilisateurs bloqués</h1>
-            <List subheader={<ListSubheader> Liste des utilisateurs bloqués</ListSubheader>}>
-                {blockedList.map((l) =>
-                <ListItem>
-                    <ListItemText primary={l.username} />
-                    <ListItemText primary={l.email} />
-                   <Input type={"submit"} onClick={(e) => deblockUser(e)} name={l.id}  style={btnStyleDes}  value={'DEBLOQUER'}/>
+            <Container style={stylesContainer}>
+                <h1> Gestion des ressources bloquées</h1>
+                <List subheader={<ListSubheader> Liste des utilisateurs bloqués</ListSubheader>}>
+                    {blockedList.map((l) =>
+                        <ListItem>
+                            <ListItemText primary={l.title} />
 
-                </ListItem>
-                )}
-        </List>
-        </Container>
+                            <Input type={"submit"} onClick={(e) => deblockRes(e)} name={l.id}  style={btnStyleDes}  value={'DEBLOQUER'}/>
+
+                        </ListItem>
+                    )}
+                </List>
+            </Container>
         )
     }
 }
 
 
-export default BlockedUserList
+export default BlockedResList

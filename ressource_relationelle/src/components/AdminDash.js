@@ -84,7 +84,7 @@ const AdminDash = (props) => {
                        <div style={displayBtn}>
                        <CardActions style={dFlexCenter}>
 
-                           <Button style={btnStyle} variant="contained" color="primary" href="#contained-buttons">
+                           <Button style={btnStyle} variant="contained" color="primary" href="/blockedRes">
                                Consulter
                            </Button>
 
