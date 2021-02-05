@@ -16,6 +16,7 @@ import Register from "./components/Register";
 import {useEffect, useState} from "react";
 import {BrowserRouter as Router, BrowserRouter, Route, Switch, withRouter} from 'react-router-dom';
 import Loader from "react-loader-spinner";
+import BlockedUserList from "./components/BlockedUserList";
 
 import "./App.css";
 
@@ -62,7 +63,8 @@ function App() {
                         <Container maxWidth="lg">
                             <Switch>
                                 <ProtectedRoute exact path="/categTools" component={CategTools}/>
-
+                                <ProtectedRoute exact path="/home" component={Home}/>
+                                <ProtectedRoute exact path='/blockedUser' component={BlockedUserList}/>
                                 <Route path="*" component={Home}/>
                             </Switch>
                         </Container>

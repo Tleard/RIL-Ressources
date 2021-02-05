@@ -9,12 +9,13 @@ use App\Entity\Resource;
 use App\Entity\User;
 use App\Entity\Warning;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
+use FOS\RestBundle\Controller\Annotations as Rest;
 use JMS\Serializer\Exception\Exception;
 use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTManager;
 use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 use PhpParser\Node\Scalar\String_;
 use Symfony\Component\HttpFoundation\JsonResponse;
-
+use FOS\RestBundle\View\View as FosRestView;
 use Symfony\Component\HttpFoundation\Request;
 
 use Symfony\Component\HttpFoundation\Response;
@@ -56,6 +57,7 @@ class AdminController extends AbstractFOSRestController
 
         return $this->json($reports);
     }
+
     /**
      * @Route(name="getAllReports", path="/api/admin/reportsHistory", methods={"POST"})
      * @throws Exception
@@ -243,6 +245,61 @@ class AdminController extends AbstractFOSRestController
         $em->flush();
 
         return $this->json("Singalement traité, utilisateur bloqué");
+
+    }
+
+    /**
+     * @Route(name="getUserBlockedList", path="/api/admin/getUserBlockedList", methods={"POST"})
+     * @param Request $request
+     * @return JsonResponse
+     *
+     */
+    public function getUserBlockedList(Request $request){
+        $em = $this->getDoctrine()->getManager();
+        $userList = $em->getRepository(User::class)->findBy(
+            ['isBanned' => true]
+        );
+
+            return $this->json($userList);
+
+        
+    }
+
+    /**
+     * @Rest\Post(
+     *     path = "/api/admin/deblockUser",
+     *     name = "deblock_user"
+     * )
+     * @param Request $request
+     * @return FosRestView|Response
+     * @throws \Exception
+     */
+    public function deblocAction(Request $request)
+    {
+
+
+        $em = $this->getDoctrine()->getManager();
+        $data = json_decode($request->getContent(), true);
+
+
+        //  return $this->json($categoryId);
+        try {
+            $user = $em->getRepository(User::class)->find($data['u']);
+            if ($user == null)
+            {
+                throw new \Exception('User could not be find', Response::HTTP_NOT_FOUND);
+            }
+            /** @var User $user*/
+            $user->setIsBanned(false);
+        } catch (\Exception $exception) {
+            throw new \Exception($exception->getMessage(), Response::HTTP_BAD_REQUEST);
+        }
+
+        $em->persist($user);
+        $em->flush();
+
+        return $this->json($user,
+            Response::HTTP_FOUND);
 
     }
 }

@@ -113,12 +113,12 @@ const AdminDash = (props) => {
                <Card style={card}>
                    <CardContent>
                        <Typography style={txtCenter} variant="p" component="p">
-                           Consultez les signalements des ressources
+                           Consultez les utilisateurs bloqués
                        </Typography>
                        <div style={displayBtn}>
                            <CardActions style={dFlexCenter}>
 
-                               <Button style={btnStyle} variant="contained" color="primary" href="#contained-buttons">
+                               <Button style={btnStyle} variant="contained" color="primary" href="/blockedUser">
                                    Consulter
                                </Button>
 
