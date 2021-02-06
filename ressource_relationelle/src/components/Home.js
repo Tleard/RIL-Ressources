@@ -100,7 +100,9 @@ function Home() {
         Authorization: `Bearer ${auth.getToken()}`,
       },
     });
-    return await res.json();
+    const data = await res.json();
+    console.log(data);
+    return data
   };
 
   const lastResources = resources.slice(0, 3);

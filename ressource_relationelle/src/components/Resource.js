@@ -3,6 +3,7 @@ import React from 'react'
 import { useState, useEffect } from 'react'
 import "./Resource"
 import auth from '../auth'
+import userlib from '../user-library-functions'
 
 // MaterialUI import
 import Grid from "@material-ui/core/Grid";
@@ -72,7 +73,11 @@ function Resource(props) {
               <CardContent>{resource.description}</CardContent>
               <CardActions style={{ justifyContent: "flex-end" }}>
                 <IconButton aria-label="add to favorites">
-                  <FavoriteIcon />
+                  <FavoriteIcon 
+                    onClick={() => {
+                      userlib.saveInLibrary(resource.id);
+                    }}
+                  />
                 </IconButton>
                 <IconButton aria-label="share">
                   <ShareIcon />
