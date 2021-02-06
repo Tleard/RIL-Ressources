@@ -1,9 +1,10 @@
 import React from "react";
+import {useEffect, useState} from "react";
+import {BrowserRouter as Router, BrowserRouter, Route, Switch, withRouter} from 'react-router-dom';
 
 // Import that manage the authentification system
 import ProtectedRoute from "./ProtectedRoute";
 import auth from './auth';
-
 
 // Component that render some View
 import Navigation from "./components/Navigation";
@@ -13,12 +14,11 @@ import Category from "./components/Category";
 import Resource from "./components/Resource"
 import Login from "./components/Login";
 import Register from "./components/Register";
-import {useEffect, useState} from "react";
-import {BrowserRouter as Router, BrowserRouter, Route, Switch, withRouter} from 'react-router-dom';
 import Loader from "react-loader-spinner";
 import BlockedUserList from "./components/BlockedUserList";
 import BlockedResList from "./components/BlockedResList";
 import ResRepList from "./components/ResRepList";
+import UserLibrary from "./components/UserLibrary";
 
 import "./App.css";
 
