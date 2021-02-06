@@ -18,6 +18,7 @@ import Button from "@material-ui/core/Button";
 // MaterialUI Icon Import
 import FavoriteIcon from "@material-ui/icons/Favorite"
 import ShareIcon from "@material-ui/icons/Share"
+import ReportIcon from '@material-ui/icons/Report';
 
 // MaterialUI Lab 
 import { Alert, AlertTitle } from "@material-ui/lab";
@@ -58,8 +59,6 @@ function Category(props) {
 
     return data;
   };
-
-  console.log(resources);
   
   return (
     
@@ -94,10 +93,14 @@ function Category(props) {
                         <IconButton aria-label="share">
                           <ShareIcon />
                         </IconButton>
+                        <IconButton aria-label="report">
+                          <ReportIcon />
+                        </IconButton>
                         <Button size="medium" color="primary">
                           <Link
                             key={resource.id}
-                            to={{pathname: "category/resource", state: {id: resource.id}}}
+                            //to={{pathname: "category/resource", state: {id: resource.id}}}
+                            to={{pathname: "category/resource", hash:`${resource.id}`}}
                           >
                             Consulter
                           </Link> 

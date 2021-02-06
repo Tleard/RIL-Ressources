@@ -195,7 +195,7 @@ class UsersController extends AbstractFOSRestController
             throw new Exception("Could not find user n°" . $userId , Response::HTTP_NOT_FOUND);
         }
 
-        if ($this->getUser() != $user|| !in_array('ROLE_ADMIN', $this->getUser()->getRoles()))
+        if ($this->getUser() != $user && !in_array('ROLE_ADMIN', $this->getUser()->getRoles()))
         {
             throw new Exception("You do not have the authorization to modify this user." , Response::HTTP_UNAUTHORIZED);
         }
