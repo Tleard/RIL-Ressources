@@ -6,7 +6,6 @@ import {createStackNavigator} from "@react-navigation/stack";
 import logInScreen from "./screens/logInScreen";
 import profileScreen from "./screens/profileScreen";
 import RegisterScreen from "./screens/RegisterScreen";
-import bottomTabNavigator from "./constants/bottomTabNavigator";
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faUserAlt } from '@fortawesome/free-solid-svg-icons'
 
