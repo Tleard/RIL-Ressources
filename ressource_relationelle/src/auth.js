@@ -1,3 +1,5 @@
+
+
 class Auth {
     constructor() {
         if(localStorage.getItem('auth_token') !== 'undefined') {
@@ -6,13 +8,14 @@ class Auth {
     }
 
     loggedin() {
-        console.log('loggedin and token is stored');
+        window.location.href = "http://localhost:3000/home";
         //this.accessToken = JSON.parse(localStorage.getItem('auth_token'));
     }
 
     loggedout(callback) {
+
         console.log('loggedout');
-        localStorage.removeItem('auth_token');
+        localStorage.auth_token = undefined;
         callback();
     }
 

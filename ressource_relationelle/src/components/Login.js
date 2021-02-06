@@ -3,6 +3,7 @@ import { withRouter, Redirect } from 'react-router-dom';
 import '../global';
 import auth from '../auth';
 import './Login.css';
+import {getRole} from "../App";
 
 
 const Login  = (props) => {
@@ -25,15 +26,19 @@ const Login  = (props) => {
         })
         .then(res=>res.json())
         .then((data)=>{
+
             storeTokenInLocalStorage(data.token);
+
             auth.loggedin();
+
         })
         .then(() => {
-            console.log('then redirect check');
+
+
             //props.history.push('home');
             // return <Redirect to="home"/>
             // !!! The window.location.href is bad. But I couldn't find any fix yet. !!! The page need to be refresh to be logged. 
-            window.location.href = "http://localhost:3000/home";
+           window.location.href = "http://localhost:3000/home";
         });
     }
 
@@ -43,23 +48,24 @@ const Login  = (props) => {
         localStorage.setItem('auth_token', JSON.stringify(token));
     }
 
-
-    return (  
-        <div className="login">
-            <h1>Login</h1>
-            <label>Nom d'utilisateur
-                <input type="text" onChange={(e) => {
-                    setUsernameState(e.target.value);
-                }} />
-            </label>
-            <label>Mot de passe
-                <input type="password" onChange={(e) => {
-                    setPasswordState(e.target.value);               
-                }}/>
-            </label>
-            <button onClick={login}>Submit</button>
-        </div>
-    );
+    if (localStorage.auth_token !== undefined) {
+        return (
+            <div className="login">
+                <h1>Login</h1>
+                <label>Nom d'utilisateur
+                    <input type="text" onChange={(e) => {
+                        setUsernameState(e.target.value);
+                    }}/>
+                </label>
+                <label>Mot de passe
+                    <input type="password" onChange={(e) => {
+                        setPasswordState(e.target.value);
+                    }}/>
+                </label>
+                <button onClick={login}>Submit</button>
+            </div>
+        );
+    }
 }
  
 export default withRouter(Login);

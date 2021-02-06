@@ -1,7 +1,15 @@
+
+import React, {useEffect, useState} from "react";
+
 import React from "react";
 import { useState, useEffect } from "react";
 import auth from "../auth.js";
+
 import "./Home.css";
+import {getRole} from "../App";
+import Loader from "react-loader-spinner";
+import {loaderStyle} from "../App";
+import AdminDash from "./AdminDash";
 
 // Material UI import
 import { makeStyles } from '@material-ui/core/styles';
@@ -28,6 +36,55 @@ const useStyles = makeStyles({
 });
 
 function Home() {
+
+
+    const [roleTab, setRoleTab] = useState(
+        null
+    )
+    useEffect(() => {
+
+            getRole().then(({roles}) => setRoleTab(roles))
+        }
+    , [])
+    if (localStorage.auth_token !== undefined) {
+
+        if (roleTab === 'admin'){
+
+            return (
+
+                <>
+                    <AdminDash>
+                        
+                        
+                    </AdminDash>
+
+                </>
+            );
+        } else if (roleTab === 'user') {
+
+            return (
+
+                <>
+                    <h1>This is the HomePage</h1>
+
+                </>
+            );
+        } else  {
+            return (
+                <Loader
+                    style={loaderStyle}
+                    type="Puff"
+                    color="#00BFFF"
+                    height={100}
+                    width={100}
+                    timeout={3000} //3 secs
+                />
+            );
+
+        }
+    }
+
+
   const [resources, setResources] = useState([]);
 
   const classes = useStyles();

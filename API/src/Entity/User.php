@@ -285,7 +285,7 @@ class User implements UserInterface
      */
     public function getPassword()
     {
-        //Useless.
+       return $this->password;
     }
 
 
