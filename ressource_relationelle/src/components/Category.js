@@ -24,11 +24,11 @@ import ReportIcon from '@material-ui/icons/Report';
 import { Alert, AlertTitle } from "@material-ui/lab";
 
 function Category(props) {
-  // The category object that we get is used to get the correct resources
-  const { category } = props.location.state;
+  // The category name is passed through the hash props in Categories.js
+  const categoryName = props.location.hash.substring(1);
 
   const [resources, setResources] = useState([]);
-  const [categoryTitle, setCategoryTitle] = useState([]);
+  //const [categoryTitle, setCategoryTitle] = useState([]);
 
 
   useEffect(() => {
@@ -38,8 +38,6 @@ function Category(props) {
         setResources(resourcesFromServer);
       };
 
-      setCategoryTitle(category.name);
-
       getResources();
       
     }
@@ -47,7 +45,7 @@ function Category(props) {
 
   // Fetch Resources
   const fetchResources = async () => {
-    const res = await fetch(`${global.api}/api/resources/category/${category.name}`, {
+    const res = await fetch(`${global.api}/api/resources/category/${categoryName}`, {
       method: "get",
       headers: {
         Accept: "application/json",
@@ -64,7 +62,7 @@ function Category(props) {
     
     <>
       <Typography variant="h2" component="h1" style={{margin:"4% 0 4% 0"}}>
-        Ressources pour : {categoryTitle}
+        Ressources pour : {categoryName}
       </Typography>
       <Grid container spacing={3}>
           {typeof resources[0] !== "string" ?
@@ -100,7 +98,7 @@ function Category(props) {
                           <Link
                             key={resource.id}
                             //to={{pathname: "category/resource", state: {id: resource.id}}}
-                            to={{pathname: "category/resource", hash:`${resource.id}`}}
+                            to={{pathname: "resource", hash:`${resource.id}`}}
                           >
                             Consulter
                           </Link> 
