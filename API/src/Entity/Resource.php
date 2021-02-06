@@ -25,7 +25,7 @@ class Resource
         $this->assets = new ArrayCollection();
         $this->reactions = new ArrayCollection();
         $this->reports = new ArrayCollection();
-        $this->users = new ArrayCollection();
+
     }
 
 

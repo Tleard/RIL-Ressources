@@ -439,9 +439,9 @@ class UsersController extends AbstractFOSRestController
      */
     public function saveResInLib(Request $request){
         $em = $this->getDoctrine()->getManager();
-        $ressId = $request->get('ressource_id');
+        $data = json_decode($request->getContent(), true);
         $ressource = $em->getRepository(Resource::class)->find([
-            'id' => $ressId
+            'id' => $data['id']
         ]);
         $userId = $this->getUser()->getId();
         $user = $em->getRepository(User::class)->find([
