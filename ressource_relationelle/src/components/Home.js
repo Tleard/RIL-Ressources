@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from "react";
-
-
+import { Link } from "react-router-dom";
 import auth from "../auth.js";
 
 import "./Home.css";
@@ -123,7 +122,15 @@ function Home() {
                                     </CardActionArea>
                                     <CardActions>
                                         <Button size="small" color="primary">
-                                            Consulter
+                                            <Link
+                                                key={resource.id}
+                                                to={{
+                                                    pathname: "resource",
+                                                    hash: `${resource.id}`
+                                                }}
+                                            >
+                                                Consulter
+                                            </Link>                                            
                                         </Button>
                                     </CardActions>
                                 </Card>
