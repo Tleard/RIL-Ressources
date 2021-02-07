@@ -93,12 +93,12 @@ function App() {
                                 <ProtectedRoute exact path="/categories" component={Categories}/>
                                 <ProtectedRoute
                                     exact
-                                    path="/categories/category"
+                                    path="/category"
                                     component={Category}
                                 />
                                 <ProtectedRoute
                                     exact
-                                    path="/categories/category/resource"
+                                    path="/resource"
                                     component={Resource}
                                 />
 

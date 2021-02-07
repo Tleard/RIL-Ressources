@@ -59,9 +59,8 @@ function Categories() {
                   <Link
                     key={category.id}
                     to={{
-                      pathname: "categories/category",
-                      state: { category: category },
-                      category_name: { category_name: category.name },
+                      pathname: "category",
+                      hash: `${category.name}`
                     }}
                     style={{ textDecoration: "none" }}
                   >

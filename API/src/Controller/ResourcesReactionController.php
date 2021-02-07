@@ -172,10 +172,13 @@ class ResourcesReactionController extends AbstractController
         try {
             $resourceReaction = $em->getRepository(ResourceReaction::class)->findBy(['user' => $userId]);
 
-            if ($resourceReaction == null)
+            if (empty($resourceReaction))
             {
-                throw new Exception("could not find reactions for user n°" . $userId, Response::HTTP_UNAUTHORIZED);
+                return New JsonResponse([
+                    "The user has no reactions"],
+                    Response::HTTP_NOT_FOUND);
             }
+
         } catch (Exception $exception) {
             throw new Exception($exception);
         }
