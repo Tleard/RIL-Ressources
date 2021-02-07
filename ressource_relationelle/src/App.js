@@ -18,12 +18,15 @@ import {BrowserRouter as Router, BrowserRouter, Route, Switch, withRouter} from 
 import Loader from "react-loader-spinner";
 import BlockedUserList from "./components/BlockedUserList";
 import BlockedResList from "./components/BlockedResList";
+import ResRepList from "./components/ResRepList";
 
 import "./App.css";
 
 // Material UI Import
 import Container from "@material-ui/core/Container"
 import CategTools from "./components/CategTools";
+import UserRepList from "./components/UserRepList";
+import WarnList from "./components/WarnList";
 
 export  const loaderStyle = { position: "fixed", top: "50%", left: "50%", transform: "translate(-50%, -50%)" };
 export function getRole() {
@@ -67,7 +70,9 @@ function App() {
                                 <ProtectedRoute exact path="/home" component={Home}/>
                                 <ProtectedRoute exact path='/blockedUser' component={BlockedUserList}/>
                                 <ProtectedRoute exact path='/blockedRes' component={BlockedResList}/>
-
+                                <ProtectedRoute exact path='/repResList' component={ResRepList}/>
+                                <ProtectedRoute exact path='/repUserList' component={UserRepList}/>
+                                <ProtectedRoute exact path='/warnList' component={WarnList} />
                                 <Route path="*" component={Home}/>
                             </Switch>
                         </Container>
@@ -96,6 +101,7 @@ function App() {
                                     path="/resource"
                                     component={Resource}
                                 />
+
 
                                 <Route path="*" component={Home}/>
                             </Switch>

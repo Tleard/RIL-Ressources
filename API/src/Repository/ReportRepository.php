@@ -19,22 +19,21 @@ class ReportRepository extends ServiceEntityRepository
         parent::__construct($registry, Report::class);
     }
 
-    // /**
+     /**
     //  * @return Report[] Returns an array of Report objects
     //  */
     /*
-    public function findByExampleField($value)
+    public function findRepResUnclosed()
     {
         return $this->createQueryBuilder('r')
-            ->andWhere('r.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('r.id', 'ASC')
-            ->setMaxResults(10)
+            ->andWhere('r.report_ressource' != null)
+            ->andWhere('r.is_closed' == null)
             ->getQuery()
             ->getResult()
         ;
     }
     */
+
 
     /*
     public function findOneBySomeField($value): ?Report

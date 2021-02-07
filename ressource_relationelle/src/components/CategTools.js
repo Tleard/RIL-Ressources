@@ -47,7 +47,7 @@ function CategTools() {
 
 
     const addCategory = (e) => {
-        e.default()
+
         const {name} = e.target.elements
         const playload = {
             name : name.value
