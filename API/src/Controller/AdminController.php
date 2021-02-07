@@ -108,18 +108,18 @@ class AdminController extends AbstractFOSRestController
     }
 
     /**
-     * @Route(name="closeReport", path="/api/admin/closeReport", methods={"GET"})
+     * @Route(name="closeReport", path="/api/admin/closeReport", methods={"POST"})
      * @param Request $request
      * @throws Exception
      * @return JsonResponse
      */
     public function closeReport(Request $request){
         $em = $this->getDoctrine()->getManager();
-        $repId = $request->query->get('report_id');
-
+        $data = json_decode($request->getContent(), true);
         $report = $em->getRepository(Report::class)->find([
-            'id' => $repId
+            'id' => $data['r']
         ]);
+
 
         $report->setIsClosed(true);
         $em->flush();

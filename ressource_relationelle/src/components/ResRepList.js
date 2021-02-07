@@ -32,8 +32,8 @@ function ResRepList(){
     const stylesContainer = {
         marginTop: '10%',
     }
-    const btnStyleDes = {
-        backgroundColor : 'green',
+    const btnStyleBlock = {
+        backgroundColor : 'red',
 
         borderRadius : '0%',
 
@@ -41,6 +41,20 @@ function ResRepList(){
         color : "white",
         boxShadow : "0px 3px 1px -2px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12)",
         fontWeight: "500",
+        lineHeight: "1.75",
+        letterSpacing: "0.02857em",
+
+    }
+    const btnStyleClose = {
+        backgroundColor : '#FFB833',
+
+        borderRadius : '0%',
+
+        width : '10rem',
+        color : "white",
+        boxShadow : "0px 3px 1px -2px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12)",
+        fontWeight: "500",
+        marginLeft : "2rem",
         lineHeight: "1.75",
         letterSpacing: "0.02857em",
 
@@ -88,6 +102,32 @@ function ResRepList(){
             window.location.assign("http://localhost:3000/repResList");
         })
     }
+
+    const closeReport = (e) => {
+
+        const name = e.target.name
+
+        const playload = {
+            r : name
+
+        }
+        fetch(
+            `${global.api}/api/admin/closeandblockres`,{
+                method : 'POST',
+                headers: {
+                    Accept: "application/json",
+                    "Content-type": "application/json",
+                    Authorization: `Bearer ${auth.getToken()}`
+
+                },
+                body: JSON.stringify(playload),
+            }).then((res) => {
+
+            window.location.assign("http://localhost:3000/repResList");
+        })
+    }
+
+
     console.log(repList);
     if (repList.length === 0){
         return (
@@ -107,12 +147,12 @@ function ResRepList(){
                         <ListItem>
                             <ListItemText primary={l.reportRessource.title} />
 
-                            <Input name={l.id} type={"submit"} onClick={(e) => blockRes(e)} style={btnStyleDes}  value={'BLOQUER'}/>
+                            <Input name={l.id} type={"submit"} onClick={(e) => blockRes(e)} style={btnStyleBlock}  value={'BLOQUER'}/>
+
+                            <Input name={l.id} type={"submit"} onClick={(e) => closeReport(e)} style={btnStyleClose}  value={'CLOTURER'}/>
                             <Link style={btnStyleLink} href="#" color="inherit">
                                 VOIR
                             </Link>
-                            <Input type={"submit"}  style={btnStyleDes}  value={'VOIR'}/>
-
                         </ListItem>
 
                     )}
