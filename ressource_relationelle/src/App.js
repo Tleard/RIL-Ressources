@@ -103,6 +103,11 @@ function App() {
                                 />
 
 
+                                <ProtectedRoute 
+                                    exact 
+                                    path="/userlibrary"
+                                    component={UserLibrary}
+                                />
                                 <Route path="*" component={Home}/>
                             </Switch>
                         </Container>

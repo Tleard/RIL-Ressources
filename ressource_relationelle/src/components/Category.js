@@ -3,6 +3,7 @@ import React from 'react';
 import auth from '../auth';
 import { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
+import userlib from '../userLibraryFunctions'
 
 // MaterialUI import
 import Grid from "@material-ui/core/Grid";
@@ -57,6 +58,8 @@ function Category(props) {
 
     return data;
   };
+
+  console.log(resources);
   
   return (
     
@@ -79,14 +82,15 @@ function Category(props) {
                       <CardHeader
                         title={resource.title}
                         subheader={`${resource.author.username} - ${day}/${month}/${year}`}
-                        
                       />
-                      <CardContent>
-                        {resource.description}
-                      </CardContent>
-                      <CardActions style={{justifyContent:'flex-end'}}>
+                      <CardContent>{resource.description}</CardContent>
+                      <CardActions style={{ justifyContent: "flex-end" }}>
                         <IconButton aria-label="add to favorites">
-                          <FavoriteIcon />
+                          <FavoriteIcon
+                            onClick={() => {
+                              userlib.saveInLibrary(resource.id);
+                            }}
+                          />
                         </IconButton>
                         <IconButton aria-label="share">
                           <ShareIcon />
@@ -98,10 +102,13 @@ function Category(props) {
                           <Link
                             key={resource.id}
                             //to={{pathname: "category/resource", state: {id: resource.id}}}
-                            to={{pathname: "resource", hash:`${resource.id}`}}
+                            to={{
+                              pathname: "resource",
+                              hash: `${resource.id}`,
+                            }}
                           >
                             Consulter
-                          </Link> 
+                          </Link>
                         </Button>
                       </CardActions>
                     </Card>
