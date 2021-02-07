@@ -96,10 +96,7 @@ class Resource
      */
     private $author;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Report::class, mappedBy="report_ressource")
-     */
-    private $reports;
+
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
@@ -314,13 +311,7 @@ class Resource
         return $this;
     }
 
-    /**
-     * @return Collection|Report[]
-     */
-    public function getReports(): Collection
-    {
-        return $this->reports;
-    }
+
 
     public function addReport(Report $report): self
     {

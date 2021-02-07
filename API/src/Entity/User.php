@@ -111,10 +111,6 @@ class User implements UserInterface
      */
     private $roles;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Report::class, mappedBy="report_by")
-     */
-
 
 
 
@@ -288,10 +284,6 @@ class User implements UserInterface
        return $this->password;
     }
 
-
-    /**
-     * @return Collection|Report[]
-     */
 
 
     public function getCodeConfirmation(): ?string

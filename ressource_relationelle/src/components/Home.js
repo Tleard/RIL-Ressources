@@ -116,7 +116,7 @@ function Home() {
         if (roleTab === "admin") {
             return (
                 <>
-                    <AdminDash></AdminDash>
+                    <AdminDash/>
                 </>
             );
         } else if (roleTab === "user") {

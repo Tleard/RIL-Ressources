@@ -18,6 +18,7 @@ import {BrowserRouter as Router, BrowserRouter, Route, Switch, withRouter} from 
 import Loader from "react-loader-spinner";
 import BlockedUserList from "./components/BlockedUserList";
 import BlockedResList from "./components/BlockedResList";
+import ResRepList from "./components/ResRepList";
 
 import "./App.css";
 
@@ -67,6 +68,7 @@ function App() {
                                 <ProtectedRoute exact path="/home" component={Home}/>
                                 <ProtectedRoute exact path='/blockedUser' component={BlockedUserList}/>
                                 <ProtectedRoute exact path='/blockedRes' component={BlockedResList}/>
+                                <ProtectedRoute exact path='/repResList' component={ResRepList}/>
 
                                 <Route path="*" component={Home}/>
                             </Switch>
@@ -96,6 +98,7 @@ function App() {
                                     path="/categories/category/resource"
                                     component={Resource}
                                 />
+
 
                                 <Route path="*" component={Home}/>
                             </Switch>

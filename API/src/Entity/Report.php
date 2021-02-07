@@ -40,10 +40,7 @@ class Report
      */
     private $comment;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="reports")
-     */
-    private $report_by;
+
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
@@ -107,17 +104,6 @@ class Report
         return $this;
     }
 
-    public function getReportBy(): ?User
-    {
-        return $this->report_by;
-    }
-
-    public function setReportBy(?User $report_by): self
-    {
-        $this->report_by = $report_by;
-
-        return $this;
-    }
 
     public function getIsClosed(): ?bool
     {

@@ -43,19 +43,36 @@ class AdminController extends AbstractFOSRestController
 
 
     /**
-     * @Route(name="getAllReportsUnclosed", path="/api/admin/getAllReportUnClosed", methods={"POST"})
+     * @Route(name="getAllReportsResUnclosed", path="/api/admin/getReportResUnClosed", methods={"POST"})
      * @param Request $request
      * @throws Exception
      * @return JsonResponse
      *
      */
-    public function getAllReportsUnclosed(){
+    public function getAllReportRessUnclosed(){
+        $null = null;
         $em = $this->getDoctrine()->getManager();
-        $reports = $em->getRepository(Report::class)->findBy([
-            'is_closed' => null
-        ]);
+        $rQ = $em->getRepository(Report::class)->createQueryBuilder('r')
+            ->andWhere('r.is_closed IS  null AND r.report_ressource IS NOT null');
 
+        $reports = $rQ->getQuery()->getResult();
         return $this->json($reports);
+    }
+    /**
+     * @Route(name="getAllReportsUserUnclosed", path="/api/admin/getAllReportUserUnClosed", methods={"POST"})
+     * @param Request $request
+     * @throws Exception
+     * @return JsonResponse
+     *
+     */
+    public function getAllReportUsersUnclosed(){
+        $null = null;
+        $em = $this->getDoctrine()->getManager();
+        $uQ = $em->getRepository(Report::class)->createQueryBuilder('r')
+            ->andWhere('r.is_closed IS  null AND r.report_user IS NOT null');
+
+        $users = $uQ->getQuery()->getResult();
+        return $this->json($users);
     }
 
     /**
@@ -113,38 +130,7 @@ class AdminController extends AbstractFOSRestController
 
     }
 
-    /**
-     * @Route(name="closeAndDeleteRessource", path="api/admin/closeandblockres", methods={"POST"})
-     * @param Request $request
-     * @throws Exception
-     * @return JsonResponse
-     *
-     */
 
-    public function closeAndBlockRessource(Request $request){
-        $em = $this->getDoctrine()->getManager();
-
-        $repId = $request->query->get('report_id');
-        $report = $em->getRepository(Report::class)->find([
-            'id' => $repId
-        ]);
-
-        $resource = $em->getRepository(Resource::class)->find([
-            'id' => $report->getReportRessource()
-        ]);
-
-        $resource->setIsBlocked(true);
-        $report->setIsClosed(true);
-
-        $em->flush();
-        $em->persist($resource);
-        $em->persist($report);
-
-
-        return $this->json('Signalement traité, ressource bloquée');
-
-
-    }
 
     /**
      * @Route(name="closeAndWarnUser", path="/api/admin/closeAndWarnUser", methods={"POST"})
@@ -355,6 +341,38 @@ class AdminController extends AbstractFOSRestController
 
         return $this->json($res,
             Response::HTTP_FOUND);
+
+    }
+    /**
+     * @Route(name="closeAndDeleteRessource", path="api/admin/closeandblockres", methods={"POST"})
+     * @param Request $request
+     * @throws Exception
+     * @return JsonResponse
+     *
+     */
+
+    public function closeAndBlockRessource(Request $request){
+
+        $em = $this->getDoctrine()->getManager();
+        $data = json_decode($request->getContent(), true);
+        $report = $em->getRepository(Report::class)->find([
+            'id' => $data['r']
+        ]);
+
+        $resource = $em->getRepository(Resource::class)->find([
+            'id' => $report->getReportRessource()
+        ]);
+
+        $resource->setIsBlocked(true);
+        $report->setIsClosed(true);
+
+        $em->flush();
+        $em->persist($resource);
+        $em->persist($report);
+
+
+        return $this->json('Signalement traité, ressource bloquée');
+
 
     }
 }
