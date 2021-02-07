@@ -439,9 +439,9 @@ class UsersController extends AbstractFOSRestController
      */
     public function saveResInLib(Request $request){
         $em = $this->getDoctrine()->getManager();
-        $ressId = $request->get('ressource_id');
+        $data = json_decode($request->getContent(), true);
         $ressource = $em->getRepository(Resource::class)->find([
-            'id' => $ressId
+            'id' => $data['id']
         ]);
         $userId = $this->getUser()->getId();
         $user = $em->getRepository(User::class)->find([
@@ -478,14 +478,14 @@ class UsersController extends AbstractFOSRestController
      * @return JsonResponse
      */
     public function removeFromLib(Request $request){
-        $resId = $request->get('ressource_id');
-        $userId = $this->getUser()->getId();
         $em = $this->getDoctrine()->getManager();
+        $data = json_decode($request->getContent(), true);
+        $res = $em->getRepository(Resource::class)->find([
+            'id' => $data['id']
+        ]);
+        $userId = $this->getUser()->getId();
         $user = $em->getRepository(User::class)->find([
             'id' => $userId
-        ]);
-        $res = $em->getRepository(Resource::class)->find([
-            'id' => $resId
         ]);
         $user->removeLibrary($res);
         $em->persist($user);

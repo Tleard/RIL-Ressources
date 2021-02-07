@@ -3,7 +3,7 @@ import React from 'react'
 import { useState, useEffect } from 'react'
 import "./Resource"
 import auth from '../auth'
-import userlib from '../user-library-functions'
+import userlib from '../userLibraryFunctions'
 
 // MaterialUI import
 import Grid from "@material-ui/core/Grid";

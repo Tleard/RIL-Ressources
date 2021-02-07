@@ -96,7 +96,11 @@ function App() {
                                     path="/resource"
                                     component={Resource}
                                 />
-
+                                <ProtectedRoute 
+                                    exact 
+                                    path="/userlibrary"
+                                    component={UserLibrary}
+                                />
                                 <Route path="*" component={Home}/>
                             </Switch>
                         </Container>
