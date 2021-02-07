@@ -10,6 +10,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faUserAlt } from '@fortawesome/free-solid-svg-icons'
 
 import { BottomNavigation } from 'react-native-paper';
+import ResourceDetailsScreen from "./screens/ResourceDetailsScreen";
 
 
 const Stack = createStackNavigator();
@@ -54,6 +55,10 @@ function App() {
                 <Stack.Screen
                     name="Register"
                     component={RegisterScreen}
+                />
+                <Stack.Screen
+                    name="Details"
+                    component={ResourceDetailsScreen}
                 />
             </Stack.Navigator>
         </NavigationContainer>

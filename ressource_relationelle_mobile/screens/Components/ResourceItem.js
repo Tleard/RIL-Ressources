@@ -5,21 +5,35 @@ import {StyleSheet, View, Text, Image, Dimensions, TouchableOpacity} from 'react
 import { Avatar, Button, Card, Title, Paragraph, Icon, IconButton } from 'react-native-paper';
 import defaultImage from '../../assets/default-picture.png'
 import {getUrl} from "../../API/RequestHandler";
+//import {navigate} from "@react-navigation/routers/lib/typescript/src/CommonActions";
 const {width: WIDTH} = Dimensions.get('window');
 
-class ResourceItem extends PureComponent {
+class ResourceItem extends React.Component {
+
+    constructor(props) {
+        super(props)
+        this.state = {
+            token: '',
+            id:'',
+            error_message:'',
+        }
+    }
+
 
     render() {
-        console.log(this.props.postData);
         const post = this.props.postData;
+        const {DisplayDetails} = this.props;
+
         return (
             <View style={{backgroundColor : '#CDCDCD', paddingTop : 10, paddingRight: 10, paddingLeft : 10}}>
                 <Card style={{}}>
-                    <Card.Content>
-                        <Title numberOfLines={6}>{this.props.postData.title}</Title>
-                        <Text size={10} style={{color: 'grey'}}>{this.props.postData.author.username} - {this.props.postData.createdAt}</Text>
-                        <Paragraph style={{paddingTop : 10}} numberOflines={2}>{this.props.postData.description}</Paragraph>
-                    </Card.Content>
+                    <TouchableOpacity onPress={() => DisplayDetails(this.props.postData.id)}>
+                        <Card.Content>
+                            <Title numberOfLines={6}>{this.props.postData.title}</Title>
+                            <Text size={10} style={{color: 'grey'}}>{this.props.postData.author.username} - {this.props.postData.createdAt}</Text>
+                            <Paragraph style={{paddingTop : 10}} numberOflines={2}>{this.props.postData.description}</Paragraph>
+                        </Card.Content>
+                    </TouchableOpacity>
                     <Card.Actions style={{ justifyContent: "flex-end" }}>
                         <IconButton aria-label="add to favorites" icon="heart-outline">
                         </IconButton>
@@ -53,7 +67,6 @@ const styles = StyleSheet.create({
     content_container: {
         flex: 1,
         paddingTop: 20,
-        flex : 1,
         borderColor : '#000000',
         width : WIDTH - 15,
     },
