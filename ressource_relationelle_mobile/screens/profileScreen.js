@@ -21,6 +21,7 @@ import {getUrl} from "../API/RequestHandler";
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import Ionicons from "react-native-vector-icons/Ionicons";
 import ResourceItem from "./Components/ResourceItem";
+import Loader from "./Components/Loader";
 
 class ImageCustom extends React.Component {
 
@@ -43,6 +44,7 @@ class profileScreen extends React.Component {
             token: '',
             id:'',
             error_message:'',
+            loading : false
         }
     }
 
@@ -53,6 +55,8 @@ class profileScreen extends React.Component {
     }
 
     _fetchUserInfo = async() => {
+        //Show Loading
+        this.state.loading = true
         //Get User Info
         try {
             let userId = this.props.route.params['userId'];
@@ -148,6 +152,8 @@ class profileScreen extends React.Component {
                             .then((response) => response.json())
                             .then((responseText) => {
                                 this.setState({userReactions: responseText});
+                                // Hide Loader
+                                this.state.loading = false;
                                 if (responseText[0] == "The user has no reactions")
                                 {
                                     this.setState({userReactionsLenght: 0});
@@ -180,6 +186,7 @@ class profileScreen extends React.Component {
         const image = getUrl() + "/asset/file/" +this.state.profilePicture;
         return (
             <View>
+                    <Loader loading={this.state.loading}/>
                     <View style={{alignSelf : 'stretch', height: height / 3}}>
                         <Image source={require('../assets/default-picture.png')} style={{width : width, height :height /3 , resizeMode: 'stretch'}} />
                         <View style={{position: 'absolute', top: height / 3, left: 0, right: 0, bottom: 0, justifyContent: 'center', alignItems: 'center'}}>
