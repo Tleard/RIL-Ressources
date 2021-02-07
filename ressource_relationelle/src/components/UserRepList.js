@@ -59,6 +59,20 @@ function UserRepList(){
         letterSpacing: "0.02857em",
 
     }
+    const btnStyleWarn = {
+        backgroundColor : 'purple',
+
+        borderRadius : '0%',
+
+        width : '10rem',
+        color : "white",
+        boxShadow : "0px 3px 1px -2px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12)",
+        fontWeight: "500",
+        marginLeft : "2rem",
+        lineHeight: "1.75",
+        letterSpacing: "0.02857em",
+
+    }
     const btnStyleLink = {
         backgroundColor : 'blue',
         textAlign : 'center',
@@ -79,7 +93,7 @@ function UserRepList(){
 
     }
 
-    const blockRes = (e) => {
+    const blockUser = (e) => {
 
         const name = e.target.name
 
@@ -88,7 +102,7 @@ function UserRepList(){
 
         }
         fetch(
-            `${global.api}/api/admin/closeandblockres`,{
+            `${global.api}/api/admin/closeAndBlockUser`,{
                 method : 'POST',
                 headers: {
                     Accept: "application/json",
@@ -99,7 +113,7 @@ function UserRepList(){
                 body: JSON.stringify(playload),
             }).then((res) => {
 
-            window.location.assign("http://localhost:3000/repResList");
+            window.location.assign("http://localhost:3000/repUserList");
         })
     }
 
@@ -112,7 +126,7 @@ function UserRepList(){
 
         }
         fetch(
-            `${global.api}/api/admin/closeandblockres`,{
+            `${global.api}/api/admin/closeReport`,{
                 method : 'POST',
                 headers: {
                     Accept: "application/json",
@@ -123,7 +137,30 @@ function UserRepList(){
                 body: JSON.stringify(playload),
             }).then((res) => {
 
-            window.location.assign("http://localhost:3000/repResList");
+            window.location.assign("http://localhost:3000/repUserList");
+        })
+    }
+
+    const warnUser = (e) => {
+        const name = e.target.name
+
+        const playload = {
+            r : name
+
+        }
+        fetch(
+            `${global.api}/api/admin/closeAndWarnUser`,{
+                method : 'POST',
+                headers: {
+                    Accept: "application/json",
+                    "Content-type": "application/json",
+                    Authorization: `Bearer ${auth.getToken()}`
+
+                },
+                body: JSON.stringify(playload),
+            }).then((res) => {
+
+            window.location.assign("http://localhost:3000/repUserList");
         })
     }
 
@@ -141,15 +178,16 @@ function UserRepList(){
     } else {
         return (
             <Container style={stylesContainer}>
-                <h1> Gestion des utilisateurs bloqués</h1>
-                <List subheader={<ListSubheader> Liste des utilisateurs bloqués</ListSubheader>}>
+                <h1> Gestion des utilisateurs signalés</h1>
+                <List subheader={<ListSubheader> Liste des utilisateurs signalés</ListSubheader>}>
                     {repList.map((l) =>
                         <ListItem>
-                            <ListItemText primary={l.reportRessource.title} />
+                            <ListItemText primary={l.reportedUser.username} />
 
                             <Input name={l.id} type={"submit"} onClick={(e) => blockUser(e)} style={btnStyleBlock}  value={'BLOQUER'}/>
-
+                            <Input name={l.id} type={"submit"} onClick={(e) => warnUser(e)} style={btnStyleWarn}  value={'AVERTIR'}/>
                             <Input name={l.id} type={"submit"} onClick={(e) => closeReport(e)} style={btnStyleClose}  value={'CLOTURER'}/>
+
                             <Link style={btnStyleLink} href="#" color="inherit">
                                 VOIR
                             </Link>

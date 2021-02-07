@@ -38,8 +38,16 @@ class AdminController extends AbstractFOSRestController
     }
     */
 
+    /**
+     * @Route(name="getWarnList", path="/api/admin/getWarnList", methods={"POST"})
+     * @return JsonResponse
+     */
+    public function getWarnList(){
+        $em = $this->getDoctrine()->getManager();
+        $warnList = $em->getRepository(Warning::class)->findAll();
 
-
+        return $this->json($warnList);
+    }
 
 
     /**
@@ -58,18 +66,16 @@ class AdminController extends AbstractFOSRestController
         $reports = $rQ->getQuery()->getResult();
         return $this->json($reports);
     }
+
     /**
-     * @Route(name="getAllReportsUserUnclosed", path="/api/admin/getAllReportUserUnClosed", methods={"POST"})
-     * @param Request $request
-     * @throws Exception
+     * @Route(name="getAllReportsUserUnclosed", path="/api/admin/getReportUserUnClosed", methods={"POST"})
      * @return JsonResponse
-     *
      */
     public function getAllReportUsersUnclosed(){
-        $null = null;
+
         $em = $this->getDoctrine()->getManager();
         $uQ = $em->getRepository(Report::class)->createQueryBuilder('r')
-            ->andWhere('r.is_closed IS  null AND r.report_user IS NOT null');
+            ->andWhere('r.is_closed IS  null AND r.reported_user IS NOT null');
 
         $users = $uQ->getQuery()->getResult();
         return $this->json($users);
@@ -143,9 +149,9 @@ class AdminController extends AbstractFOSRestController
     public function closeAndWarnUser(Request $request, \Swift_Mailer $mailer){
         $em = $this->getDoctrine()->getManager();
 
-        $repId = $request->query->get('report_id');
+        $data = json_decode($request->getContent(), true);
         $report = $em->getRepository(Report::class)->find([
-            'id' => $repId
+            'id' => $data['r']
         ]);
 
         $user = $em->getRepository(User::class)->find([
@@ -197,16 +203,16 @@ class AdminController extends AbstractFOSRestController
     public function closeAndBlockUser(Request $request, \Swift_Mailer $mailer){
         $em = $this->getDoctrine()->getManager();
 
-        $repId = $request->query->get('report_id');
+        $data = json_decode($request->getContent(), true);
         $report = $em->getRepository(Report::class)->find([
-            'id' => $repId
+            'id' => $data['r']
         ]);
 
         $user = $em->getRepository(User::class)->find([
             'id' => $report->getReportedUser()
         ]);
 
-        $user->setIsBanned(true);
+
         $message = (new \Swift_Message('Hello Email'))
             ->setFrom('ressourcesrelationelle@gmail.com')
             ->setTo($user->getEmail())
@@ -222,8 +228,8 @@ class AdminController extends AbstractFOSRestController
 
 
         $mailer->send($message);
-        $report->setIsClosed(true);
-
+      $report->setIsClosed(true);
+        $user->setIsBanned(true);
         $em->persist($user);
 
         $em->persist($report);
@@ -374,5 +380,26 @@ class AdminController extends AbstractFOSRestController
         return $this->json('Signalement traité, ressource bloquée');
 
 
+    }
+
+    /**
+     * @Route(name="deleteWarn", path="api/admin/delWarn", methods={"POST"})
+     * @param Request $request
+     * @return JsonResponse
+     */
+
+    public function delWarning(Request $request){
+        $em = $this->getDoctrine()->getManager();
+        $data = json_decode($request->getContent(), true);
+
+        $warn = $em->getRepository(Warning::class)->find( [
+            'id' => $data['w']
+        ]);
+        
+        $em->remove($warn);
+        $em->flush();
+        $em->persist($warn);
+
+        return $this->json(['message' => 'avertissement supprimé']);
     }
 }

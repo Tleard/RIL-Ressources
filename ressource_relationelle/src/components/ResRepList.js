@@ -141,8 +141,8 @@ function ResRepList(){
     } else {
         return (
             <Container style={stylesContainer}>
-                <h1> Gestion des utilisateurs bloqués</h1>
-                <List subheader={<ListSubheader> Liste des utilisateurs bloqués</ListSubheader>}>
+                <h1> Gestion des ressources signalées</h1>
+                <List subheader={<ListSubheader> Liste des ressources signalées</ListSubheader>}>
                     {repList.map((l) =>
                         <ListItem>
                             <ListItemText primary={l.reportRessource.title} />

@@ -97,12 +97,12 @@ const AdminDash = (props) => {
                <Card style={card}>
                    <CardContent>
                        <Typography style={txtCenter} variant="p" component="p">
-                           Consultez les signalements des utilisateurs
+                           Consultez les utilisateurs signalés
                        </Typography>
                        <div style={displayBtn}>
                            <CardActions style={dFlexCenter}>
 
-                               <Button style={btnStyle} variant="contained" color="primary" href="#contained-buttons">
+                               <Button style={btnStyle} variant="contained" color="primary" href="/repUserList">
                                    Consulter
                                </Button>
 
@@ -136,7 +136,7 @@ const AdminDash = (props) => {
                        <div style={displayBtn}>
                            <CardActions style={dFlexCenter}>
 
-                               <Button style={btnStyle} variant="contained" color="primary" href="#contained-buttons">
+                               <Button style={btnStyle} variant="contained" color="primary" href="/warnList">
                                    Consulter
                                </Button>
 
