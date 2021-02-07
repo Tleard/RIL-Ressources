@@ -112,7 +112,7 @@ function ResRepList(){
 
         }
         fetch(
-            `${global.api}/api/admin/closeandblockres`,{
+            `${global.api}/api/admin/closeReport`,{
                 method : 'POST',
                 headers: {
                     Accept: "application/json",
