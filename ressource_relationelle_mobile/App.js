@@ -7,8 +7,8 @@ import logInScreen from "./screens/logInScreen";
 import profileScreen from "./screens/profileScreen";
 import RegisterScreen from "./screens/RegisterScreen";
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import { faUserAlt } from '@fortawesome/free-solid-svg-icons'
-
+import { faUserAlt, faListAlt } from '@fortawesome/free-solid-svg-icons'
+import{ AllResourcesScreen } from "./screens/AllResourcesScreen"
 import { BottomNavigation } from 'react-native-paper';
 
 
@@ -43,6 +43,11 @@ function App() {
                 }}
             >
                 <Stack.Screen
+                    name="Ressources"
+                    component={AllResourcesScreen}
+                    options={{ headerShown: true}}
+                />
+                <Stack.Screen
                     name="Root"
                     component={Root}
                     options={{ headerShown: true}}
@@ -70,6 +75,14 @@ function Root() {
                 options={{
                     title: 'Profile',
                     tabBarIcon: ({ focused }) => <FontAwesomeIcon focused={focused} size={30} color="black" icon={faUserAlt}/>,
+                }}
+            />
+            <Tab.Screen
+                name="Ressources"
+                component={AllResourcesScreen}
+                options={{
+                    title: 'Ressources',
+                    tabBarIcon: ({ focused }) => <FontAwesomeIcon focused={focused} size={30} color="black" icon={faListAlt}/>,
                 }}
             />
         </Tab.Navigator>
