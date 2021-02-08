@@ -9,7 +9,7 @@ import {
     Image,
     Dimensions,
     ImageBackground,
-    FlatList
+    FlatList,
 } from "react-native";
 import { Text, Card, Title, Paragraph } from 'react-native-paper';
 import { NavigationContainer } from "@react-navigation/native";
@@ -36,7 +36,7 @@ class profileScreen extends React.Component {
         super(props)
         this.state = {
             userData:'',
-            userResources:[],
+            userResources:'',
             userResourcesLenght:'',
             userReactions : '',
             userReactionsLenght : '',
@@ -113,7 +113,6 @@ class profileScreen extends React.Component {
                             .then((response) => response.json())
                             .then((responseText) => {
                                 this.setState({userResources: responseText})
-                                console.log(responseText)
                                 if (responseText[0] == "The user has no ressources")
                                 {
                                     this.setState({userResourcesLenght: 0})
@@ -174,7 +173,9 @@ class profileScreen extends React.Component {
         }
     }
 
-    TextList = [];
+    _DisplayDetails = (resourceId) => {
+        this.props.navigation.navigate("Details", {resourceId: resourceId});
+    }
 
     render() {
         var width = Dimensions.get('window').width;
@@ -210,8 +211,9 @@ class profileScreen extends React.Component {
                         <FlatList
                             data={this.state.userResources}
                             keyExtractor={(item) => item.id.toString()}
-                            renderItem={({item}) => <ResourceItem postData={item}/>}
+                            renderItem={({item}) => <ResourceItem postData={item} DisplayDetails={this._DisplayDetails}/>}
                         />
+
                     </View>
             </View>
 
