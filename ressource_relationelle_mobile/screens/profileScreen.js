@@ -75,7 +75,6 @@ class profileScreen extends React.Component {
                             .then((response) => response.json())
                             .then((responseText) => {
                                 this.setState({userData: responseText})
-                                console.log(responseText);
                                 if (responseText.profilePicture !== null)
                                 {
                                     this.setState({profilePicture : responseText.profilePicture.id});
@@ -114,8 +113,6 @@ class profileScreen extends React.Component {
                             .then((response) => response.json())
                             .then((responseText) => {
                                 this.setState({userResources: responseText})
-                                console.log("Reee")
-                                console.log(responseText)
                                 if (responseText[0] == "The user has no ressource")
                                 {
                                     this.setState({userResourcesLenght: 0})
