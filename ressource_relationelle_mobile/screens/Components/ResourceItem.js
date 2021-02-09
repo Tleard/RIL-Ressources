@@ -29,9 +29,9 @@ class ResourceItem extends React.Component {
                 <Card style={{}}>
                     <TouchableOpacity onPress={() => DisplayDetails(this.props.postData.id)}>
                         <Card.Content>
-                            <Title numberOfLines={6}>{this.props.postData.title}</Title>
+                            <Title style = {{paddingTop : 15}} numberOfLines={6}>{this.props.postData.title}</Title>
                             <Text size={10} style={{color: 'grey'}}>{this.props.postData.author.username} - {this.props.postData.createdAt}</Text>
-                            <Paragraph style={{paddingTop : 10}} numberOflines={2}>{this.props.postData.description}</Paragraph>
+                            <Paragraph style={{paddingTop : 10}} numberOfLines={5}>{this.props.postData.description}</Paragraph>
                         </Card.Content>
                     </TouchableOpacity>
                     <Card.Actions style={{ justifyContent: "flex-end" }}>
@@ -75,10 +75,10 @@ const styles = StyleSheet.create({
     },
     title_text: {
         fontWeight: 'bold',
-        fontSize: 25,
+        fontSize: 50,
         flex: 1,
         flexWrap: 'wrap',
-        paddingRight: 5
+        paddingRight: 5,
     },
     vote_text: {
         fontWeight: 'bold',

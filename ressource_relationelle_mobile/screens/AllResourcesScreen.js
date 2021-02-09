@@ -48,7 +48,10 @@ export class AllResourcesScreen extends React.Component {
     UNSAFE_componentWillMount() {
         this._fetchResources();
     }
-    
+   
+    _DisplayDetails = (resourceId) => {
+        this.props.navigation.navigate("Details", {resourceId: resourceId});
+    }
 
     
     _fetchResources = async() => {
@@ -94,9 +97,8 @@ export class AllResourcesScreen extends React.Component {
                         <FlatList
                             data={this.state.resources}
                             keyExtractor={(item) => item.id.toString()}
-                            renderItem={({item}) => <ResourceItem postData={item}/>}
+                            renderItem={({item}) => <ResourceItem postData={item} DisplayDetails={this._DisplayDetails}/>}
                         />
-                       
                    </View>
                    
         )
