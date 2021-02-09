@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {StyleSheet, Text, TouchableOpacity, View, Image, Dimensions, FlatList} from 'react-native';
-import {Card, Title, Paragraph } from 'react-native-paper';
+import {Card, Title, Paragraph, IconButton} from 'react-native-paper';
 import {getUrl} from "../API/RequestHandler";
 import { Ionicons } from '@expo/vector-icons';
 import { RectButton, ScrollView } from 'react-native-gesture-handler';
@@ -18,6 +18,7 @@ class ProfileScreen extends React.Component{
         super(props)
         this.state = {
             postData : '',
+            postImage : '',
             userId : '',
             Posts: '',
             loading: false
@@ -62,16 +63,68 @@ class ProfileScreen extends React.Component{
         catch (e) {
             console.error("Something went wrong" + e)
         }
+
+        //Fetch Asset
+        if(this.state.postData.asset !== [])
+        {
+            this.setState({postImage : this.state.postData.assets[0].id})
+        }
     }
 
+
     render() {
-        return (
-            <View style={{alignItems: 'center', paddingTop: 20}}>
-                <Loader loading={this.state.loading}/>
-                <Title>{this.state.postData.title}</Title>
-                <Text>{this.state.postData.description}</Text>
-            </View>
-        );
+        var width = Dimensions.get('window').width;
+        var height = Dimensions.get('window').height;
+
+        if (this.state.postData.asset !== [])
+        {
+            return (
+                <View style={{alignItems: 'center', paddingTop: 20}}>
+                    <Loader loading={this.state.loading}/>
+                    <Card style={{width : width /1.05}}>
+                        <Card.Content>
+                            <Title size={20}>{this.state.postData.title}</Title>
+                            <Text size={10} style={{color: 'grey'}}> - {this.state.postData.createdAt}</Text>
+                        </Card.Content>
+                        <Card.Cover source={{ uri: getUrl() + "/asset/file/" + this.state.postImage }} />
+                        <Card.Content>
+                            <Paragraph style={{paddingTop : 10}} numberOfLines={5}>{this.state.postData.description}</Paragraph>
+                        </Card.Content>
+
+                        <Card.Actions style={{ justifyContent: "flex-end" }}>
+                            <IconButton aria-label="add to favorites" icon="heart-outline">
+                            </IconButton>
+                            <IconButton aria-label="share" icon="share-variant">
+                            </IconButton>
+                            <IconButton aria-label="report" icon="alert-octagon">
+                            </IconButton>
+                        </Card.Actions>
+                    </Card>
+                </View>
+            )
+        } else {
+            return (
+                <View style={{alignItems: 'center', paddingTop: 20}}>
+                    <Loader loading={this.state.loading}/>
+                    <Card style={{width : width /1.05}}>
+                        <Card.Content>
+                            <Title size={20}>{this.state.postData.title}</Title>
+                            <Text size={10} style={{color: 'grey'}}> - {this.state.postData.createdAt}</Text>
+                            <Paragraph style={{paddingTop : 10}} numberOfLines={5}>{this.state.postData.description}</Paragraph>
+                        </Card.Content>
+
+                        <Card.Actions style={{ justifyContent: "flex-end" }}>
+                            <IconButton aria-label="add to favorites" icon="heart-outline">
+                            </IconButton>
+                            <IconButton aria-label="share" icon="share-variant">
+                            </IconButton>
+                            <IconButton aria-label="report" icon="alert-octagon">
+                            </IconButton>
+                        </Card.Actions>
+                    </Card>
+                </View>
+            )
+        }
     }
 }
 
