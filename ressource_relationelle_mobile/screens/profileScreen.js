@@ -189,7 +189,7 @@ class profileScreen extends React.Component {
             <View>
                     <Loader loading={this.state.loading}/>
                     <View style={{alignSelf : 'stretch', height: height / 3}}>
-                        <Image source={require('../assets/default-picture.png')} style={{width : width, height :height /3 , resizeMode: 'stretch'}} />
+                        <Image source={{uri : image}} style={{width : width, height :height /3 , resizeMode: 'stretch'}} />
                         <View style={{position: 'absolute', top: height / 3, left: 0, right: 0, bottom: 0, justifyContent: 'center', alignItems: 'center'}}>
                             <Card style={{height : height / 10}}>
                                 <Card.Content>

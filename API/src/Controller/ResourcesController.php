@@ -120,15 +120,17 @@ class ResourcesController extends AbstractController
 
         $data = $request->request->all();
 
-        if ($data == [])
+        //dump($request->files->all());
+
+        /*if ($data === [])
         {
             $data = json_decode($request->getContent(), true);
-        }
+        }*/
 
 
         $resource = new Resource();
 
-        if (isset($data['assets']))
+        if ($request->files->all() !== [])
         {
             /** @var UploadedFile $uploadedAssets */
             $uploadedAssets = $request->files->all();
