@@ -75,6 +75,7 @@ class profileScreen extends React.Component {
                             .then((response) => response.json())
                             .then((responseText) => {
                                 this.setState({userData: responseText})
+                                console.log(responseText);
                                 if (responseText.profilePicture !== null)
                                 {
                                     this.setState({profilePicture : responseText.profilePicture.id});
@@ -113,7 +114,9 @@ class profileScreen extends React.Component {
                             .then((response) => response.json())
                             .then((responseText) => {
                                 this.setState({userResources: responseText})
-                                if (responseText[0] == "The user has no ressources")
+                                console.log("Reee")
+                                console.log(responseText)
+                                if (responseText[0] == "The user has no ressource")
                                 {
                                     this.setState({userResourcesLenght: 0})
                                 } else {
@@ -177,19 +180,40 @@ class profileScreen extends React.Component {
         this.props.navigation.navigate("Details", {resourceId: resourceId});
     }
 
+    _DisplayResource = (userResource) => {
+        var width = Dimensions.get('window').width;
+        var height = Dimensions.get('window').height;
+        if (userResource[0] === "The user has no ressource")
+        {
+            return(
+                <Paragraph style={{fontSize : 22, paddingTop: height/30, paddingBottom : height/70}}>L'utilisateur ne possède pas de ressources</Paragraph>
+            )
+        } else {
+            return (
+                <View>
+                    <Paragraph style={{fontSize : 22, paddingTop: height/30, paddingBottom : height/70}}>Ressources :</Paragraph>
+                    <FlatList
+                        data={this.state.userResources}
+                        keyExtractor={(item) => String(item.id)}
+                        renderItem={({item}) => <ResourceItem postData={item} DisplayDetails={this._DisplayDetails}/>}
+                    />
+                </View>
+            )
+        }
+    }
+
+
     render() {
         var width = Dimensions.get('window').width;
         var height = Dimensions.get('window').height;
-        if (this.state.profilePicture !== 'default-picture')
+        if(this.state.userData.profilePicture !== null)
         {
-            const image = require('../assets/default-picture.png')
-        }
-        const image = getUrl() + "/asset/file/" +this.state.profilePicture;
-        return (
-            <View>
+            return(
+
+                <View>
                     <Loader loading={this.state.loading}/>
                     <View style={{alignSelf : 'stretch', height: height / 3}}>
-                        <Image source={{uri : image}} style={{width : width, height :height /3 , resizeMode: 'stretch'}} />
+                        <Image source={{uri : getUrl() + "/asset/file/" +this.state.profilePicture}} style={{width : width, height :height /3 , resizeMode: 'stretch'}} />
                         <View style={{position: 'absolute', top: height / 3, left: 0, right: 0, bottom: 0, justifyContent: 'center', alignItems: 'center'}}>
                             <Card style={{height : height / 10}}>
                                 <Card.Content>
@@ -206,18 +230,38 @@ class profileScreen extends React.Component {
                     <View style={{backgroundColor : '#CDCDCD'}}>
                         <Paragraph style={{fontSize : 20 ,marginTop: height/17}}>Ressources postée(s) : {this.state.userResourcesLenght}</Paragraph>
                         <Paragraph style={{fontSize : 20}}>Réactions postée(s) : {this.state.userReactionsLenght}</Paragraph>
-                        <Paragraph style={{fontSize : 22, paddingTop: height/30, paddingBottom : height/70}}> Ressources : </Paragraph>
-
-                        <FlatList
-                            data={this.state.userResources}
-                            keyExtractor={(item) => item.id.toString()}
-                            renderItem={({item}) => <ResourceItem postData={item} DisplayDetails={this._DisplayDetails}/>}
-                        />
-
+                        {this._DisplayResource(this.state.userResources)}
                     </View>
-            </View>
+                </View>
+            );
+        } else {
+            return (
 
-        );
+                <View>
+                    <Loader loading={this.state.loading}/>
+                    <View style={{alignSelf : 'stretch', height: height / 3}}>
+                        <Image source={require('../assets/default-picture.png')} style={{width : width, height :height /3 , resizeMode: 'stretch'}} />
+                        <View style={{position: 'absolute', top: height / 3, left: 0, right: 0, bottom: 0, justifyContent: 'center', alignItems: 'center'}}>
+                            <Card style={{height : height / 10}}>
+                                <Card.Content>
+                                    <View style={{flex: 1, flexDirection: 'row', alignItems : 'center'}}>
+                                        <View style={{width : width /2, height : height/40}}>
+                                            <Text style={{fontSize : 25}}>{this.state.userData.firstName} {this.state.userData.lastName}</Text>
+                                            <Text style={{fontSize : 25}}>{this.state.userData.username}</Text>
+                                        </View>
+                                    </View>
+                                </Card.Content>
+                            </Card>
+                        </View>
+                    </View>
+                    <View style={{backgroundColor : '#CDCDCD'}}>
+                        <Paragraph style={{fontSize : 20 ,marginTop: height/17}}>Ressources postée(s) : {this.state.userResourcesLenght}</Paragraph>
+                        <Paragraph style={{fontSize : 20}}>Réactions postée(s) : {this.state.userReactionsLenght}</Paragraph>
+                        {this._DisplayResource(this.state.userResources)}
+                    </View>
+                </View>
+            );
+        }
     }
 
 }

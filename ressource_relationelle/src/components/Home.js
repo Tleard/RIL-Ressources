@@ -92,19 +92,18 @@ function Home() {
     return await res.json();
   };
 
-  const fetchResources = async () => {
-    const res = await fetch(`${global.api}/api/resources/`, {
-      method: "get",
-      headers: {
-        Accept: "application/json",
-        "Content-type": "application/json",
-        Authorization: `Bearer ${auth.getToken()}`,
-      },
-    });
-    const data = await res.json();
-    console.log(data);
-    return data
-  };
+    const fetchResources = async () => {
+        const res = await fetch(`${global.api}/api/resources/`, {
+            method: "get",
+            headers: {
+                Accept: "application/json",
+                "Content-type": "application/json",
+                Authorization: `Bearer ${auth.getToken()}`,
+            },
+        });
+        const data = await res.json();
+        return data
+    };
 
   const lastResources = resources.slice(0, 3);
 
