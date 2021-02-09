@@ -7,6 +7,7 @@ import { RectButton, ScrollView } from 'react-native-gesture-handler';
 import { FontAwesome } from '@expo/vector-icons';
 import {AsyncStorage} from 'react-native';
 import {UserHandler} from "../API/UserHandler";
+import Loader from "./Components/Loader";
 
 
 
@@ -18,7 +19,8 @@ class ProfileScreen extends React.Component{
         this.state = {
             postData : '',
             userId : '',
-            Posts: ''
+            Posts: '',
+            loading: false
         }
     }
 
@@ -27,6 +29,7 @@ class ProfileScreen extends React.Component{
     }
 
     _fetchData = async() => {
+        this.state.loading = true
         try {
             let resourceId = this.props.route.params['resourceId'];
             await AsyncStorage.getItem("userToken")
@@ -41,9 +44,12 @@ class ProfileScreen extends React.Component{
                                 'Authorization': 'Bearer '+ responseJson,
                             }),
                         })
+                            
                             .then((response) => response.json())
                             .then((responseText) => {
+                                this.state.loading = false;
                                 this.setState({postData: responseText[0]})
+                               
                             })
                             .catch((error) => {
                                 console.error(error.message)
@@ -61,7 +67,9 @@ class ProfileScreen extends React.Component{
     render() {
         return (
             <View style={{alignItems: 'center', paddingTop: 20}}>
+                <Loader loading={this.state.loading}/>
                 <Title>{this.state.postData.title}</Title>
+                <Text>{this.state.postData.description}</Text>
             </View>
         );
     }
