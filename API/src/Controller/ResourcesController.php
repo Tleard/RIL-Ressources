@@ -120,20 +120,33 @@ class ResourcesController extends AbstractController
 
         $data = $request->request->all();
 
-        /** @var UploadedFile $uploadedAssets */
-        $uploadedAssets = $request->files->all();
+        if ($data == [])
+        {
+            $data = json_decode($request->getContent(), true);
+        }
+
 
         $resource = new Resource();
 
-        if ($uploadedAssets['assets'] !== NULL)
+        if (isset($data['assets']))
         {
-            foreach ($uploadedAssets['assets'] as $file)
-            {
-                //Set Assets , create file(s) & check Type
-                $assets = $fileUpload->UploadFile($file, $this->getParameter('kernel.project_dir'));
-                $resource->addAssets($assets);
+            /** @var UploadedFile $uploadedAssets */
+            $uploadedAssets = $request->files->all();
 
+            if ($uploadedAssets['assets'] !== NULL)
+            {
+
+                foreach ($uploadedAssets['assets'] as $file)
+                {
+                    //Set Assets , create file(s) & check Type
+                    $assets = $fileUpload->UploadFile($file, $this->getParameter('kernel.project_dir'));
+                    $resource->addAssets($assets);
+                    //Check Constraints for Mime
+                    $fileUpload->CheckMimeTypeConstraints($resource);
+
+                }
             }
+
         }
 
         //Default Status
@@ -147,9 +160,6 @@ class ResourcesController extends AbstractController
             $resource->addCategories($category[0]);
         }
         $resource->setType($em->getRepository(ResourceType::class)->findOneBy(['type_name' => $data['type']]));
-
-        //Check Constraints for Mime
-        $fileUpload->CheckMimeTypeConstraints($resource);
 
         $resource->setAuthor($this->getUser());
         $em = $this->getDoctrine()->getManager();
