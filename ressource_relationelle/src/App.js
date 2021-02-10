@@ -102,8 +102,6 @@ function App() {
                                     path="/resource"
                                     component={Resource}
                                 />
-
-
                                 <ProtectedRoute 
                                     exact 
                                     path="/userlibrary"
