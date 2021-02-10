@@ -85,7 +85,6 @@ function Publication(props) {
   const onSubmit = (data) => {
     let selectedCategories = [];
     for (const [key, value] of Object.entries(data)) {
-      //console.log(`${key}: ${value}`);
       if(value === true) {
         selectedCategories.push(key);
       }
@@ -94,17 +93,16 @@ function Publication(props) {
     const payload = {
       title: `${data.title}`,
       description: `${data.description}`,
-      categories: `${selectedCategories}`,
+      categories: selectedCategories,
       type: "text"
     }
-    console.log(payload);
 
     fetch(`${global.api}/api/resources`, {
       method: "POST",
       headers: {
-        Accept: "application/json",
+        "Accept": "application/json",
         "Content-type": "application/json",
-        "BearerToken" : `${auth.accessToken}`
+        "Authorization" : `Bearer ${auth.accessToken}`
       },
       body: JSON.stringify(payload),
     }).then(() => {
