@@ -18,6 +18,7 @@ import Loader from "react-loader-spinner";
 import BlockedUserList from "./components/BlockedUserList";
 import BlockedResList from "./components/BlockedResList";
 import UserLibrary from "./components/UserLibrary";
+import Publication from "./components/Publication";
 
 import "./App.css";
 
@@ -100,6 +101,11 @@ function App() {
                                     exact 
                                     path="/userlibrary"
                                     component={UserLibrary}
+                                />
+                                <ProtectedRoute 
+                                    exact
+                                    path="/publication"
+                                    component={Publication}
                                 />
                                 <Route path="*" component={Home}/>
                             </Switch>
