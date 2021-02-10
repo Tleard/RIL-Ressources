@@ -11,13 +11,14 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Exception;
+use FOS\RestBundle\Controller\Annotations as Rest;
 
 
 class LibrariesController extends AbstractController
 {
     /**
      * @Rest\Post(
-     *     path = "api/librairy/add-ressource",
+     *     path = "api/librairy/add-resource",
      *     name = "save_resource_in_library"
      * )
      * @param Request $request
@@ -43,8 +44,8 @@ class LibrariesController extends AbstractController
 
     /**
      * @Rest\Get(
-     *     path = "api/librairy/add-ressource",
-     *     name = "get_library"
+     *     path = "api/librairy/add-resource",
+     *     name = "add_library_resource"
      * )
      * @return JsonResponse
      */
@@ -65,8 +66,8 @@ class LibrariesController extends AbstractController
 
     /**
      * @Rest\Delete(
-     *     path = "api/librairy/remove/{ressource_id}",
-     *     name = "get_library"
+     *     path = "api/librairy/remove/{resource_id}",
+     *     name = "delete_library_resource"
      * )
      * @param Request $request
      * @return JsonResponse
@@ -74,7 +75,7 @@ class LibrariesController extends AbstractController
     public function DeleteResourceAction(Request $request): JsonResponse
     {
         $em = $this->getDoctrine()->getManager();
-        $resourceId = $request->get('ressource_id');
+        $resourceId = $request->get('resource_id');
 
         $resource = $em->getRepository(Resource::class)->find([
             'id' => $resourceId
