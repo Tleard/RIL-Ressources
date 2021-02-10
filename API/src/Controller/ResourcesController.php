@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\Asset;
 use App\Entity\Resource;
 use App\Entity\ResourceCategory;
 use App\Entity\ResourceStatus;
@@ -10,16 +9,9 @@ use App\Entity\ResourceType;
 use App\Entity\User;
 use App\Form\ResourcesType;
 use App\Service\FileManager;
-use Doctrine\ORM\Id\AssignedGenerator;
-use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\NonUniqueResultException;
 use Exception;
-use Faker\Provider\File;
-use JMS\Serializer\SerializationContext;
-use Symfony\Component\Serializer\SerializerInterface;
-use Symfony\Component\Uid\Uuid;
 use FOS\RestBundle\Controller\Annotations as Rest;
-use FOS\RestBundle\View\View;
 use FOS\RestBundle\View\View as FosRestView;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -119,12 +111,6 @@ class ResourcesController extends AbstractController
         $em = $this->getDoctrine()->getManager();
 
         $data = $request->request->all();
-
-        if ($data == [])
-        {
-            $data = json_decode($request->getContent(), true);
-        }
-
 
         $resource = new Resource();
 
