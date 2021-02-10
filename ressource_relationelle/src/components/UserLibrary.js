@@ -1,9 +1,8 @@
-// This compenent contains the resources of ONE chosen category 
 import React from 'react';
-import auth from '../auth';
 import { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
-import userlib from '../userLibraryFunctions'
+import auth from "../auth";
+import userlib from "../userLibraryFunctions";
 
 // MaterialUI import
 import Grid from "@material-ui/core/Grid";
@@ -20,56 +19,53 @@ import Button from "@material-ui/core/Button";
 import FavoriteIcon from "@material-ui/icons/Favorite"
 import ShareIcon from "@material-ui/icons/Share"
 import ReportIcon from '@material-ui/icons/Report';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 // MaterialUI Lab 
 import { Alert, AlertTitle } from "@material-ui/lab";
 
-function Category(props) {
-  // The category name is passed through the hash props in Categories.js
-  const categoryName = props.location.hash.substring(1);
+function UserLibrary() {
+    const [libResources, setLibResources] = useState([]);
 
-  const [resources, setResources] = useState([]);
-  //const [categoryTitle, setCategoryTitle] = useState([]);
-
-
-  useEffect(() => {
-    if (localStorage.getItem("auth_token")) {
-      const getResources = async () => {
-        const resourcesFromServer = await fetchResources();
-        setResources(resourcesFromServer);
-      };
-
-      getResources();
-      
-    }
-  }, []);
-
-  // Fetch Resources
-  const fetchResources = async () => {
-    const res = await fetch(`${global.api}/api/resources/category/${categoryName}`, {
-      method: "get",
-      headers: {
-        Accept: "application/json",
-        "Content-type": "application/json",
-        Authorization: `Bearer ${auth.getToken()}`,
-      },
-    });
-    const data = await res.json();
-
-    return data;
-  };
-
-  console.log(resources);
-  
-  return (
+    useEffect(() => {
+        if (localStorage.getItem("auth_token")) {
+          const getResource = async () => {
+            const resourceFromServer = await fetchResource();
+            setLibResources(resourceFromServer);
+          };
     
-    <>
-      <Typography variant="h2" component="h1" style={{margin:"4% 0 4% 0"}}>
-        Ressources pour : {categoryName}
-      </Typography>
-      <Grid container spacing={3}>
-          {typeof resources[0] !== "string" ?
-              resources.map((resource) => {
+          getResource();
+          
+        }
+      }, []);
+
+    // Fetch One Ressource
+    const fetchResource = async () => {
+
+        const res = await fetch(`${global.api}/api/user/getLib`, {
+            method: "post",
+            headers: {
+              Accept: "application/json",
+              "Content-type": "application/json",
+              Authorization: `Bearer ${auth.getToken()}`,
+            }
+        })
+        const data = await res.json();
+    
+        return data;
+    }
+
+    console.log(libResources);
+    console.log(typeof libResources);
+
+    return (
+      <>
+        <Typography variant="h2" component="h1" style={{ margin: "4% 0 4% 0" }}>
+          Ma Bibliothèque
+        </Typography>
+        <Grid container spacing={3}>
+            {!libResources.message  ?
+              libResources.map((resource) => {
                 // To format the Date to dd/mm/YYYY
                 const date = new Date(resource.createdAt);
                 const day = date.getDate();
@@ -89,6 +85,19 @@ function Category(props) {
                           <FavoriteIcon
                             onClick={() => {
                               userlib.saveInLibrary(resource.id);
+                            }}
+                          />
+                        </IconButton>
+                        <IconButton aria-label="share">
+                          <DeleteIcon
+                            onClick={() => {
+                              userlib.removeFromLibrary(resource.id);
+                              const getResource = async () => {
+                                const resourceFromServer = await fetchResource();
+                                setLibResources(resourceFromServer);
+                              };
+
+                              getResource();
                             }}
                           />
                         </IconButton>
@@ -114,16 +123,15 @@ function Category(props) {
                     </Card>
                   </Grid>
                 );
-                      
               })
               : <Alert severity="info">
-                  <AlertTitle>Attention</AlertTitle>
-                  Cette catégorie n'a pas encore de ressource
-                </Alert>
-            }
-      </Grid>
-    </>
-  );
+              <AlertTitle>Attention</AlertTitle>
+              Votre bibliothèque est vide
+            </Alert>
+          }
+        </Grid>
+      </>
+    );
 }
 
-export default Category
+export default UserLibrary

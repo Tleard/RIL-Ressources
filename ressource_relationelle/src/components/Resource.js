@@ -55,41 +55,41 @@ function Resource(props) {
     }
 
     return (
-        <>
-            <h1>This is only ONE resource.</h1>
-            {resource.map((resource) => {
-                // To format the Date to dd/mm/YYYY
-                const date = new Date(resource.createdAt);
-                const day = date.getDate();
-                const month = ("0" + date.getMonth()).slice(-1) + 1;
-                const year = date.getFullYear();
-                return (
-                    <Card variant="outlined">
-                        <CardHeader
-                            key={resource.id}
-                            title={resource.title}
-                            subheader={`${resource.author.username} - ${day}/${month}/${year}`}
-                        />
-                        <CardContent>{resource.description}</CardContent>
-                        <CardActions style={{ justifyContent: "flex-end" }}>
-                            <IconButton aria-label="add to favorites">
-                                <FavoriteIcon
-                                    onClick={() => {
-                                        userlib.saveInLibrary(resource.id);
-                                    }}
-                                />
-                            </IconButton>
-                            <IconButton aria-label="share">
-                                <ShareIcon />
-                            </IconButton>
-                            <IconButton aria-label="report">
-                                <ReportIcon />
-                            </IconButton>
-                        </CardActions>
-                    </Card>
-                );
-            })}
-        </>
+      <>
+        <h1>This is only ONE resource.</h1>
+        {resource.map((resource) => {
+          // To format the Date to dd/mm/YYYY
+          const date = new Date(resource.createdAt);
+          const day = date.getDate();
+          const month = ("0" + date.getMonth()).slice(-1) + 1;
+          const year = date.getFullYear();
+          return (
+            <Card variant="outlined">
+              <CardHeader
+                key={resource.id}
+                title={resource.title}
+                subheader={`${resource.author.username} - ${day}/${month}/${year}`}
+              />
+              <CardContent>{resource.description}</CardContent>
+              <CardActions style={{ justifyContent: "flex-end" }}>
+                <IconButton aria-label="add to favorites">
+                  <FavoriteIcon 
+                    onClick={() => {
+                      userlib.saveInLibrary(resource.id);
+                    }}
+                  />
+                </IconButton>
+                <IconButton aria-label="share">
+                  <ShareIcon />
+                </IconButton>
+                <IconButton aria-label="report">
+                  <ReportIcon />
+                </IconButton>
+              </CardActions>
+            </Card>
+          );
+        })}
+      </>
     );
 }
 

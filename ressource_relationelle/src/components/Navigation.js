@@ -74,11 +74,14 @@ if (props.role === 'admin') {
                 <Typography component={Link} to="/categories" variant="h6" className={classes.title}>
                   Catégories
                 </Typography>
-                <Typography component={Link} to="/" variant="h6" className={classes.title}>
+                <Typography component={Link} to="/publication" variant="h6" className={classes.title}>
                   Publier
                 </Typography>
                 <Typography component={Link} to="/" variant="h6" className={classes.title}>
                   Aide
+                </Typography>
+                <Typography component={Link} to="/userlibrary" variant="h6" className={classes.title}>
+                  Ma Bibliothèque
                 </Typography>
 
                   <Button color="inherit" onClick={() => {
