@@ -68,7 +68,6 @@ class LibrariesController extends AbstractController
      *     path = "api/librairy/remove/{ressource_id}",
      *     name = "get_library"
      * )
-     * @Route(name="removeFromLib", path="/api/user/removeFromLib", methods={"POST"})
      * @param Request $request
      * @return JsonResponse
      */
