@@ -65,26 +65,23 @@ if (props.role === 'admin') {
                 <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
                   <MenuIcon/>
                 </IconButton>
-                <Typography component={Link} to="/home" variant="h6" className={classes.title}>
+                <Typography color="secondary" component={Link} to="/home" variant="h6" className={classes.title}>
                   Accueil
                 </Typography>
-                <Typography component={Link} to="/" variant="h6" className={classes.title}>
-                  Fil d'actualité
-                </Typography>
-                <Typography component={Link} to="/categories" variant="h6" className={classes.title}>
+                <Typography color="secondary" component={Link} to="/categories" variant="h6" className={classes.title}>
                   Catégories
                 </Typography>
-                <Typography component={Link} to="/publication" variant="h6" className={classes.title}>
+                <Typography color="secondary" component={Link} to="/publication" variant="h6" className={classes.title}>
                   Publier
                 </Typography>
-                <Typography component={Link} to="/" variant="h6" className={classes.title}>
+                <Typography color="secondary" component={Link} to="/" variant="h6" className={classes.title}>
                   Aide
                 </Typography>
-                <Typography component={Link} to="/userlibrary" variant="h6" className={classes.title}>
+                <Typography color="secondary" component={Link} to="/userlibrary" variant="h6" className={classes.title}>
                   Ma Bibliothèque
                 </Typography>
 
-                  <Button color="inherit" onClick={() => {
+                  <Button variant="outlined" color="inherit" onClick={() => {
                       auth.loggedout(() => {
                           console.log('callback in test');
                           window.location.assign("http://localhost:3000/login");
@@ -103,7 +100,7 @@ if (props.role === 'admin') {
               <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
                 <MenuIcon/>
               </IconButton>
-              <Button color="inherit" component={Link} to="/login">Login</Button>
+              <Button variant="outlined" color="inherit" component={Link} to="/login">Login</Button>
               <Button color="inherit" component={Link} to="/register">S'inscrire</Button>
             </Toolbar>
           </AppBar>
