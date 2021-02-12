@@ -112,6 +112,11 @@ class ResourcesController extends AbstractController
 
         $data = $request->request->all();
 
+        if ($data == [])
+        {
+            $data = json_decode($request->getContent(), true);
+        }
+
         $resource = new Resource();
 
         if (isset($data['assets']))
