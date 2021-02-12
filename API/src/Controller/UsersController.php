@@ -75,7 +75,7 @@ class UsersController extends AbstractFOSRestController
         } else {
             return new JsonResponse([
                 'message' => "Invalid Credentials."
-                ], Response::HTTP_UNAUTHORIZED);
+            ], Response::HTTP_UNAUTHORIZED);
         }
     }
 
@@ -158,7 +158,7 @@ class UsersController extends AbstractFOSRestController
 
             }
             return $this->json($message, Response::HTTP_CREATED);
-
+            
         } catch (\Exception $exception) {
             return new JsonResponse(['message' => $exception->getMessage()], Response::HTTP_BAD_REQUEST);
         }
@@ -371,21 +371,21 @@ class UsersController extends AbstractFOSRestController
         if ($request->get('comment') != ""){
             $comment = $request->get('comment');
         }
-       $reporterId = $this->getUser()->getId();
+        $reporterId = $this->getUser()->getId();
 
-       $reporter = $em->getRepository(User::class)->findBy([
-           'id' => $reporterId
-       ]);
+        $reporter = $em->getRepository(User::class)->findBy([
+            'id' => $reporterId
+        ]);
 
-       $report = new Report();
-       $report->setDate(new \DateTime());
-       $report->setReportedUser($userReported[0]);
-       $report->setReportBy($reporter[0]);
-       if ($comment){
-           $report->setComment($comment);
-       }
-       $em->persist($report);
-       $em->flush();
+        $report = new Report();
+        $report->setDate(new \DateTime());
+        $report->setReportedUser($userReported[0]);
+        $report->setReportBy($reporter[0]);
+        if ($comment){
+            $report->setComment($comment);
+        }
+        $em->persist($report);
+        $em->flush();
 
         return $this->json(['message' => 'Merci pour votre signalement'], Response::HTTP_CREATED);
     }
@@ -419,6 +419,68 @@ class UsersController extends AbstractFOSRestController
         $em->persist($report);
         $em->flush();
         return $this->json(['message' => 'Merci pour votre signalement'], Response::HTTP_CREATED);
+    }
+
+    /**
+     * @Route (name="saveResInLib", path="/api/user/saveResInLib", methods={"POST"})
+     * @param Request $request
+     * @throws Exception
+     */
+    public function saveResInLib(Request $request){
+        $em = $this->getDoctrine()->getManager();
+        $data = json_decode($request->getContent(), true);
+        $ressource = $em->getRepository(Resource::class)->find([
+            'id' => $data['id']
+        ]);
+        $userId = $this->getUser()->getId();
+        $user = $em->getRepository(User::class)->find([
+            'id' => $userId
+        ]);
+        $user->addLibrary($ressource);
+        $em->persist($user);
+        $em->flush();
+        return $this->json(['message' => 'ressource ajoutée à la bibliothèque'], Response::HTTP_CREATED);
+    }
+
+    /**
+     * @Route(name="getLibrary", path="/api/user/getLib", methods={"POST"})
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function getMyLib(Request $request){
+        $userId = $this->getUser()->getId();
+        $em = $this->getDoctrine()->getManager();
+        $user = $em->getRepository(User::class)->find([
+            'id' => $userId
+        ]);
+        $lib = $user->getLibrary();
+        if (count($lib) > 0){
+            return $this->json($lib, Response::HTTP_CREATED);
+        } else {
+            return $this->json(['message' => "vous n'avez aucune ressource enregistrée"]);
+        }
+    }
+
+    /**
+     * @Route(name="removeFromLib", path="/api/user/removeFromLib", methods={"POST"})
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function removeFromLib(Request $request){
+        $em = $this->getDoctrine()->getManager();
+        $data = json_decode($request->getContent(), true);
+        $res = $em->getRepository(Resource::class)->find([
+            'id' => $data['id']
+        ]);
+        $userId = $this->getUser()->getId();
+        $user = $em->getRepository(User::class)->find([
+            'id' => $userId
+        ]);
+        $user->removeLibrary($res);
+        $em->persist($user);
+        $em->flush();
+        return $this->json(['message' => 'ressource retirée de la bibliothèque']);
+
     }
 
     /**
