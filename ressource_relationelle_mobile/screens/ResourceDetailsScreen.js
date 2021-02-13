@@ -9,8 +9,6 @@ import {AsyncStorage} from 'react-native';
 import {UserHandler} from "../API/UserHandler";
 import Loader from "./Components/Loader";
 
-
-
 const {width: WIDTH} = Dimensions.get('window');
 class ProfileScreen extends React.Component{
 
@@ -45,12 +43,11 @@ class ProfileScreen extends React.Component{
                                 'Authorization': 'Bearer '+ responseJson,
                             }),
                         })
-                            
                             .then((response) => response.json())
                             .then((responseText) => {
                                 this.state.loading = false;
                                 this.setState({postData: responseText[0]})
-                               
+                                console.log(responseText)
                             })
                             .catch((error) => {
                                 console.error(error.message)
@@ -64,20 +61,61 @@ class ProfileScreen extends React.Component{
             console.error("Something went wrong" + e)
         }
 
-        //Fetch Asset
-        if(this.state.postData.asset !== [])
+        if(this.state.postData.assets && this.state.postData.assets.length)
         {
             this.setState({postImage : this.state.postData.assets[0].id})
         }
     }
 
+    /*_addToLibrary = async(ResourceId) => {
+        try {
+            await AsyncStorage.getItem("userToken")
+                .then((responseJson) => {
+                    try{
+                        let url = getUrl() +"/api/user/reaction/" + userId;
+                        return fetch(url, {
+                            method: 'GET',
+                            headers: new Headers({
+                                'Content-Type': 'application/json',
+                                'Accept': 'application/json',
+                                'Authorization': 'Bearer ' + responseJson,
+                            }),
+                        })
+                            .then((response) => response.json())
+                            .then((responseText) => {
+                                this.setState({userReactions: responseText});
+                                // Hide Loader
+                                this.state.loading = false;
+                                if (responseText[0] == "The user has no reactions")
+                                {
+                                    this.setState({userReactionsLenght: 0});
+                                } else {
+                                    this.setState({userReactionsLenght: responseText.length});
+                                }
+                            })
+                            .catch((error) => {
+                                console.error(error.message)
+                            })
+
+                    } catch (e) {
+                        console.error("Something went wrong" + e)
+                    }
+                })
+        } catch (e) {
+            console.error("Somenting went wrong" + e)
+        }
+    }*/
 
     render() {
         var width = Dimensions.get('window').width;
         var height = Dimensions.get('window').height;
+        console.log("Asset : ");
+        console.log(this.state.postData.assets)
 
-        if (this.state.postData.asset !== [])
+        if (this.state.postData.assets && this.state.postData.assets.length)
         {
+            console.log("None");
+            console.log("Lenght : " +this.state.postData.assets.length)
             return (
                 <View style={{alignItems: 'center', paddingTop: 20}}>
                     <Loader loading={this.state.loading}/>
@@ -92,8 +130,10 @@ class ProfileScreen extends React.Component{
                         </Card.Content>
 
                         <Card.Actions style={{ justifyContent: "flex-end" }}>
-                            <IconButton aria-label="add to favorites" icon="heart-outline">
-                            </IconButton>
+                            <TouchableOpacity>
+                                <IconButton aria-label="add to favorites" icon="heart-outline">
+                                </IconButton>
+                            </TouchableOpacity>
                             <IconButton aria-label="share" icon="share-variant">
                             </IconButton>
                             <IconButton aria-label="report" icon="alert-octagon">
