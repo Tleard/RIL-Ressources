@@ -114,10 +114,10 @@ class ResourcesController extends AbstractController
 
         //dump($request->files->all());
 
-        /*if ($data === [])
+        if ($data === [])
         {
             $data = json_decode($request->getContent(), true);
-        }*/
+        }
 
         $resource = new Resource();
 
