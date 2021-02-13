@@ -28,6 +28,8 @@ import Container from "@material-ui/core/Container"
 import CategTools from "./components/CategTools";
 import UserRepList from "./components/UserRepList";
 import WarnList from "./components/WarnList";
+// cThe following import are used to customize Material UI Theme
+import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 
 export  const loaderStyle = { position: "fixed", top: "50%", left: "50%", transform: "translate(-50%, -50%)" };
 export function getRole() {
@@ -43,9 +45,18 @@ export function getRole() {
     })
         .then(res => res.json())
 
-
 }
 
+const theme = createMuiTheme({
+    palette: {
+      primary: {
+        main: '#009688',
+      },
+      secondary: {
+        main: '#404E88'
+      }
+    }
+  })
 
 function App() {
     const [roleTab, setRoleTab] = useState(
@@ -62,6 +73,7 @@ function App() {
     if (roleTab === 'admin') {
         return (
             <>
+            <ThemeProvider theme={theme}>
                 <BrowserRouter>
                     <Router>
                         <Navigation role={roleTab}/>
@@ -79,12 +91,14 @@ function App() {
                         </Container>
                     </Router>
                 </BrowserRouter>
+            </ThemeProvider>
             </>
 
         )
     } else if (roleTab === 'user') {
         return (
             <>
+            <ThemeProvider theme={theme}>
                 <BrowserRouter>
                     <Router>
                         <Navigation role={roleTab}/>
@@ -117,6 +131,7 @@ function App() {
                         </Container>
                     </Router>
                 </BrowserRouter>
+            </ThemeProvider>
             </>
 
         );
@@ -124,7 +139,7 @@ function App() {
     else if (roleTab == null){
 
         return(
-
+        <ThemeProvider theme={theme}>
             <BrowserRouter>
                 <Router>
                     <Navigation/>
@@ -138,7 +153,7 @@ function App() {
                     </Container>
                 </Router>
             </BrowserRouter>
-
+        </ThemeProvider>
         )
     } else {
 

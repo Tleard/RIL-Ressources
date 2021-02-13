@@ -7,15 +7,10 @@ import { Link } from 'react-router-dom'
 // Material UI import 
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
-import Paper from '@material-ui/core/Paper';
-import Card from '@material-ui/core/Card';
-import CardActionArea from '@material-ui/core/CardActionArea';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid'
+import Box from '@material-ui/core/Box'
 // Material UI import for Form Select
 import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
@@ -112,65 +107,73 @@ function Publication(props) {
 
   return (
     <>
-      <h1>Publier une nouvelle ressource</h1>
+      <Box my={5}>
+        <Typography component="h1" variant="h4">
+          Publier une nouvelle ressource
+        </Typography>
+      </Box>
       <form
         className={classes.form}
         noValidate
         onSubmit={handleSubmit(onSubmit)}
       >
-      <Grid container spacing={2}>
-        <Grid item xs={12}>
-          <TextField
-            id="title"
-            name="title"
-            label="Titre"
-            placeholder="Titre"
-            multiline
-            rowsMax={4}
-            variant="filled"
-            inputRef={register}
-          />
-        </Grid>
-
-        <Grid item xs={6}>
-        <FormControl component="fieldset" className={classes.formControl}>
-        <FormLabel component="legend">Choisissez une ou des catégories</FormLabel>
-        <FormGroup>
-          {categories.map((category) => (
-            <FormControlLabel
-              control={
-                <Checkbox 
-                  name={category.name}
-                  inputRef={register}
-                />}
-              label={category.name}
+        <Grid container spacing={2} justify="center">
+          <Grid item xs={12}>
+            <TextField
+              id="title"
+              name="title"
+              label="Titre"
+              placeholder="Titre"
+              multiline
+              rowsMax={4}
+              variant="filled"
+              inputRef={register}
+              fullWidth
             />
-          ))}
-        </FormGroup>
-      </FormControl>
-        </Grid>
+          </Grid>
 
-        <Grid item xs={12}>
-          <TextField
-            id="description"
-            name="description"
-            label="Description"
-            multiline
-            rows={4}
-            variant="filled"
-            inputRef={register}
-          />
+          <Grid item xs={6}>
+            <FormControl component="fieldset" className={classes.formControl}>
+              <FormLabel component="legend">
+                Choisissez une ou des catégories
+              </FormLabel>
+              <FormGroup>
+                {categories.map((category) => (
+                  <FormControlLabel
+                    control={
+                      <Checkbox name={category.name} inputRef={register} />
+                    }
+                    label={category.name}
+                  />
+                ))}
+              </FormGroup>
+            </FormControl>
+          </Grid>
+
+          <Grid item xs={12}>
+            <TextField
+              id="description"
+              name="description"
+              label="Description"
+              multiline
+              rows={4}
+              variant="filled"
+              inputRef={register}
+              fullWidth
+            />
+          </Grid>
+
+          <Box my={3}>
+            <Button
+              type="submit"
+              variant="contained"
+              color="primary"
+              className={classes.submit}
+            >
+              Publier
+            </Button>
+          </Box>
         </Grid>
-      </Grid>
-      <Button
-        type="submit"
-        fullWidth
-        variant="contained"
-        color="primary"
-        className={classes.submit}
-      >
-        Publier
-      </Button>
       </form>
     </>
   );

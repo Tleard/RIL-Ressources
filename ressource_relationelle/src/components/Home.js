@@ -17,6 +17,7 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid'
+import Box from '@material-ui/core/Box'
 // Material UI import for Form Select
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -123,10 +124,16 @@ function Home() {
       return (
         <>
           <HomeCarousel />
-          <Typography variant="h2" component="h2">
-            Dernières ressources
-          </Typography>
-          <Grid container spacing={5}>
+          <Box my={3}>
+            <Typography
+              variant="h2"
+              component="h2"
+              style={{ textAlign: "center" }}
+            >
+              Dernières ressources
+            </Typography>
+          </Box>
+          <Grid container spacing={5} alignContent="center">
             {lastResources.map((resource) => (
               <Grid item xs={12} sm={3} key={resource.id}>
                 <Card className={classes.root}>

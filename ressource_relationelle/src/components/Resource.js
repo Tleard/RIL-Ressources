@@ -14,7 +14,7 @@ import CardActions from "@material-ui/core/CardActions"
 import IconButton from "@material-ui/core/IconButton"
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
-
+import Box from "@material-ui/core/Box";
 
 // MaterialUI Icon Import
 import FavoriteIcon from "@material-ui/icons/Favorite"
@@ -56,7 +56,15 @@ function Resource(props) {
 
     return (
       <>
-        <h1>This is only ONE resource.</h1>
+      <Box my={3}>
+        <Typography component="h1" variant="h2" >
+          {resource.map((resource) => {
+            return (
+              <Typography component="h2" variant="h3">Resource : {resource.title}</Typography>
+            );
+          })}
+        </Typography>
+      </Box>
         {resource.map((resource) => {
           // To format the Date to dd/mm/YYYY
           const date = new Date(resource.createdAt);
