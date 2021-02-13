@@ -11,6 +11,10 @@ import { faUserAlt, faListAlt } from '@fortawesome/free-solid-svg-icons'
 import{ AllResourcesScreen } from "./screens/AllResourcesScreen"
 import { BottomNavigation } from 'react-native-paper';
 import ResourceDetailsScreen from "./screens/ResourceDetailsScreen";
+import CreateResourceScreen from "./screens/CreateResourceScreen";
+import CategoryScreen from "./screens/CategoryScreen";
+import CategoryResourcesScreen from "./screens/CategoryResourcesScreen";
+
 
 
 const Stack = createStackNavigator();
@@ -65,6 +69,18 @@ function App() {
                     name="Details"
                     component={ResourceDetailsScreen}
                 />
+                <Stack.Screen
+                    name="CreateResource"
+                    component={CreateResourceScreen}
+                />
+                <Stack.Screen
+                    name="CategoryScreen"
+                    component={CategoryScreen}
+                />
+                 <Stack.Screen
+                    name="CategoryResources"
+                    component={CategoryResourcesScreen}
+                />
             </Stack.Navigator>
         </NavigationContainer>
     );
@@ -83,10 +99,26 @@ function Root() {
                 }}
             />
             <Tab.Screen
+                name="CreateResource"
+                component={CreateResourceScreen}
+                options={{
+                    title: 'Ressources',
+                    tabBarIcon: ({ focused }) => <FontAwesomeIcon focused={focused} size={30} color="black" icon={faListAlt}/>,
+                }}
+            />
+            <Tab.Screen
                 name="Ressources"
                 component={AllResourcesScreen}
                 options={{
                     title: 'Ressources',
+                    tabBarIcon: ({ focused }) => <FontAwesomeIcon focused={focused} size={30} color="black" icon={faListAlt}/>,
+                }}
+            />
+            <Tab.Screen
+                name="CategoryScreen"
+                component={CategoryScreen}
+                options={{
+                    title: 'CategoryScreen',
                     tabBarIcon: ({ focused }) => <FontAwesomeIcon focused={focused} size={30} color="black" icon={faListAlt}/>,
                 }}
             />
