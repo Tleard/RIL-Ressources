@@ -112,12 +112,14 @@ class ResourcesController extends AbstractController
 
         $data = $request->request->all();
 
-        //dump($request->files->all());
-
         if ($data === [])
         {
             $data = json_decode($request->getContent(), true);
         }
+
+        var_dump($data);
+        var_dump($request->files->all());
+        die();
 
         $resource = new Resource();
 
@@ -147,6 +149,7 @@ class ResourcesController extends AbstractController
 
         //Todo : Improve, Create Service
         //Set Data
+        //if ($data['categories'])
         foreach ($data['categories'] as $categoryName)
         {
             $category = $em->getRepository(ResourceCategory::class)->findBy(['name' => $categoryName]);

@@ -57,15 +57,14 @@ const CreateResource = (props) => {
       return;
     }
 
-    const _fetchResources = async () => {
+    let _fetchResources = async () => {
 
-      var formData = new FormData();
+      let formData = new FormData();
       formData.append("title", title);
       formData.append("description", description);
-      formData.append("categories[0]", oneCategorie);
-      formData.append("type", type);
-      formData.append("assets", image);
-      console.log(formData);
+      formData.append("categories", "health");
+      formData.append("type", "text");
+      formData.append("assets", image)
 
       try {
         await AsyncStorage.getItem("userToken").then((responseJson) => {
@@ -74,16 +73,14 @@ const CreateResource = (props) => {
             return fetch(url, {
               method: "POST",
               headers: new Headers({
-                "Content-Type": "multipart/form-data",
                "Authorization": "Bearer " + responseJson,
               }),
-              body: JSON.stringify(formData),
+              body: formData,
             })
-              .then((response) => console.log(response.json()), setIsRegistraionSuccess(true))
-              
-              .catch((error) => {
-                console.error(error.message);
-              });
+              .then((response) => response.text())
+              .then((responseText) => {
+                console.log(responseText)
+              })
           } catch (e) {
             console.error("Something went wrong" + e);
           }
@@ -93,7 +90,7 @@ const CreateResource = (props) => {
       }
     };
     _fetchResources();
-    
+
   };
  
 
