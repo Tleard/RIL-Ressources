@@ -3,6 +3,7 @@ import {TokenHandler} from "./TokenHandler";
 import Component from 'react-native';
 import {UserHandler} from "./UserHandler";
 import {getUrl} from "./RequestHandler";
+import {View} from "react-native-web";
 
 
 export function LoginAttempt(username, password) {
@@ -20,6 +21,7 @@ export function LoginAttempt(username, password) {
     })
         .then((response) => response.json())
         .catch((error) => {
-            console.error("Error Manual : " +error.message)
+            alert('Mauvais Identifiants')
+            console.error("Error Manual : " + error.message)
         })
 }
