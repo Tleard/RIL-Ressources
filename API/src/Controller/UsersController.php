@@ -507,6 +507,6 @@ class UsersController extends AbstractFOSRestController
             return $this->json(['roles' => 'user']);
         }
     }
-    
+
 
 }

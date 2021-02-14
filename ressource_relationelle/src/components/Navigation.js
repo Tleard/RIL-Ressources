@@ -33,7 +33,7 @@ const Navigation = (props) => {
 
   const classes = useStyles();
 
-
+console.log(props)
 
 if (props.role === 'admin') {
       return (

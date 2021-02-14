@@ -51,14 +51,16 @@ class ResourceReaction
     {
         $this->id = $id;
     }
-
+    /*
     /**
      * @return mixed
-     */
+
     public function getUser()
     {
         return $this->user;
     }
+
+         */
 
     /**
      * @param mixed $user

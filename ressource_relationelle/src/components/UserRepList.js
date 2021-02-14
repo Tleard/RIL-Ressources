@@ -196,7 +196,7 @@ function UserRepList(){
                                   to={{
                                       pathname: "profile",
                                       state: {
-                                          role: '',
+                                          role: 'admin',
                                           rep : l.id
                                       },
                                       hash: `${l.reportedUser.id}`,
