@@ -109,13 +109,9 @@ class ProfileScreen extends React.Component{
     render() {
         var width = Dimensions.get('window').width;
         var height = Dimensions.get('window').height;
-        console.log("Asset : ");
-        console.log(this.state.postData.assets)
 
         if (this.state.postData.assets && this.state.postData.assets.length)
         {
-            console.log("None");
-            console.log("Lenght : " +this.state.postData.assets.length)
             return (
                 <View style={{alignItems: 'center', paddingTop: 20}}>
                     <Loader loading={this.state.loading}/>
