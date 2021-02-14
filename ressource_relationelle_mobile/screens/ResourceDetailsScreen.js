@@ -18,8 +18,10 @@ class ProfileScreen extends React.Component{
             postData : '',
             postImage : '',
             userId : '',
+            reactionsLength : 0,
             Posts: '',
-            loading: false
+            loading: false,
+            is_liked: false,
         }
     }
 
@@ -47,7 +49,13 @@ class ProfileScreen extends React.Component{
                             .then((responseText) => {
                                 this.state.loading = false;
                                 this.setState({postData: responseText[0]})
-                                console.log(responseText)
+                                //console.log(responseText[0].reactions.length)
+                                if (responseText[0].reactions.length > 1)
+                                {
+                                    console.log(responseText[0].reactions.length)
+                                    this.setState({reactionsLength : responseText[0].reactions.length})
+                                }
+                                //console.log(responseText[0].reactions.length)
                             })
                             .catch((error) => {
                                 console.error(error.message)
@@ -106,10 +114,47 @@ class ProfileScreen extends React.Component{
         }
     }*/
 
+    _fetchCreateReactions = async () => {
+        try {
+            await AsyncStorage.getItem("userToken").then((responseJson) => {
+                try {
+                    let url =
+                        getUrl() + "/api/resources/reaction/" + this.state.postData.id;
+                    return fetch(url, {
+                        method: "POST",
+                        headers: new Headers({
+                            "Content-Type": "application/json",
+                            "Accept": "application/json",
+                            "Authorization": "Bearer " + responseJson,
+                        }),
+                        body: JSON.stringify({
+                            reaction: 'like',
+                        })
+
+                    })
+                        .then((response) => response.json(), )
+                        .then((responseText) => {
+                            this.setState({ is_liked: true });
+                            this.setState({reaction_length: this.state.postData.reactions.length})
+                        })
+
+                        .catch((error) => {
+                            console.error(error.message);
+                        });
+                } catch (e) {
+                    console.error("Something went wrong" + e);
+                }
+            });
+        } catch (e) {
+            console.error("Somenting went wrong" + e);
+        }
+    };
+
+
     render() {
         var width = Dimensions.get('window').width;
         var height = Dimensions.get('window').height;
-
+        console.log("Reaction lenght ; " + this.state.reactions_length)
         if (this.state.postData.assets && this.state.postData.assets.length)
         {
             return (
@@ -126,10 +171,15 @@ class ProfileScreen extends React.Component{
                         </Card.Content>
 
                         <Card.Actions style={{ justifyContent: "flex-end" }}>
-                            <TouchableOpacity>
-                                <IconButton aria-label="add to favorites" icon="heart-outline">
-                                </IconButton>
-                            </TouchableOpacity>
+                            <IconButton
+                                onPress={() => {
+                                    if(this.state.is_liked === false)
+                                    {this._fetchCreateReactions()}
+                                }}
+                                aria-label="add to favorites"
+                                icon="heart-outline"
+                            />
+                            <Text style={{color : 'black'}}>{this.state.reaction_length}</Text>
                             <IconButton aria-label="share" icon="share-variant">
                             </IconButton>
                             <IconButton aria-label="report" icon="alert-octagon">
@@ -150,8 +200,15 @@ class ProfileScreen extends React.Component{
                         </Card.Content>
 
                         <Card.Actions style={{ justifyContent: "flex-end" }}>
-                            <IconButton aria-label="add to favorites" icon="heart-outline">
-                            </IconButton>
+                            <IconButton
+                                onPress={() => {
+                                    if(this.state.is_liked === false)
+                                    {this._fetchCreateReactions()}
+                                }}
+                                aria-label="add to favorites"
+                                icon="heart-outline"
+                            />
+                            <Text style={{color : 'black'}}>{this.state.reactionsLength}</Text>
                             <IconButton aria-label="share" icon="share-variant">
                             </IconButton>
                             <IconButton aria-label="report" icon="alert-octagon">

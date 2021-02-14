@@ -57,9 +57,6 @@ class ResourceItem extends React.Component {
           })
             .then((response) => response.json(), )
             .then((responseText) => {
-              
-                console.log(responseText)
-              //this.setState({ reaction: 'like' });
               this.setState({ is_liked: true });
               this.setState({reaction_length: this.props.postData.reactions.length})
             })
@@ -114,7 +111,7 @@ class ResourceItem extends React.Component {
             }}
               aria-label="add to favorites"
               icon="heart-outline"
-            ></IconButton>
+            />
             <Text>{this.props.postData.reactions.length}</Text>
             <IconButton aria-label="share" icon="share-variant"></IconButton>
             <IconButton aria-label="report" icon="alert-octagon"></IconButton>
