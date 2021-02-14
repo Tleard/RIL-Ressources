@@ -64,7 +64,11 @@ const CreateResource = (props) => {
       formData.append("description", description);
       formData.append("categories", "health");
       formData.append("type", "text");
-      formData.append("assets", image)
+      formData.append("assets", {
+        uri: image.uri,
+        name: 'my_photo.jpg',
+        type: 'image/jpg'
+      });
 
       try {
         await AsyncStorage.getItem("userToken").then((responseJson) => {
@@ -73,14 +77,12 @@ const CreateResource = (props) => {
             return fetch(url, {
               method: "POST",
               headers: new Headers({
-               "Authorization": "Bearer " + responseJson,
+                "Content-Type": "multipart/form-data",
+                "Authorization": "Bearer " + responseJson,
               }),
               body: formData,
             })
               .then((response) => response.text())
-              .then((responseText) => {
-                console.log(responseText)
-              })
           } catch (e) {
             console.error("Something went wrong" + e);
           }
@@ -149,7 +151,7 @@ const CreateResource = (props) => {
     });
 
     if (!result.cancelled) {
-      setImage(result.uri);
+      setImage(result);
       setType(result.type);
     }
   };
