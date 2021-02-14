@@ -22,6 +22,7 @@ use Doctrine\ORM\NonUniqueResultException;
 
 use Exception;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
+use FOS\RestBundle\Controller\Annotations as Rest;
 use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 use Lexik\Bundle\JWTAuthenticationBundle\Tests\Functional\Utils\CallableEventSubscriber;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -506,5 +507,6 @@ class UsersController extends AbstractFOSRestController
             return $this->json(['roles' => 'user']);
         }
     }
+    
 
 }

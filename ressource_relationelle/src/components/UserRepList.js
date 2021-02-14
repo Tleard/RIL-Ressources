@@ -2,7 +2,8 @@ import {useEffect, useState} from "react";
 import auth from "../auth";
 import Container from "@material-ui/core/Container";
 import {Input, List, ListItem, ListItemText, ListSubheader, Typography} from "@material-ui/core";
-import Link from "@material-ui/core/Link";
+import {Link} from 'react-router-dom'
+
 
 function UserRepList(){
 
@@ -188,9 +189,19 @@ function UserRepList(){
                             <Input name={l.id} type={"submit"} onClick={(e) => warnUser(e)} style={btnStyleWarn}  value={'AVERTIR'}/>
                             <Input name={l.id} type={"submit"} onClick={(e) => closeReport(e)} style={btnStyleClose}  value={'CLOTURER'}/>
 
-                            <Link style={btnStyleLink} href="#" color="inherit">
-                                VOIR
-                            </Link>
+                            <Link style={btnStyleLink}
+                                  key={l.reportedUser.id}
+                                //   params={{ role : "admin" }}
+                                //to={{pathname: "category/resource", state: {id: resource.id}}}
+                                  to={{
+                                      pathname: "profile",
+                                      state: {
+                                          role: '',
+                                          rep : l.id
+                                      },
+                                      hash: `${l.reportedUser.id}`,
+                                  }}
+                            > VOIR </Link>
                         </ListItem>
 
                     )}
