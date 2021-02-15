@@ -292,15 +292,22 @@ class ProfileScreen extends React.Component{
                                 aria-label="add to favorites"
                                 icon="heart-outline"
                             />
-                            <Text style={{color : 'black'}}>{this.state.reaction_length}</Text>
-
-                            <IconButton
-                                onPress={() => {
-                                    {this._addToLibrary()}
-                                }}
-                                aria-label="bookmark"
-                                icon="bookmark-outline">
-                            </IconButton>
+                            <Text style={{color : 'black'}}>{this.state.reactionsLength}</Text>
+                            {this.state.isFavorite === true ?
+                                <IconButton
+                                    onPress={() => {
+                                        {this._removeFromLibrary()}
+                                    }}
+                                    aria-label="bookmark"
+                                    icon="bookmark" />
+                                :
+                                <IconButton
+                                    onPress={() => {
+                                        {this._addToLibrary()}
+                                    }}
+                                    aria-label="bookmark"
+                                    icon="bookmark-outline" />
+                            }
                             <IconButton aria-label="share" icon="share-variant">
                             </IconButton>
                             <IconButton aria-label="report" icon="alert-octagon">
