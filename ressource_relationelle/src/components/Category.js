@@ -19,6 +19,8 @@ import Button from "@material-ui/core/Button";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import ShareIcon from "@material-ui/icons/Share";
 import ReportIcon from "@material-ui/icons/Report";
+import ThumbUpIcon from '@material-ui/icons/ThumbUp';
+import Badge from '@material-ui/core/Badge';
 
 // MaterialUI Lab
 import { Alert, AlertTitle } from "@material-ui/lab";
@@ -93,6 +95,18 @@ function Category(props) {
     });
   }
 
+  let localStorageId = localStorage.idUser.substring(1, localStorage.idUser.length - 1);
+  // Loop and Conditional to check if a resource was already "liked" or not by the current user
+  for(let object of resources) {
+    object["hasLiked"] = false;
+    for(let prop of object.reactions) {
+      if(prop.user === localStorageId) {
+        object["hasLiked"] = true; 
+        break;   
+      }
+    }
+  }
+
   return (
     <>
       <Typography variant="h2" component="h1" style={{ margin: "4% 0 4% 0" }}>
@@ -147,6 +161,31 @@ function Category(props) {
                           }}
                         />
                       )}
+                    </IconButton>
+                    <IconButton aria-label="like">
+                      <Badge
+                        badgeContent={resource.reactions.length}
+                        color="primary"
+                      >
+                        {resource.hasLiked ? (
+                            <ThumbUpIcon
+                              color="primary"
+                            />
+                          ) : (
+                            <ThumbUpIcon 
+                              onClick={() => {
+                                userlib.postReactionLike(resource.id);
+                                const getResources = async () => {
+                                  const resources = await fetchResources();
+                                  setResources(resources);
+                                };
+            
+                                getResources();
+                              }}
+                            />
+                          )
+                        }
+                      </Badge>
                     </IconButton>
                     <IconButton aria-label="share">
                       <ShareIcon />

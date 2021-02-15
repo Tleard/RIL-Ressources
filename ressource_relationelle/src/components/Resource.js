@@ -20,9 +20,10 @@ import Box from "@material-ui/core/Box";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import ShareIcon from "@material-ui/icons/Share";
 import ReportIcon from "@material-ui/icons/Report";
+import ThumbUpIcon from '@material-ui/icons/ThumbUp';
+import Badge from '@material-ui/core/Badge';
 
 function Resource(props) {
-  //const {id}  = props.location.state;
   const id = props.location.hash.substring(1);
 
   const [resource, setResource] = useState([]);
@@ -42,6 +43,7 @@ function Resource(props) {
 
       getResource();
       getUserLibrary();
+
     }
   }, []);
 
@@ -60,7 +62,7 @@ function Resource(props) {
     return data;
   };
 
-  // Fetch User's saved resources
+  //Fetch User's saved resources
   const fetchLibResources = async () => {
     const res = await fetch(`${global.api}/api/user/getLib`, {
       method: "post",
@@ -75,7 +77,8 @@ function Resource(props) {
     return data;
   };
 
-  // The condition check if the User has something in his library.
+
+  //The condition check if the User has something in his library.
   if (libResources.length > 0) {
     resource.forEach((resource) => {
       resource["inLibrary"] = false;
@@ -88,7 +91,17 @@ function Resource(props) {
     });
   }
 
-  console.log(resource);
+  let localStorageId = localStorage.idUser.substring(1, localStorage.idUser.length - 1);
+  
+  // Checking if a resource was already "liked" or not
+  let hasLiked = false;
+  for(let object of resource) {
+    for(let prop of object.reactions) {
+      if(prop.user === localStorageId){
+        hasLiked = true;
+      }
+    }
+  }
 
   return (
     <>
@@ -149,6 +162,35 @@ function Resource(props) {
                     }}
                   />
                 )}
+              </IconButton>
+              <IconButton aria-label="like">
+              <Badge badgeContent={resource.reactions.length} color="primary">
+                {hasLiked ? (
+                  <ThumbUpIcon 
+                  color="primary"
+                  onClick={() => {
+                    const getResources = async () => {
+                      const resource = await fetchResource();
+                      setResource(resource);
+                    };
+
+                    getResources();
+                  }}
+                />
+                ) : (
+                  <ThumbUpIcon 
+                  onClick={() => {
+                    userlib.postReactionLike(resource.id);
+                    const getResources = async () => {
+                      const resource = await fetchResource();
+                      setResource(resource);
+                    };
+
+                    getResources();
+                  }}
+                />
+                )}
+              </Badge>
               </IconButton>
               <IconButton aria-label="share">
                 <ShareIcon />

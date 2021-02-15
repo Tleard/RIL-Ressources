@@ -42,6 +42,7 @@ const Login  = (props) => {
         .then((data)=>{
 
             storeTokenInLocalStorage(data.token);
+            storeIdInLocalStorage(data.user.id);
 
             auth.loggedin();
 
@@ -58,6 +59,12 @@ const Login  = (props) => {
     function storeTokenInLocalStorage(token) {
         localStorage.removeItem('auth_token');
         localStorage.setItem('auth_token', JSON.stringify(token));
+    }
+
+    // Store Id in localstorage
+    function storeIdInLocalStorage(idUser) {
+      localStorage.removeItem('idUser');
+      localStorage.setItem('idUser', JSON.stringify(idUser));
     }
 
     if (localStorage.auth_token !== undefined) {
