@@ -31,10 +31,43 @@ class ResourceItem extends React.Component {
       token: "",
       id: "",
       error_message: "",
+      userId : "",
       reactions_lenght : 0,
       reaction: "",
       is_liked: false,
     };
+  }
+
+  _addToLibrary = async() => {
+    try {
+      await AsyncStorage.getItem("userToken")
+          .then((responseJson) => {
+            try{
+              let url = getUrl() +"/api/user/saveResInLib";
+              return fetch(url, {
+                method: 'POST',
+                headers: new Headers({
+                  'Content-Type': 'application/json',
+                  'Accept': 'application/json',
+                  'Authorization': 'Bearer ' + responseJson,
+                }),
+                body : JSON.stringify({'id' : this.state.postData.id})
+              })
+                  .then((response) => response.json())
+                  .then((responseText) => {
+                    this.state.loading = false;
+                  })
+                  .catch((error) => {
+                    console.error(error.message)
+                  })
+
+            } catch (e) {
+              console.error("Something went wrong" + e)
+            }
+          })
+    } catch (e) {
+      console.error("Somenting went wrong" + e)
+    }
   }
   
   _fetchCreateReactions = async () => {
@@ -113,6 +146,13 @@ class ResourceItem extends React.Component {
               icon="heart-outline"
             />
             <Text>{this.props.postData.reactions.length}</Text>
+            <IconButton
+                onPress={() => {
+                  {this._addToLibrary()}
+                }}
+                aria-label="bookmark"
+                icon="bookmark-outline">
+            </IconButton>
             <IconButton aria-label="share" icon="share-variant"></IconButton>
             <IconButton aria-label="report" icon="alert-octagon"></IconButton>
           </Card.Actions>
