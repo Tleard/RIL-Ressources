@@ -1,20 +1,20 @@
 import * as React from "react";
 import { useState, createRef, useEffect } from "react";
 import * as ImagePicker from "expo-image-picker";
+import { Button, TextInput, Provider } from 'react-native-paper';
 import Constants from "expo-constants";
 
 import {
-  Button,
   View,
   StyleSheet,
   ScrollView,
   KeyboardAvoidingView,
   AsyncStorage,
-  TextInput,
   TouchableOpacity,
   Image,
   Platform,
   Dimensions,
+  SafeAreaView,
   ImageBackground,
   FlatList,
 } from "react-native";
@@ -57,15 +57,18 @@ const CreateResource = (props) => {
       return;
     }
 
-    const _fetchResources = async () => {
+    let _fetchResources = async () => {
 
-      var formData = new FormData();
+      let formData = new FormData();
       formData.append("title", title);
       formData.append("description", description);
-      formData.append("categories[0]", oneCategorie);
-      formData.append("type", type);
-      formData.append("assets", image);
-      console.log(formData);
+      formData.append("categories", "health");
+      formData.append("type", "text");
+      formData.append("assets", {
+        uri: image.uri,
+        name: 'my_photo.jpg',
+        type: 'image/jpg'
+      });
 
       try {
         await AsyncStorage.getItem("userToken").then((responseJson) => {
@@ -75,15 +78,11 @@ const CreateResource = (props) => {
               method: "POST",
               headers: new Headers({
                 "Content-Type": "multipart/form-data",
-               "Authorization": "Bearer " + responseJson,
+                "Authorization": "Bearer " + responseJson,
               }),
-              body: JSON.stringify(formData),
+              body: formData,
             })
-              .then((response) => console.log(response.json()), setIsRegistraionSuccess(true))
-              
-              .catch((error) => {
-                console.error(error.message);
-              });
+              .then((response) => response.text())
           } catch (e) {
             console.error("Something went wrong" + e);
           }
@@ -93,7 +92,7 @@ const CreateResource = (props) => {
       }
     };
     _fetchResources();
-    
+
   };
  
 
@@ -152,7 +151,7 @@ const CreateResource = (props) => {
     });
 
     if (!result.cancelled) {
-      setImage(result.uri);
+      setImage(result);
       setType(result.type);
     }
   };
@@ -199,11 +198,14 @@ const CreateResource = (props) => {
               }}
             >
               <Button
-                title="Joindre une photo ou un video"
+                icon="camera"
                 onPress={pickImage}
-                color="#003f5c"
+                color="#fafafa"
+                style={styles.fileButton}
                 borderRadius="20"
-              />
+              >
+                <Text style={{color : "#fafafa", fontSize : 12}}>Joindre une photo ou un video</Text>
+              </Button>
             </View>
             <View style={styles.SectionStyleDropDown}>
               <DropDownPicker
@@ -213,7 +215,7 @@ const CreateResource = (props) => {
                 dropDownStyle={{ backgroundColor: "#fafafa" }}
                 containerStyle={{ width: 300, height: 70 }}
                 labelStyle={{ fontSize: 14, color: "#000" }}
-                activeLabelStyle={{ color: "green" }}
+                activeLabelStyle={{color: 'black'}}
                 items={categories}
                 defaultIndex={0}
                 onChangeItem={(categories) => setOneCategorie([categories])}
@@ -263,6 +265,17 @@ const styles = StyleSheet.create({
   },
   DropDownPickerStyle: {
     paddingVertical: 25,
+    color : '#000000'
+  },
+  fileButton: {
+    flex : 1,
+    justifyContent: "center",
+    alignContent: "center",
+    backgroundColor: "#003f5c",
+    alignItems: "center",
+    color : "#fafafa",
+    marginTop: 10,
+    marginBottom: 10,
   },
   SectionStyleDescription: {
     flexDirection: "row",
@@ -291,6 +304,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   inputStyle: {
+    backgroundColor: "#FFFFFF",
     flex: 1,
     color: "black",
     paddingLeft: 15,
@@ -301,6 +315,7 @@ const styles = StyleSheet.create({
   },
   inputStyleDescription: {
     flex: 2,
+    backgroundColor: "#FFFFFF",
     color: "black",
     paddingTop: 15,
     paddingLeft: 15,

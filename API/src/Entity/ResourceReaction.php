@@ -57,7 +57,7 @@ class ResourceReaction
      */
     public function getUser()
     {
-        return $this->user;
+        return $this->user->getId();
     }
 
     /**

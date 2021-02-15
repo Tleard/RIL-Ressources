@@ -7,13 +7,23 @@ import logInScreen from "./screens/logInScreen";
 import profileScreen from "./screens/profileScreen";
 import RegisterScreen from "./screens/RegisterScreen";
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import { faUserAlt, faListAlt } from '@fortawesome/free-solid-svg-icons'
+import {
+    faUserAlt,
+    faListAlt,
+    faHeart,
+    faCaretUp,
+    faPenFancy,
+    faPen,
+    faPenAlt,
+    faList
+} from '@fortawesome/free-solid-svg-icons'
 import{ AllResourcesScreen } from "./screens/AllResourcesScreen"
 import { BottomNavigation } from 'react-native-paper';
 import ResourceDetailsScreen from "./screens/ResourceDetailsScreen";
 import CreateResourceScreen from "./screens/CreateResourceScreen";
 import CategoryScreen from "./screens/CategoryScreen";
 import CategoryResourcesScreen from "./screens/CategoryResourcesScreen";
+import FavoriteScreen from "./screens/FavoriteScreen";
 
 
 
@@ -103,7 +113,7 @@ function Root() {
                 component={CreateResourceScreen}
                 options={{
                     title: 'Ressources',
-                    tabBarIcon: ({ focused }) => <FontAwesomeIcon focused={focused} size={30} color="black" icon={faListAlt}/>,
+                    tabBarIcon: ({ focused }) => <FontAwesomeIcon focused={focused} size={30} color="black" icon={faPenAlt}/>,
                 }}
             />
             <Tab.Screen
@@ -118,8 +128,16 @@ function Root() {
                 name="CategoryScreen"
                 component={CategoryScreen}
                 options={{
-                    title: 'CategoryScreen',
-                    tabBarIcon: ({ focused }) => <FontAwesomeIcon focused={focused} size={30} color="black" icon={faListAlt}/>,
+                    title: 'Category',
+                    tabBarIcon: ({ focused }) => <FontAwesomeIcon focused={focused} size={30} color="black" icon={faList}/>,
+                }}
+            />
+            <Tab.Screen
+                name="Library"
+                component={FavoriteScreen}
+                options={{
+                    title: 'Favoris',
+                    tabBarIcon: ({ focused }) => <FontAwesomeIcon focused={focused} size={30} color="black" icon={faHeart}/>,
                 }}
             />
         </Tab.Navigator>

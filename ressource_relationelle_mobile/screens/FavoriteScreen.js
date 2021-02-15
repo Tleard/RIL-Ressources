@@ -26,12 +26,7 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import ResourceItem from "./Components/ResourceItem";
 import Loader from "./Components/Loader";
 
-export class CategoryResourcesScreen extends React.Component {
-    
-    
-
-
-
+export class FavoriteScreen extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -42,44 +37,39 @@ export class CategoryResourcesScreen extends React.Component {
             error_message:'',
             loading : false
         }
-        
+
     }
 
     UNSAFE_componentWillMount() {
         this._fetchResources();
     }
-   
+
     _DisplayDetails = (resourceId) => {
         this.props.navigation.navigate("Details", {resourceId: resourceId});
     }
 
-    
+
     _fetchResources = async() => {
-       const categoryName =  this.props.route.params.categoryName;
-       console.log(categoryName);
-       this.state.loading = true;
-       
+        this.state.loading = true;
         try {
-            await AsyncStorage.getItem("userToken")
+            await AsyncStorage.multiGet(["userToken", "user"])
                 .then((responseJson) => {
                     try{
-                        let url = getUrl() +"/api/resources/category/"+ categoryName;
+                        let url = getUrl() +"/api/user/getLib";
                         return fetch(url, {
-                            method: 'GET',
+                            method: 'POST',
                             headers: new Headers({
                                 'Content-Type': 'application/json',
                                 'Accept': 'application/json',
-                                'Authorization': 'Bearer ' + responseJson,
+                                'Authorization': 'Bearer ' + responseJson[0][1],
                             }),
+                            body : JSON.stringify({'id' : responseJson[1][1]}),
                         })
                             .then((response) => response.json())
                             .then((responseText) => {
                                 this.state.loading = false;
                                 this.setState({resources: responseText})
-                                console.log(responseText)
-                               
-                                    this.setState({resourcesLenght: responseText.length});
-                                    
+                                this.setState({resourcesLenght: responseText.length});
                             })
                             .catch((error) => {
                                 console.error(error.message)
@@ -94,34 +84,19 @@ export class CategoryResourcesScreen extends React.Component {
         }
     }
 
-        render() {
-            return (
-                <View>
-                    <Card>
-                        <Card.Title title={`Catégorie: ${this.props.route.params.categoryName}`}style={styles.titleContainer}/>
-                        </Card>
+    render() {
+        return (
+            <View>
+                <Loader loading={this.state.loading}/>
+                <FlatList
+                    data={this.state.resources}
+                    keyExtractor={(item) => item.id.toString()}
+                    renderItem={({item}) => <ResourceItem postData={item} DisplayDetails={this._DisplayDetails}/>}
+                />
+            </View>
 
-                    <Loader loading={this.state.loading}/>
-                    <FlatList
-                        data={this.state.resources}
-                        keyExtractor={(item) => item.id.toString()}
-                        renderItem={({item}) => <ResourceItem postData={item} DisplayDetails={this._DisplayDetails}/>}
-                    />
-               </View>
-
-            )
-        }
+        )
+    }
 }
 
-const styles = StyleSheet.create({
-    titleContainer: {
-     justifyContent: 'center',
-     alignItems: 'center',
-     paddingLeft:20
-    },
-    container: {
-        
-    },
-  });
-
-export default CategoryResourcesScreen
+export default FavoriteScreen

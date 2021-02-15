@@ -27,13 +27,8 @@ import CategoryItem from "./Components/CategoryItem";
 import Loader from "./Components/Loader";
 
 export class CategoryScreen extends React.Component {
-    
-    
-
-
 
     constructor(props) {
-        
         super(props)
         this.state = {
             category:[],
@@ -43,7 +38,6 @@ export class CategoryScreen extends React.Component {
             error_message:'',
             loading : false
         }
-        
     }
 
     UNSAFE_componentWillMount() {
@@ -72,10 +66,7 @@ export class CategoryScreen extends React.Component {
                             .then((responseText) => {
                                 this.state.loading = false;
                                 this.setState({category: responseText})
-                                console.log(responseText)
-                               
-                                    this.setState({categoryLength: responseText.length});
-                                    
+                                this.setState({categoryLength: responseText.length});
                             })
                             .catch((error) => {
                                 console.error(error.message)

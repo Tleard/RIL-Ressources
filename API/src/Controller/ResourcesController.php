@@ -112,8 +112,6 @@ class ResourcesController extends AbstractController
 
         $data = $request->request->all();
 
-        //dump($request->files->all());
-
         if ($data === [])
         {
             $data = json_decode($request->getContent(), true);
@@ -128,7 +126,13 @@ class ResourcesController extends AbstractController
 
             if ($uploadedAssets['assets'] !== NULL)
             {
-
+                if (gettype($uploadedAssets['assets']) == "object")
+                {
+                   $assets = $fileUpload->UploadFile($uploadedAssets['assets'], $this->getParameter('kernel.project_dir'));
+                   $resource->addAssets($assets);
+                   //Check Constraints for Mime
+                   $fileUpload->CheckMimeTypeConstraints($resource);
+                }
                 foreach ($uploadedAssets['assets'] as $file)
                 {
                     //Set Assets , create file(s) & check Type
@@ -147,11 +151,20 @@ class ResourcesController extends AbstractController
 
         //Todo : Improve, Create Service
         //Set Data
-        foreach ($data['categories'] as $categoryName)
+        //if ($data['categories'])
+
+        if (gettype($data['categories']) == "string")
         {
-            $category = $em->getRepository(ResourceCategory::class)->findBy(['name' => $categoryName]);
+            $category = $em->getRepository(ResourceCategory::class)->findBy(['name' => $data['categories']]);
             $resource->addCategories($category[0]);
+        } else {
+            foreach ($data['categories'] as $categoryName)
+                {
+                    $category = $em->getRepository(ResourceCategory::class)->findBy(['name' => $categoryName]);
+                    $resource->addCategories($category[0]);
+                }
         }
+
         $resource->setType($em->getRepository(ResourceType::class)->findOneBy(['type_name' => $data['type']]));
 
         $resource->setAuthor($this->getUser());

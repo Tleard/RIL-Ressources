@@ -17,17 +17,23 @@ class ProfileScreen extends React.Component{
         this.state = {
             postData : '',
             postImage : '',
+            postLibData: '',
             userId : '',
+            useToken : '',
+            isFavorite : false,
+            reactionsLength : 0,
             Posts: '',
-            loading: false
+            loading: false,
+            is_liked: false,
         }
     }
 
     UNSAFE_componentWillMount(){
         this._fetchData();
+        this._fetchLib();
     }
 
-    _fetchData = async() => {
+    _fetchDataFavorite = async() => {
         this.state.loading = true
         try {
             let resourceId = this.props.route.params['resourceId'];
@@ -35,19 +41,24 @@ class ProfileScreen extends React.Component{
                 .then((responseJson) => {
                     try{
                         let url = getUrl() +"/api/resources/" + resourceId;
+                        this.setState({userId : responseJson[1][1]})
                         return fetch(url, {
                             method: 'GET',
                             headers: new Headers({
                                 'Content-Type': 'application/json',
                                 'Accept': 'application/json',
-                                'Authorization': 'Bearer '+ responseJson,
+                                'Authorization': 'Bearer '+ responseJson[0][1],
                             }),
                         })
                             .then((response) => response.json())
                             .then((responseText) => {
                                 this.state.loading = false;
                                 this.setState({postData: responseText[0]})
-                                console.log(responseText)
+                                if (responseText[0].reactions.length > 1)
+                                {
+                                    this.setState({reactionsLength : responseText[0].reactions.length})
+                                }
+                                //console.log(responseText[0].reactions.length)
                             })
                             .catch((error) => {
                                 console.error(error.message)
@@ -67,31 +78,107 @@ class ProfileScreen extends React.Component{
         }
     }
 
-    /*_addToLibrary = async(ResourceId) => {
+    _fetchData = async() => {
+        this.state.loading = true
         try {
-            await AsyncStorage.getItem("userToken")
+            let resourceId = this.props.route.params['resourceId'];
+            await AsyncStorage.multiGet(["userToken", "user"])
                 .then((responseJson) => {
                     try{
-                        let url = getUrl() +"/api/user/reaction/" + userId;
+                        let url = getUrl() +"/api/resources/" + resourceId;
                         return fetch(url, {
                             method: 'GET',
                             headers: new Headers({
                                 'Content-Type': 'application/json',
                                 'Accept': 'application/json',
-                                'Authorization': 'Bearer ' + responseJson,
+                                'Authorization': 'Bearer '+ responseJson[0][1],
                             }),
                         })
                             .then((response) => response.json())
                             .then((responseText) => {
-                                this.setState({userReactions: responseText});
-                                // Hide Loader
                                 this.state.loading = false;
-                                if (responseText[0] == "The user has no reactions")
+                                this.setState({postData: responseText[0]})
+                                if (responseText[0].reactions.length > 1)
                                 {
-                                    this.setState({userReactionsLenght: 0});
-                                } else {
-                                    this.setState({userReactionsLenght: responseText.length});
+                                    this.setState({reactionsLength : responseText[0].reactions.length})
                                 }
+                            })
+                            .catch((error) => {
+                                console.error(error.message)
+                            })
+                    } catch (e) {
+                        console.error("Something went wrong" + e);
+                    }
+                })
+        }
+        catch (e) {
+            console.error("Something went wrong" + e)
+        }
+
+        if(this.state.postData.assets && this.state.postData.assets.length)
+        {
+            this.setState({postImage : this.state.postData.assets[0].id})
+        }
+    }
+
+    _fetchLib = async() => {
+        this.state.loading = true
+        try {
+            await AsyncStorage.multiGet(["userToken", "user"])
+                .then((responseJson) => {
+                    try{
+                        let url = getUrl() +"/api/user/getLib";
+                        return fetch(url, {
+                            method: 'POST',
+                            headers: new Headers({
+                                'Content-Type': 'application/json',
+                                'Accept': 'application/json',
+                                'Authorization': 'Bearer '+ responseJson[0][1],
+                            }),
+                            body : JSON.stringify({'id' : responseJson[1][1]})
+                        })
+                            .then((response) => response.json())
+                            .then((responseText) => {
+                                this.state.loading = false;
+                                this.setState({postDataLib: responseText})
+                                for (const [key, value] of Object.entries(responseText)) {
+                                    if (value.id == this.state.postData.id)
+                                    {
+                                        this.setState({isFavorite : true})
+                                    }
+                                }
+                            })
+                            .catch((error) => {
+                                console.error(error.message)
+                            })
+                    } catch (e) {
+                        console.error("Something went wrong" + e);
+                    }
+                })
+        }
+        catch (e) {
+            console.error("Something went wrong" + e)
+        }
+    }
+
+    _addToLibrary = async() => {
+        try {
+            await AsyncStorage.getItem("userToken")
+                .then((responseJson) => {
+                    try{
+                        let url = getUrl() +"/api/user/saveResInLib";
+                        return fetch(url, {
+                            method: 'POST',
+                            headers: new Headers({
+                                'Content-Type': 'application/json',
+                                'Accept': 'application/json',
+                                'Authorization': 'Bearer ' + responseJson,
+                            }),
+                            body : JSON.stringify({'id' : this.state.postData.id})
+                        })
+                            .then((response) => response.json())
+                            .then((responseText) => {
+                                this.state.loading = false;
                             })
                             .catch((error) => {
                                 console.error(error.message)
@@ -104,18 +191,85 @@ class ProfileScreen extends React.Component{
         } catch (e) {
             console.error("Somenting went wrong" + e)
         }
-    }*/
+    }
+
+    _removeFromLibrary = async() => {
+        try {
+            await AsyncStorage.getItem("userToken")
+                .then((responseJson) => {
+                    try{
+                        let url = getUrl() +"/api/user/removeFromLib";
+                        return fetch(url, {
+                            method: 'POST',
+                            headers: new Headers({
+                                'Content-Type': 'application/json',
+                                'Accept': 'application/json',
+                                'Authorization': 'Bearer ' + responseJson,
+                            }),
+                            body : JSON.stringify({'id' : this.state.postData.id})
+                        })
+                            .then((response) => response.json())
+                            .then((responseText) => {
+                                this.state.loading = false;
+                            })
+                            .catch((error) => {
+                                console.error(error.message)
+                            })
+
+                    } catch (e) {
+                        console.error("Something went wrong" + e)
+                    }
+                })
+        } catch (e) {
+            console.error("Somenting went wrong" + e)
+        }
+        this.props.navigation.navigate('Root', {
+            screen: 'Favorite',
+        });
+    }
+
+    _fetchCreateReactions = async () => {
+        try {
+            await AsyncStorage.getItem("userToken").then((responseJson) => {
+                try {
+                    let url =
+                        getUrl() + "/api/resources/reaction/" + this.state.postData.id;
+                    return fetch(url, {
+                        method: "POST",
+                        headers: new Headers({
+                            "Content-Type": "application/json",
+                            "Accept": "application/json",
+                            "Authorization": "Bearer " + responseJson,
+                        }),
+                        body: JSON.stringify({
+                            reaction: 'like',
+                        })
+
+                    })
+                        .then((response) => response.json(), )
+                        .then((responseText) => {
+                            this.setState({ is_liked: true });
+                            this.setState({reaction_length: this.state.postData.reactions.length})
+                        })
+                        .catch((error) => {
+                            console.error(error.message);
+                        });
+                } catch (e) {
+                    console.error("Something went wrong" + e);
+                }
+            });
+        } catch (e) {
+            console.error("Somenting went wrong" + e);
+        }
+    };
+
 
     render() {
         var width = Dimensions.get('window').width;
         var height = Dimensions.get('window').height;
-        console.log("Asset : ");
-        console.log(this.state.postData.assets)
 
         if (this.state.postData.assets && this.state.postData.assets.length)
         {
-            console.log("None");
-            console.log("Lenght : " +this.state.postData.assets.length)
             return (
                 <View style={{alignItems: 'center', paddingTop: 20}}>
                     <Loader loading={this.state.loading}/>
@@ -130,10 +284,30 @@ class ProfileScreen extends React.Component{
                         </Card.Content>
 
                         <Card.Actions style={{ justifyContent: "flex-end" }}>
-                            <TouchableOpacity>
-                                <IconButton aria-label="add to favorites" icon="heart-outline">
-                                </IconButton>
-                            </TouchableOpacity>
+                            <IconButton
+                                onPress={() => {
+                                    if(this.state.is_liked === false)
+                                    {this._fetchCreateReactions()}
+                                }}
+                                aria-label="add to favorites"
+                                icon="heart-outline"
+                            />
+                            <Text style={{color : 'black'}}>{this.state.reactionsLength}</Text>
+                            {this.state.isFavorite === true ?
+                                <IconButton
+                                    onPress={() => {
+                                        {this._removeFromLibrary()}
+                                    }}
+                                    aria-label="bookmark"
+                                    icon="bookmark" />
+                                :
+                                <IconButton
+                                    onPress={() => {
+                                        {this._addToLibrary()}
+                                    }}
+                                    aria-label="bookmark"
+                                    icon="bookmark-outline" />
+                            }
                             <IconButton aria-label="share" icon="share-variant">
                             </IconButton>
                             <IconButton aria-label="report" icon="alert-octagon">
@@ -154,8 +328,30 @@ class ProfileScreen extends React.Component{
                         </Card.Content>
 
                         <Card.Actions style={{ justifyContent: "flex-end" }}>
-                            <IconButton aria-label="add to favorites" icon="heart-outline">
-                            </IconButton>
+                            <IconButton
+                                onPress={() => {
+                                    if(this.state.is_liked === false)
+                                    {this._fetchCreateReactions()}
+                                }}
+                                aria-label="add to favorites"
+                                icon="heart-outline"
+                            />
+                            <Text style={{color : 'black'}}>{this.state.reactionsLength}</Text>
+                            {this.state.isFavorite === true ?
+                                <IconButton
+                                    onPress={() => {
+                                        {this._removeFromLibrary()}
+                                    }}
+                                    aria-label="bookmark"
+                                    icon="bookmark" />
+                                :
+                                <IconButton
+                                    onPress={() => {
+                                        {this._addToLibrary()}
+                                    }}
+                                    aria-label="bookmark"
+                                    icon="bookmark-outline" />
+                            }
                             <IconButton aria-label="share" icon="share-variant">
                             </IconButton>
                             <IconButton aria-label="report" icon="alert-octagon">
