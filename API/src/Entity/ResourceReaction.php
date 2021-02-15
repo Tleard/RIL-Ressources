@@ -53,11 +53,12 @@ class ResourceReaction
     }
 
     /**
+     *
      * @return mixed
-     */
+    */
     public function getUser()
     {
-        return $this->user;
+        return $this->user->getId();
     }
 
     /**

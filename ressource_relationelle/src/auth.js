@@ -16,6 +16,7 @@ class Auth {
 
         console.log('loggedout');
         localStorage.auth_token = undefined;
+        localStorage.idUser = undefined;
         callback();
     }
 
