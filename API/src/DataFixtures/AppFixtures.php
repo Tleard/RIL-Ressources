@@ -164,7 +164,7 @@ class AppFixtures extends Fixture
         for ($i = 0; $i < 100; $i++) {
             $resource = new Resource();
             $resource->setTitle($this->faker->realText(20, 5));
-            $resource->setDescription($this->faker->realText(200, 5));
+            $resource->setDescription($this->faker->realText(1000, 5));
             $resource->setStatus($this->getReference("status_" . rand(1, sizeof(self::STATUS) -1)));
             //Todo: Improve setCategories to have multiple categories
             $resource->setCategories([$this->getReference("category_" . rand(1, sizeof(self::CATEGORIES) -1))]);
