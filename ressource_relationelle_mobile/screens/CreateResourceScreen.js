@@ -35,14 +35,15 @@ const CreateResource = (props) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [categories, setCategories] = useState([""]);
-  const [oneCategorie, setOneCategorie] = useState([[""]]);
+  const [oneCategorie, setOneCategorie] = useState([""]);
   const [image, setImage] = useState(null);
   const [type, setType] = useState("");
   const [errortext, setErrortext] = useState("");
-
+  let obj = {};
   const [isRegistraionSuccess, setIsRegistraionSuccess] = useState(false);
 
   const handleSubmitButton = () => {
+    console.log(oneCategorie);
     setErrortext("");
     if (!title) {
       alert("Veuillez renseigner le titre");
@@ -62,14 +63,14 @@ const CreateResource = (props) => {
       let formData = new FormData();
       formData.append("title", title);
       formData.append("description", description);
-      formData.append("categories", "health");
-      formData.append("type", "text");
+      formData.append("categories", oneCategorie);
+      formData.append("type", type);
       formData.append("assets", {
         uri: image.uri,
         name: 'my_photo.jpg',
         type: 'image/jpg'
       });
-
+      
       try {
         await AsyncStorage.getItem("userToken").then((responseJson) => {
           try {
@@ -155,6 +156,9 @@ const CreateResource = (props) => {
       setType(result.type);
     }
   };
+
+
+
   return (
     <View style={styles.mainBody}>
       <ScrollView>
@@ -208,6 +212,7 @@ const CreateResource = (props) => {
               </Button>
             </View>
             <View style={styles.SectionStyleDropDown}>
+            
               <DropDownPicker
                 defaultNull
                 placeholder="Sélectionner une catégorie"
@@ -216,9 +221,9 @@ const CreateResource = (props) => {
                 containerStyle={{ width: 300, height: 70 }}
                 labelStyle={{ fontSize: 14, color: "#000" }}
                 activeLabelStyle={{color: 'black'}}
-                items={categories}
+                items={categories.map((value) =>  obj =  {value , label : value } )}
                 defaultIndex={0}
-                onChangeItem={(categories) => setOneCategorie([categories])}
+                onChangeItem={item => setOneCategorie(item.value)}
               />
             </View>
             {errortext != "" ? (
