@@ -212,6 +212,15 @@ class AdminController extends AbstractFOSRestController
             'id' => $report->getReportedUser()
         ]);
 
+        $resources = $em->getRepository(Resource::class)
+            ->createQueryBuilder('r')->where('r.author = :author')
+            ->setParameter('author', $report->getReportedUser())->getQuery()->getResult();
+
+        foreach ($resources as $r ){
+            $r->setIsBlocked(true);
+            $em->persist($r);
+            $em->flush();
+        }
 
         $message = (new \Swift_Message('Hello Email'))
             ->setFrom('ressourcesrelationelle@gmail.com')

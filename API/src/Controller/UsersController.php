@@ -375,9 +375,10 @@ class UsersController extends AbstractFOSRestController
      */
     public function reportUser(Request $request){
         $em = $this->getDoctrine()->getManager();
-        $userId = $request->get('user_id');
+        $data = json_decode($request->getContent(), true);
+
         $userReported = $em->getRepository(User::class)->findBy([
-            'id' => $userId
+            'id' => $data['id']
         ]);
 
         if ($request->get('comment') != ""){
@@ -392,10 +393,7 @@ class UsersController extends AbstractFOSRestController
        $report = new Report();
        $report->setDate(new \DateTime());
        $report->setReportedUser($userReported[0]);
-       $report->setReportBy($reporter[0]);
-       if ($comment){
-           $report->setComment($comment);
-       }
+     //  $report->setReportBy($reporter[0]);
        $em->persist($report);
        $em->flush();
 
@@ -409,9 +407,10 @@ class UsersController extends AbstractFOSRestController
      */
     public function reportRessource(Request $request){
         $em = $this->getDoctrine()->getManager();
-        $ressId = $request->get('ressource_id');
+        $data = json_decode($request->getContent(), true);
+
         $ressource = $em->getRepository(Resource::class)->findBy([
-            'id' => $ressId
+            'id' => $data['id']
         ]);
         if ($request->get('comment') != ""){
             $comment = $request->get('comment');
@@ -424,10 +423,6 @@ class UsersController extends AbstractFOSRestController
         $report = new Report();
         $report->setDate(new \DateTime());
         $report->setReportRessource($ressource[0]);
-        $report->setReportBy($reporter[0]);
-        if ($comment){
-            $report->setComment($comment);
-        }
         $em->persist($report);
         $em->flush();
         return $this->json(['message' => 'Merci pour votre signalement'], Response::HTTP_CREATED);

@@ -161,7 +161,9 @@ function Resource(props) {
         )
 
 
-    } else {
+    }
+
+    else {
         const btnStyleBlock = {
             backgroundColor : 'red',
 
@@ -262,16 +264,14 @@ function Resource(props) {
                             />
                             <CardContent>{resource.description}</CardContent>
                             <div style={cardBtn}>
-                            <Input onClick={(e) => blockRes(e)}  name={props.location.state.rep}  type={"submit"}  style={btnStyleBlock}  value={'BLOQUER'}/>
 
-                            <Input onClick={(e) => closeReport(e)} name={props.location.state.rep}  type={"submit"} style={btnStyleClose}  value={'CLOTURER'}/>
                             </div>
                             </Card>
                     );
                 })}
             </>
         )
-    };
+    }
 }
 
 export default Resource

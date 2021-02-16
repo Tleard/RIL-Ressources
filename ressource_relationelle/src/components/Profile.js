@@ -151,6 +151,45 @@ function Profile(props){
 
 
     }
+
+    const btnStyleDes = {
+        backgroundColor : 'green',
+
+        borderRadius : '0%',
+
+        width : '10rem',
+        color : "white",
+        boxShadow : "0px 3px 1px -2px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12)",
+        fontWeight: "500",
+        lineHeight: "1.75",
+        letterSpacing: "0.02857em",
+
+
+
+    }
+
+    const signalUser = (e) => {
+
+        const name = e.target.name
+
+        const playload = {
+            id : name
+        }
+        fetch(
+            `${global.api}/api/user/report_user`, {
+                method : 'POST',
+                header : {
+                    Accept: "application/json",
+                    "Content-type": "application/json",
+                    Authorization: `Bearer ${auth.getToken()}`
+                },
+                body : JSON.stringify(playload),
+        }
+        ).then((res) => {
+            window.location.assign("http://localhost:3000/warnList")
+        })
+
+    }
     const blockUser = (e) => {
 
         const name = e.target.name
@@ -241,9 +280,8 @@ function Profile(props){
                                     Ressources publiées : {res.length}
                                 </Typography>
                             </ListItem>
-                            <Input name={user.id} type={"submit"} onClick={(e) => blockUser(e)} style={btnStyleBlock}  value={'BLOQUER'}/>
-                            <Input name={user.id} type={"submit"} onClick={(e) => warnUser(e)} style={btnStyleWarn}  value={'AVERTIR'}/>
-                            <Input name={user.id} type={"submit"} onClick={(e) => closeReport(e)} style={btnStyleClose}  value={'CLOTURER'}/>
+                            <Input name={user.id} type={"submit"} onClick={(e) => signalUser(e)} style={btnStyleBlock}  value={'Signaler'}/>
+
 
                         </List>
                     </div>
@@ -304,21 +342,7 @@ function Profile(props){
                 window.location.assign("http://localhost:3000/blockedUser");
             })
         }
-        const btnStyleDes = {
-            backgroundColor : 'green',
 
-            borderRadius : '0%',
-
-            width : '10rem',
-            color : "white",
-            boxShadow : "0px 3px 1px -2px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12)",
-            fontWeight: "500",
-            lineHeight: "1.75",
-            letterSpacing: "0.02857em",
-
-
-
-        }
         return (
             <>
                 <Container style={jumbo}>
@@ -366,6 +390,7 @@ function Profile(props){
                                             pathname: "resource",
                                             state: {
                                                 role: 'admin',
+
                                                 rep : r.id
                                             },
                                             hash: `${r.id}`,
@@ -390,15 +415,20 @@ function Profile(props){
                 </div>
                 <h3 style={centerText}> {user.username} </h3>
             </Container>
-            <Container>
-                <List>
-                    <ListItem>
-                        <Typography>
-                            Ressources publiées : {res.length}
-                        </Typography>
-                    </ListItem>
-                </List>
-            </Container>
+                <Container>
+                    <div style={dFlexAround}>
+                        <List>
+                            <ListItem>
+                                <Typography>
+                                    Ressources publiées : {res.length}
+                                </Typography>
+                            </ListItem>
+                            <Input type={"submit"} onClick={(e) => blockUser(e)} name={props.location.state.rep}  style={btnStyleBlock}  value={'BLOQUER'}/>
+                            <Input type={"submit"} onClick={(e) => warnUser(e)} name={props.location.state.rep} style={btnStyleWarn}  value={'AVERTIR'}/>
+
+                        </List>
+                    </div>
+                </Container>
                 {res.map((r) => {
                         const date = new Date(r.createdAt);
                         const day = date.getDate();
