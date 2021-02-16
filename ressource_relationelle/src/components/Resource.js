@@ -4,24 +4,25 @@ import { useState, useEffect } from "react";
 import "./Resource";
 import auth from "../auth";
 import userlib from "../userLibraryFunctions";
+import moment from 'moment';
+import 'moment/locale/fr';
 
 // MaterialUI import
-import Grid from "@material-ui/core/Grid";
 import Card from "@material-ui/core/Card";
 import CardHeader from "@material-ui/core/CardHeader";
 import CardContent from "@material-ui/core/CardContent";
 import CardActions from "@material-ui/core/CardActions";
 import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
-import Button from "@material-ui/core/Button";
 import Box from "@material-ui/core/Box";
 
 // MaterialUI Icon Import
 import FavoriteIcon from "@material-ui/icons/Favorite";
-import ShareIcon from "@material-ui/icons/Share";
 import ReportIcon from "@material-ui/icons/Report";
 import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import Badge from '@material-ui/core/Badge';
+import NotInterestedIcon from '@material-ui/icons/NotInterested';
+import ReportProblemIcon from '@material-ui/icons/ReportProblem';
 
 function Resource(props) {
   const id = props.location.hash.substring(1);
@@ -117,17 +118,14 @@ function Resource(props) {
         </Typography>
       </Box>
       {resource.map((resource) => {
-        // To format the Date to dd/mm/YYYY
         const date = new Date(resource.createdAt);
-        const day = date.getDate();
-        const month = ("0" + date.getMonth()).slice(-1) + 1;
-        const year = date.getFullYear();
+
         return (
           <Card variant="outlined">
             <CardHeader
               key={resource.id}
               title={resource.title}
-              subheader={`${resource.author.username} - ${day}/${month}/${year}`}
+              subheader={`${resource.author.username} - ${moment(date).format('L')}`}
             />
             <CardContent>{resource.description}</CardContent>
             <CardActions style={{ justifyContent: "flex-end" }}>
@@ -135,8 +133,12 @@ function Resource(props) {
                 {resource.inLibrary === true ? (
                   <FavoriteIcon
                     color="primary"
-                    onClick={() => {
-                      userlib.removeFromLibrary(resource.id);
+                    onClick={async () => {
+                      const removeFromLibrary = () => {
+                        return new Promise((resolve,reject) => {
+                          resolve(userlib.removeFromLibrary(resource.id))
+                        })
+                      }
                       const getResources = async () => {
                         const libResources = await fetchLibResources();
                         if (libResources.length > 0) {
@@ -145,22 +147,30 @@ function Resource(props) {
                           setLibResources([0]);
                         }
                       };
-
-                      getResources();
+                      await removeFromLibrary();
+                      await getResources();
                     }}
                   />
                 ) : (
+                  resource.author.id !== localStorageId ?
                   <FavoriteIcon
-                    onClick={() => {
-                      userlib.saveInLibrary(resource.id);
+                    onClick={async () => {
+                      const saveFavorite = () => {
+                        return new Promise((resolve, reject) => {
+                          resolve(userlib.saveInLibrary(resource.id))
+                        })
+                      }
                       const getResources = async () => {
+                        
                         const libResources = await fetchLibResources();
                         setLibResources(libResources);
                       };
-
-                      getResources();
+                      await saveFavorite();
+                      await getResources();
                     }}
                   />
+                  :
+                  <NotInterestedIcon/>
                 )}
               </IconButton>
               <IconButton aria-label="like">
@@ -168,36 +178,56 @@ function Resource(props) {
                 {hasLiked ? (
                   <ThumbUpIcon 
                   color="primary"
-                  onClick={() => {
-                    const getResources = async () => {
-                      const resource = await fetchResource();
-                      setResource(resource);
-                    };
-
-                    getResources();
-                  }}
                 />
                 ) : (
                   <ThumbUpIcon 
-                  onClick={() => {
-                    userlib.postReactionLike(resource.id);
-                    const getResources = async () => {
+                  onClick={async () => {
+                    const saveReaction = () => {
+                      return new Promise((resolve,reject) => {
+                        resolve(userlib.postReactionLike(resource.id));
+                      })
+                    }
+                    const getResources = async () => {                      
                       const resource = await fetchResource();
                       setResource(resource);
                     };
-
-                    getResources();
+                    await saveReaction();
+                    await getResources();
                   }}
                 />
                 )}
               </Badge>
               </IconButton>
-              <IconButton aria-label="share">
-                <ShareIcon />
-              </IconButton>
               <IconButton aria-label="report">
-                <ReportIcon />
+                <ReportIcon 
+                  onClick={() => {
+                    userlib.reportResource(resource.id);
+                    const getResources = async () => {
+                      const resource = await fetchResource();
+                      setResource(resource);
+                    }
+
+                    getResources();
+                  }}
+                />
               </IconButton>
+              <IconButton>
+                      {resource.author.id !== localStorageId ? 
+                        <ReportProblemIcon 
+                        onClick={() => {
+                          userlib.reportUser(resource.author.id);
+                          const getResources = async () => {
+                            const resource = await fetchResource();
+                            setResource(resource);
+                          }
+      
+                          getResources();
+                        }}
+                      />
+                      : 
+                        <NotInterestedIcon/>
+                      }                      
+                    </IconButton>
             </CardActions>
           </Card>
         );
