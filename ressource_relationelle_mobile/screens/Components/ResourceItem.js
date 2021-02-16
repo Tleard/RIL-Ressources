@@ -112,7 +112,6 @@ class ResourceItem extends React.Component {
     const { DisplayDetails } = this.props;
     moment.locale(['fr', 'fr']);
     var date = moment(this.props.postData.createdAt).format('LLLL');
-    //console.log(this.props.postData.id + " " + this.props.postDataLib.id)
     var isFavorite = false;
     if (typeof this.props.postDataLib == "object" )
     {
