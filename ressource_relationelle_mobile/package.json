@@ -39,7 +39,8 @@
   "devDependencies": {
     "@babel/core": "~7.9.0",
     "@react-navigation/routers": "^5.7.1",
-    "react-native-paper-dropdown": "0.0.5"
+    "react-native-paper-dropdown": "0.0.5",
+    "react-navigation": "^4.4.3"
   },
   "private": true
 }

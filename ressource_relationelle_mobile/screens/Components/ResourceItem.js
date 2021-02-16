@@ -21,7 +21,7 @@ import {
 } from "react-native-paper";
 import defaultImage from "../../assets/default-picture.png";
 import { getUrl } from "../../API/RequestHandler";
-//import {navigate} from "@react-navigation/routers/lib/typescript/src/CommonActions";
+import moment from "moment";
 const { width: WIDTH } = Dimensions.get("window");
 
 class ResourceItem extends React.Component {
@@ -35,6 +35,7 @@ class ResourceItem extends React.Component {
       reactions_lenght : 0,
       reaction: "",
       is_liked: false,
+      isFavorite : false
     };
   }
 
@@ -69,7 +70,7 @@ class ResourceItem extends React.Component {
       console.error("Somenting went wrong" + e)
     }
   }
-  
+
   _fetchCreateReactions = async () => {
     try {
       await AsyncStorage.getItem("userToken").then((responseJson) => {
@@ -109,6 +110,22 @@ class ResourceItem extends React.Component {
   render() {
     const post = this.props.postData;
     const { DisplayDetails } = this.props;
+    moment.locale(['fr', 'fr']);
+    var date = moment(this.props.postData.createdAt).format('LLLL');
+    //console.log(this.props.postData.id + " " + this.props.postDataLib.id)
+    var isFavorite = false;
+    if (typeof this.props.postDataLib == "object" )
+    {
+      for (const [key, value] of Object.entries(this.props.postDataLib)) {
+        if (value.id === this.props.postData.id)
+        {
+          isFavorite = true;
+        }
+      }
+    } else {
+      isFavorite = true;
+    }
+
 
     return (
       <View
@@ -128,8 +145,8 @@ class ResourceItem extends React.Component {
                 {this.props.postData.title}
               </Title>
               <Text size={10} style={{ color: "grey" }}>
-                {this.props.postData.author.username} -{" "}
-                {this.props.postData.createdAt}
+                {this.props.postData.author.username} - {" "}
+                {date}
               </Text>
               <Paragraph style={{ paddingTop: 10 }} numberOfLines={5}>
                 {this.props.postData.description}
@@ -146,13 +163,21 @@ class ResourceItem extends React.Component {
               icon="heart-outline"
             />
             <Text>{this.props.postData.reactions.length}</Text>
-            <IconButton
-                onPress={() => {
-                  {this._addToLibrary()}
-                }}
-                aria-label="bookmark"
-                icon="bookmark-outline">
-            </IconButton>
+            {isFavorite === true ?
+                <IconButton
+                    onPress={() => {
+                      {this._removeFromLibrary()}
+                    }}
+                    aria-label="bookmark"
+                    icon="bookmark" />
+                :
+                <IconButton
+                    onPress={() => {
+                      {this._addToLibrary()}
+                    }}
+                    aria-label="bookmark"
+                    icon="bookmark-outline" />
+            }
             <IconButton aria-label="share" icon="share-variant"></IconButton>
             <IconButton aria-label="report" icon="alert-octagon"></IconButton>
           </Card.Actions>

@@ -60,36 +60,74 @@ function App() {
                 <Stack.Screen
                     name="Ressources"
                     component={AllResourcesScreen}
-                    options={{ headerShown: true}}
+                    unmountOnBlur={true}
+                    options={{
+                        headerShown: true,
+                        unmountOnBlur: true
+                    }}
                 />
                 <Stack.Screen
                     name="Root"
                     component={Root}
-                    options={{ headerShown: true}}
+                    unmountOnBlur={true}
+                    options={{
+                        headerShown: true,
+                        unmountOnBlur: true
+                    }}
                 />
                 <Stack.Screen
                     name="login"
                     component={logInScreen}
+                    unmountOnBlur={true}
+                    options={{
+                        headerShown: true,
+                        unmountOnBlur: true
+                    }}
                 />
                 <Stack.Screen
                     name="Register"
                     component={RegisterScreen}
+                    unmountOnBlur={true}
+                    options={{
+                        headerShown: true,
+                        unmountOnBlur: true
+                    }}
                 />
                 <Stack.Screen
                     name="Details"
                     component={ResourceDetailsScreen}
+                    unmountOnBlur={true}
+                    options={{
+                        headerShown: true,
+                        unmountOnBlur: true
+                    }}
                 />
                 <Stack.Screen
                     name="CreateResource"
                     component={CreateResourceScreen}
+                    unmountOnBlur={true}
+                    options={{
+                        headerShown: true,
+                        unmountOnBlur: true
+                    }}
                 />
                 <Stack.Screen
                     name="CategoryScreen"
                     component={CategoryScreen}
+                    unmountOnBlur={true}
+                    options={{
+                        headerShown: true,
+                        unmountOnBlur: true
+                    }}
                 />
                  <Stack.Screen
                     name="CategoryResources"
                     component={CategoryResourcesScreen}
+                    unmountOnBlur={true}
+                    options={{
+                        headerShown: true,
+                        unmountOnBlur: true
+                    }}
                 />
             </Stack.Navigator>
         </NavigationContainer>
@@ -104,6 +142,7 @@ function Root() {
                 name="Profile"
                 component={profileScreen}
                 options={{
+                    unmountOnBlur: true,
                     title: 'Profile',
                     tabBarIcon: ({ focused }) => <FontAwesomeIcon focused={focused} size={30} color="black" icon={faUserAlt}/>,
                 }}
@@ -112,6 +151,7 @@ function Root() {
                 name="CreateResource"
                 component={CreateResourceScreen}
                 options={{
+                    unmountOnBlur: true,
                     title: 'Ressources',
                     tabBarIcon: ({ focused }) => <FontAwesomeIcon focused={focused} size={30} color="black" icon={faPenAlt}/>,
                 }}
@@ -120,6 +160,7 @@ function Root() {
                 name="Ressources"
                 component={AllResourcesScreen}
                 options={{
+                    unmountOnBlur: true,
                     title: 'Ressources',
                     tabBarIcon: ({ focused }) => <FontAwesomeIcon focused={focused} size={30} color="black" icon={faListAlt}/>,
                 }}
@@ -128,6 +169,7 @@ function Root() {
                 name="CategoryScreen"
                 component={CategoryScreen}
                 options={{
+                    unmountOnBlur: true,
                     title: 'Category',
                     tabBarIcon: ({ focused }) => <FontAwesomeIcon focused={focused} size={30} color="black" icon={faList}/>,
                 }}
@@ -136,6 +178,7 @@ function Root() {
                 name="Library"
                 component={FavoriteScreen}
                 options={{
+                    unmountOnBlur: true,
                     title: 'Favoris',
                     tabBarIcon: ({ focused }) => <FontAwesomeIcon focused={focused} size={30} color="black" icon={faHeart}/>,
                 }}

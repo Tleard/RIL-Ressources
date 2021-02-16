@@ -40,9 +40,6 @@ export class CategoryScreen extends React.Component {
         }
     }
 
-    UNSAFE_componentWillMount() {
-        this._fetchCategory();
-    }
    
     _DisplayDetails = (categoryName) => {
         this.props.navigation.navigate("CategoryResources", {categoryName: categoryName});
