@@ -111,7 +111,7 @@ function WarnList () {
     if (warnList.length > 0){
     return (
         <Container style={stylesContainer}>
-            <h1> Gestion des averissements</h1>
+            <h1> Gestion des avertissements</h1>
             <List subheader={<ListSubheader> Liste des Avertissements </ListSubheader>}>
                 {warnList.map((l) =>
                     <ListItem>

@@ -11,6 +11,7 @@ import userlib from "../userLibraryFunctions";
 import ShareIcon from "@material-ui/icons/Share";
 import ReportIcon from "@material-ui/icons/Report";
 import {Link} from "react-router-dom";
+import Picture from '../assets/nopicture.png';
 
 
 
@@ -18,11 +19,19 @@ function Profile(props){
     const picProfile = {
         borderRadius : '100%',
         backgroundColor : 'white',
-        height : '10rem',
-        width : '10rem',
+        height : '15rem',
+        width : '15rem',
         marginRight : 'auto',
         marginLeft : 'auto',
+        display: 'flex',
+        justifyContent: 'center',
+        paddingTop : "3rem"
 
+    }
+
+    const imgprofile = {
+        height : '9rem',
+            width : '9rem',
     }
 
     const jumbo = {
@@ -259,7 +268,19 @@ function Profile(props){
             window.location.assign("http://localhost:3000/repUserList");
         })
     }
+    let asset = ""
 
+    if (user.id !== undefined) {
+
+        if (user.profilePicture !== null) {
+
+            let profilePic = `${global.api}/asset/file/${user.profilePicture}`
+        }
+
+    }
+
+
+  //  console.log(user.profilePicture)
 
     if (props.location.state.role !== 'admin') {
         return (
@@ -268,7 +289,7 @@ function Profile(props){
             <>
                 <Container style={jumbo}>
                     <div style={picProfile}>
-
+                        <img style={imgprofile} src={user.profilePicture ? `${global.api}/asset/file/${user.profilePicture.id}` : Picture} />
                     </div>
                     <h3 style={centerText}> {user.username} </h3>
                 </Container>
@@ -347,7 +368,7 @@ function Profile(props){
             <>
                 <Container style={jumbo}>
                     <div style={picProfile}>
-
+                        <img style={imgprofile} src={user.profilePicture ? `${global.api}/asset/file/${user.profilePicture.id}` : Picture} />
                     </div>
                     <h3 style={centerText}> {user.username} </h3>
                 </Container>
@@ -404,6 +425,7 @@ function Profile(props){
             </>
         ) }
      else {
+         console.log(user)
 
         return (
 
@@ -411,7 +433,7 @@ function Profile(props){
             <>
             <Container style={jumbo}>
                 <div style={picProfile}>
-
+                    <img style={imgprofile} src={user.profilePicture ? `${global.api}/asset/file/${user.profilePicture.id}` : Picture} />
                 </div>
                 <h3 style={centerText}> {user.username} </h3>
             </Container>
