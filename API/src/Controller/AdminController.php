@@ -313,6 +313,16 @@ class AdminController extends AbstractFOSRestController
             throw new \Exception($exception->getMessage(), Response::HTTP_BAD_REQUEST);
         }
 
+        $resources = $em->getRepository(Resource::class)
+            ->createQueryBuilder('r')->where('r.author = :author')
+            ->setParameter('author', $user->getId())->getQuery()->getResult();
+
+        foreach ($resources as $r ){
+            $r->setIsBlocked(null);
+            $em->persist($r);
+            $em->flush();
+        }
+
         $em->persist($user);
         $em->flush();
 
