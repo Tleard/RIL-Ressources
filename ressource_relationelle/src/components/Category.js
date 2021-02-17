@@ -246,6 +246,9 @@ function Category(props) {
                         //to={{pathname: "category/resource", state: {id: resource.id}}}
                         to={{
                           pathname: "resource",
+                          state : {
+                            role : ''
+                          },
                           hash: `${resource.id}`,
                         }}
                       >
