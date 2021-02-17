@@ -28,9 +28,14 @@ class ProfileScreen extends React.Component{
         }
     }
 
-    UNSAFE_componentWillMount(){
+    componentDidMount() {
         this._fetchData();
         this._fetchLib();
+
+        this.focusListener = this.props.navigation.addListener('focus', () => {
+            this._fetchData();
+            this._fetchLib();
+        });
     }
 
     _fetchData = async() => {
@@ -134,6 +139,8 @@ class ProfileScreen extends React.Component{
                             .then((response) => response.json())
                             .then((responseText) => {
                                 this.state.loading = false;
+                                alert("Ressource ajoutée aux favoris");
+                                this.componentDidMount();
                             })
                             .catch((error) => {
                                 console.error(error.message)

@@ -52,11 +52,12 @@ class ResourceItem extends React.Component {
                   'Accept': 'application/json',
                   'Authorization': 'Bearer ' + responseJson,
                 }),
-                body : JSON.stringify({'id' : this.state.postData.id})
+                body : JSON.stringify({'id' : this.props.postData.id})
               })
                   .then((response) => response.json())
                   .then((responseText) => {
                     this.state.loading = false;
+                    alert("Ressource ajoutée aux favoris");
                   })
                   .catch((error) => {
                     console.error(error.message)
@@ -87,14 +88,19 @@ class ResourceItem extends React.Component {
             body: JSON.stringify({
                 reaction: 'like',
             })
-            
+
           })
             .then((response) => response.json(), )
             .then((responseText) => {
               this.setState({ is_liked: true });
-              this.setState({reaction_length: this.props.postData.reactions.length})
+              this.setState({postData: responseText})
+              if (responseText[0].reactions.length > 1)
+              {
+                this.setState({reaction_length : responseText[0].reactions.length})
+              }
+              //this.setState({reaction_length: this.props.postData.reactions.length})
             })
-           
+
             .catch((error) => {
               console.error(error.message);
             });
@@ -113,6 +119,8 @@ class ResourceItem extends React.Component {
     moment.locale(['fr', 'fr']);
     var date = moment(this.props.postData.createdAt).format('LLLL');
     var isFavorite = false;
+
+    //check for favorite
     if (typeof this.props.postDataLib == "object" )
     {
       for (const [key, value] of Object.entries(this.props.postDataLib)) {
@@ -122,6 +130,7 @@ class ResourceItem extends React.Component {
         }
       }
     } else {
+      //If no argument is passed for comparaison then it's true
       isFavorite = true;
     }
 
@@ -153,30 +162,43 @@ class ResourceItem extends React.Component {
             </Card.Content>
           </TouchableOpacity>
           <Card.Actions style={{ justifyContent: "flex-end" }}>
-            <IconButton
-              onPress={() => {
-                  if(this.state.is_liked === false)
-                  {this._fetchCreateReactions()}
-            }}
-              aria-label="add to favorites"
-              icon="heart-outline"
-            />
-            <Text>{this.props.postData.reactions.length}</Text>
-            {isFavorite === true ?
+
+            {this.state.is_liked?
                 <IconButton
-                    onPress={() => {
-                      {this._removeFromLibrary()}
-                    }}
-                    aria-label="bookmark"
-                    icon="bookmark" />
+                    aria-label="add to favorites"
+                    icon="heart"
+                />
                 :
                 <IconButton
                     onPress={() => {
-                      {this._addToLibrary()}
+                      if(this.state.is_liked === false)
+                      {this._fetchCreateReactions()}
                     }}
-                    aria-label="bookmark"
-                    icon="bookmark-outline" />
+                    aria-label="add to favorites"
+                    icon="heart-outline"
+                />
             }
+            
+              {this.props.postData.reactions.length > 1 ?
+                  <Text>{this.props.postData.reactions.length}</Text>
+                  :
+                  <Text>0</Text>
+              }
+              {isFavorite === true ?
+                  <IconButton
+                      onPress={() => {
+                        {this._removeFromLibrary()}
+                      }}
+                      aria-label="bookmark"
+                      icon="bookmark" />
+                  :
+                  <IconButton
+                      onPress={() => {
+                        {this._addToLibrary()}
+                      }}
+                      aria-label="bookmark"
+                      icon="bookmark-outline" />
+              }
             <IconButton aria-label="share" icon="share-variant"></IconButton>
             <IconButton aria-label="report" icon="alert-octagon"></IconButton>
           </Card.Actions>

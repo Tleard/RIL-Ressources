@@ -39,7 +39,13 @@ export class CategoryScreen extends React.Component {
             loading : false
         }
     }
+    componentDidMount() {
+        this._fetchCategory();
 
+        this.focusListener = this.props.navigation.addListener('focus', () => {
+            this._fetchCategory();
+        });
+    }
    
     _DisplayDetails = (categoryName) => {
         this.props.navigation.navigate("CategoryResources", {categoryName: categoryName});
