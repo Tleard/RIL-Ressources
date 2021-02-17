@@ -40,6 +40,7 @@ export class CategoryScreen extends React.Component {
         }
     }
     componentDidMount() {
+        
         this._fetchCategory();
 
         this.focusListener = this.props.navigation.addListener('focus', () => {
@@ -48,11 +49,12 @@ export class CategoryScreen extends React.Component {
     }
    
     _DisplayDetails = (categoryName) => {
-        this.props.navigation.navigate("Résources par categorie", {categoryName: categoryName});
+        this.props.navigation.navigate("Ressources par categorie", {categoryName: categoryName});
     }
 
     
     _fetchCategory = async() => {
+       
         try {
             await AsyncStorage.getItem("userToken").then((responseJson) => {
               try {

@@ -35,7 +35,7 @@ class ResourceItem extends React.Component {
       reactions_lenght : 0,
       reaction: "",
       is_liked: false,
-      isFavorite : false
+      isFavorite : false,
       is_reported:false
     };
   }
@@ -205,7 +205,7 @@ class ResourceItem extends React.Component {
                 />
                 :
                 <IconButton
-                  if(this.state.is_liked === false)
+                onPress={() => { if(this.state.is_liked === false)
                       {this._fetchCreateReactions()}
                       else alert('Vous avez déjà mis like sur cette ressource')
                     }}

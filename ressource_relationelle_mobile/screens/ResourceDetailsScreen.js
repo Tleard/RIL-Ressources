@@ -35,7 +35,7 @@ class ProfileScreen extends React.Component{
         this.focusListener = this.props.navigation.addListener('focus', () => {
             this._fetchData();
             this._fetchLib();
-        });
+        })};
 
     _fetchData = async() => {
         this.state.loading = true

@@ -65,7 +65,7 @@ class profileScreen extends React.Component {
 
     _fetchUserInfo = async() => {
         //Show Loading
-        this.state.loading = true
+        
         //Get User Info
         try {
             let userId = this.props.route.params['userId'];
@@ -105,6 +105,7 @@ class profileScreen extends React.Component {
     }
 
     _fetchUserResources = async() => {
+        this.state.loading = true
         try {
             let userId = this.props.route.params['userId'];
             await AsyncStorage.getItem("userToken")
@@ -122,6 +123,7 @@ class profileScreen extends React.Component {
                             .then((response) => response.json())
                             .then((responseText) => {
                                 this.setState({userResources: responseText})
+                                this.state.loading = false;
                                 if (responseText[0] == "The user has no ressource")
                                 {
                                     this.setState({userResourcesLenght: 0})
@@ -161,7 +163,7 @@ class profileScreen extends React.Component {
                             .then((responseText) => {
                                 this.setState({userReactions: responseText});
                                 // Hide Loader
-                                this.state.loading = false;
+                                
                                 if (responseText[0] == "The user has no reactions")
                                 {
                                     this.setState({userReactionsLenght: 0});
@@ -183,7 +185,7 @@ class profileScreen extends React.Component {
     }
 
     _fetchLib = async() => {
-        this.state.loading = true
+        
         try {
             await AsyncStorage.multiGet(["userToken", "user"])
                 .then((responseJson) => {
@@ -200,7 +202,7 @@ class profileScreen extends React.Component {
                         })
                             .then((response) => response.json())
                             .then((responseText) => {
-                                this.state.loading = false;
+                               
                                 this.setState({postDataLib: responseText})
                             })
                             .catch((error) => {

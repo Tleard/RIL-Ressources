@@ -57,7 +57,7 @@ export class AllResourcesScreen extends React.Component {
 
     
     _fetchResources = async() => {
-       this.state.loading = true;
+       
         try {
             await AsyncStorage.getItem("userToken")
                 .then((responseJson) => {
@@ -92,7 +92,7 @@ export class AllResourcesScreen extends React.Component {
     }
 
     _fetchLib = async() => {
-        this.state.loading = true
+        this.state.loading = true;
         try {
             await AsyncStorage.multiGet(["userToken", "user"])
                 .then((responseJson) => {
@@ -109,7 +109,7 @@ export class AllResourcesScreen extends React.Component {
                         })
                             .then((response) => response.json())
                             .then((responseText) => {
-                                this.state.loading = false;
+                               
                                 this.setState({postDataLib: responseText})
                             })
                             .catch((error) => {
