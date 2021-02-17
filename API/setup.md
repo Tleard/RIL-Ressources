@@ -61,7 +61,7 @@ _Pensez à changer les informations présentes dans cette ligne avec vos informa
 nom de la nouvelle BDD qui sera créé par Doctrine_
 
 ```bash
-user@Computer:/var/www/html/RIL-Ressources/API$ php bin/console doctrine:dabatase:create
+user@Computer:/var/www/html/RIL-Ressources/API$ php bin/console doctrine:database:create
 user@Computer:/var/www/html/RIL-Ressources/API$ php bin/console doctrine:schema:update --force
 ```
 

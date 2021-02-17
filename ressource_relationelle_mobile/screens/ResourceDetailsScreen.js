@@ -100,12 +100,6 @@ class ProfileScreen extends React.Component{
                             .then((responseText) => {
                                 this.state.loading = false;
                                 this.setState({postDataLib: responseText})
-                                for (const [key, value] of Object.entries(responseText)) {
-                                    if (value.id == this.state.postData.id)
-                                    {
-                                        this.setState({isFavorite : true})
-                                    }
-                                }
                             })
                             .catch((error) => {
                                 console.error(error.message)
@@ -230,6 +224,20 @@ class ProfileScreen extends React.Component{
         var height = Dimensions.get('window').height;
         moment.locale(['fr', 'fr']);
         var date = moment(this.state.postData.createdAt).format('LLLL');
+        var isFavorite = false;
+
+        if (typeof this.state.postDataLib == "object" )
+        {
+            for (const [key, value] of Object.entries(this.state.postDataLib)) {
+                if (value.id === this.state.postData.id)
+                {
+                    isFavorite = true;
+                }
+            }
+        } else {
+            //If no argument is passed for comparaison then it's true
+            isFavorite = true;
+        }
 
         if (this.state.postData.assets && this.state.postData.assets.length)
         {
@@ -255,8 +263,14 @@ class ProfileScreen extends React.Component{
                                 aria-label="add to favorites"
                                 icon="heart-outline"
                             />
-                            <Text style={{color : 'black'}}>{this.state.reactionsLength}</Text>
-                            {this.state.isFavorite === true ?
+
+                                {this.state.postData.reactions.length > 1 ?
+
+                                    <Text style={{color : 'black'}}>{this.state.postData.reactions.length - 1} </Text>
+                                    :
+                                    <Text style={{color : 'black'}}>0</Text>
+                                }
+                            {isFavorite === true ?
                                 <IconButton
                                     onPress={() => {
                                         {this._removeFromLibrary()}
@@ -299,8 +313,13 @@ class ProfileScreen extends React.Component{
                                 aria-label="add to favorites"
                                 icon="heart-outline"
                             />
-                            <Text style={{color : 'black'}}>{this.state.reactionsLength}</Text>
-                            {this.state.isFavorite === true ?
+                            {this.state.reactionsLength > 1 ?
+
+                                <Text style={{color : 'black'}}>{this.state.reactionsLength - 1} </Text>
+                                :
+                                <Text style={{color : 'black'}}>0</Text>
+                            }
+                            {isFavorite === true ?
                                 <IconButton
                                     onPress={() => {
                                         {this._removeFromLibrary()}
