@@ -42,83 +42,87 @@ function NavDrawer() {
     const [openDrawer, setOpenDrawer] = useState(true);
 
     return (
-        <>
-            <Drawer
-                anchor="left"
-                onClose={() => setOpenDrawer(false)}
-                open={openDrawer}
-                classes={{ paper: classes.paper }}
+      <>
+        <Drawer
+          anchor="left"
+          onClose={() => setOpenDrawer(false)}
+          open={openDrawer}
+          classes={{ paper: classes.paper }}
+        >
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "space-between",
+              backgroundColor: "#009688",
+            }}
+          >
+            <Typography
+              color="secondary"
+              component={Link}
+              to="/home"
+              variant="h6"
+              className={classes.title}
             >
-                <div style={{
-                    display:"flex", 
-                    flexDirection:"column",
-                    justifyContent:"space-between",
-                    backgroundColor:"#009688",           
-                    }}>
-                  <Typography
-                    color="secondary"
-                    component={Link}
-                    to="/home"
-                    variant="h6"
-                    className={classes.title}
-                  >
-                    Accueil
-                  </Typography>
-                  <Typography
-                    color="secondary"
-                    component={Link}
-                    to="/categories"
-                    variant="h6"
-                    className={classes.title}
-                  >
-                    Catégories
-                  </Typography>
-                  <Typography
-                    color="secondary"
-                    component={Link}
-                    to="/publication"
-                    variant="h6"
-                    className={classes.title}
-                  >
-                    Publier
-                  </Typography>
-                  <Typography
-                    color="secondary"
-                    component={Link}
-                    to="/"
-                    variant="h6"
-                    className={classes.title}
-                  >
-                    Aide
-                  </Typography>
-                  <Typography
-                    color="secondary"
-                    component={Link}
-                    to="/userlibrary"
-                    variant="h6"
-                    className={classes.title}
-                  >
-                    Ma Bibliothèque
-                  </Typography>
-
-                  <Button
-                    color="inherit"
-                    onClick={() => {
-                      auth.loggedout(() => {
-                        console.log("callback in test");
-                        window.location.assign("http://localhost:3000/login");
-                      });
-                    }}
-                  >
-                    Logout
-                  </Button>
-                </div>
-            </Drawer>
-            <IconButton className={classes.menuIconContainer} onClick={() => setOpenDrawer(!openDrawer)}>
-                <MenuIcon />
-            </IconButton>
-        </>
-    )
+              Accueil
+            </Typography>
+            <Typography
+              color="secondary"
+              component={Link}
+              to="/categories"
+              variant="h6"
+              className={classes.title}
+            >
+              Catégories
+            </Typography>
+            <Typography
+              color="secondary"
+              component={Link}
+              to="/publication"
+              variant="h6"
+              className={classes.title}
+            >
+              Publier
+            </Typography>
+            <Typography
+              color="secondary"
+              component={Link}
+              to="/userlibrary"
+              variant="h6"
+              className={classes.title}
+            >
+              Ma Bibliothèque
+            </Typography>
+            <Typography
+                color="secondary"
+                component={Link}
+                to="/me"
+                variant="h6"
+                className={classes.title}
+              >
+                Mes ressources
+              </Typography>
+            <Button
+              color="inherit"
+              onClick={() => {
+                auth.loggedout(() => {
+                  console.log("callback in test");
+                  window.location.assign("http://localhost:3000/login");
+                });
+              }}
+            >
+              Logout
+            </Button>
+          </div>
+        </Drawer>
+        <IconButton
+          className={classes.menuIconContainer}
+          onClick={() => setOpenDrawer(!openDrawer)}
+        >
+          <MenuIcon />
+        </IconButton>
+      </>
+    );
 }
 
 export default NavDrawer

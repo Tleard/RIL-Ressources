@@ -67,10 +67,10 @@ if (props.role === 'admin') {
       )
     } else if (props.role === 'user') {
   return (
-      <>
-        <AppBar position="static">
-          <Toolbar>
-            {/* <IconButton
+    <>
+      <AppBar position="static">
+        <Toolbar>
+          {/* <IconButton
                 edge="start"
                 className={classes.menuButton}
                 color="inherit"
@@ -79,64 +79,72 @@ if (props.role === 'admin') {
                 <MenuIcon />
               </IconButton> */}
 
-            {isMatch ? (
-                <NavDrawer />
-            ) : (
-                <>
-                  <Typography
-                      color="secondary"
-                      component={Link}
-                      to="/home"
-                      variant="h6"
-                      className={classes.title}
-                  >
-                    Accueil
-                  </Typography>
-                  <Typography
-                      color="secondary"
-                      component={Link}
-                      to="/categories"
-                      variant="h6"
-                      className={classes.title}
-                  >
-                    Catégories
-                  </Typography>
-                  <Typography
-                      color="secondary"
-                      component={Link}
-                      to="/publication"
-                      variant="h6"
-                      className={classes.title}
-                  >
-                    Publier
-                  </Typography>
-                  <Typography
-                      color="secondary"
-                      component={Link}
-                      to="/userlibrary"
-                      variant="h6"
-                      className={classes.title}
-                  >
-                    Ma Bibliothèque
-                  </Typography>
-
-                  <Button
-                      variant="outlined"
-                      color="inherit"
-                      onClick={() => {
-                        auth.loggedout(() => {
-                          console.log("callback in test");
-                          window.location.assign("http://localhost:3000/login");
-                        });
-                      }}
-                  >
-                    Logout
-                  </Button>
-                </>
-            )}
-          </Toolbar>
-        </AppBar>
-      </>
+          {isMatch ? (
+            <NavDrawer />
+          ) : (
+            <>
+              <Typography
+                color="secondary"
+                component={Link}
+                to="/home"
+                variant="h6"
+                className={classes.title}
+              >
+                Accueil
+              </Typography>
+              <Typography
+                color="secondary"
+                component={Link}
+                to="/categories"
+                variant="h6"
+                className={classes.title}
+              >
+                Catégories
+              </Typography>
+              <Typography
+                color="secondary"
+                component={Link}
+                to="/publication"
+                variant="h6"
+                className={classes.title}
+              >
+                Publier
+              </Typography>
+              <Typography
+                color="secondary"
+                component={Link}
+                to="/userlibrary"
+                variant="h6"
+                className={classes.title}
+              >
+                Ma Bibliothèque
+              </Typography>
+              <Typography
+                color="secondary"
+                component={Link}
+                to="/me"
+                variant="h6"
+                className={classes.title}
+              >
+                Mes ressources
+              </Typography>
+              <Button
+                variant="outlined"
+                color="inherit"
+                onClick={() => {
+                  auth.loggedout(() => {
+                    console.log("callback in test");
+                    window.location.assign("http://localhost:3000/login");
+                  });
+                }}
+              >
+                Logout
+              </Button>
+            </>
+          )}
+        </Toolbar>
+      </AppBar>
+    </>
   );
 }
 else {

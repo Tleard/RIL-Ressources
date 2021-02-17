@@ -13,6 +13,7 @@ import ReportIcon from "@material-ui/icons/Report";
 import {Link} from "react-router-dom";
 import Picture from '../assets/nopicture.png';
 import Moment from "moment";
+import Button from "@material-ui/core/Button";
 
 
 
@@ -311,29 +312,35 @@ function Profile(props){
             {res.map((r) => {
                 // To format the Date to dd/mm/YYYY
                 return (
-                    <Card variant="outlined">
-                        <CardHeader
-                            key={r.id}
-                            title={r.title}
-                            subheader={`${r.author.username} - date de publication: ${Moment(r.createdAt).format('L')}`}
-                        />
-                        <CardContent>{r.description}</CardContent>
-                        <CardActions style={{ justifyContent: "flex-end" }}>
-                            <IconButton aria-label="add to favorites">
-                                <FavoriteIcon
-                                    onClick={() => {
-                                        userlib.saveInLibrary(r.id);
-                                    }}
-                                />
-                            </IconButton>
-                            <IconButton aria-label="share">
-                                <ShareIcon />
-                            </IconButton>
-                            <IconButton aria-label="report">
-                                <ReportIcon />
-                            </IconButton>
-                        </CardActions>
-                    </Card>
+                  <Card variant="outlined">
+                    <CardHeader
+                      key={r.id}
+                      title={r.title}
+                      subheader={`${
+                        r.author.username
+                      } - date de publication: ${Moment(r.createdAt).format(
+                        "L"
+                      )}`}
+                    />
+                    <CardContent>{r.description}</CardContent>
+                    <CardActions style={{ justifyContent: "flex-end" }}>
+                      <Button size="medium" color="primary">
+                        <Link
+                          key={r.id}
+                          //to={{pathname: "category/resource", state: {id: resource.id}}}
+                          to={{
+                            pathname: "resource",
+                            state: {
+                              role: "",
+                            },
+                            hash: `${r.id}`,
+                          }}
+                        >
+                          Consulter
+                        </Link>
+                      </Button>
+                    </CardActions>
+                  </Card>
                 );
             })}
         </>
