@@ -7,7 +7,7 @@ import Paper from "@material-ui/core/Paper";
 import Carousel from "react-material-ui-carousel";
 
 function HomeCarousel(props) {
-    
+
     var items = [
         {
             name: "Bienvenu sur Ressource Relationnelle",
@@ -39,24 +39,24 @@ function HomeCarousel(props) {
 function Item(props)
 {
     return (
-      <Paper>
-        <div
-          style={{
-            backgroundImage: "url(" + `${props.item.image}` + ")",
-            backgroundPosition: "center",
-            backgroundSize: "cover",
-            backgroundRepeat: "no-repeat",
-            height: "400px",
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            alignItems: "center"
-          }}
-        >
-          <h2>{props.item.name}</h2>
-          <p>{props.item.description}</p>
-        </div>
-      </Paper>
+        <Paper>
+            <div
+                style={{
+                    backgroundImage: "url(" + `${props.item.image}` + ")",
+                    backgroundPosition: "center",
+                    backgroundSize: "cover",
+                    backgroundRepeat: "no-repeat",
+                    height: "400px",
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "center",
+                    alignItems: "center"
+                }}
+            >
+                <h2>{props.item.name}</h2>
+                <p>{props.item.description}</p>
+            </div>
+        </Paper>
     );
 }
 
