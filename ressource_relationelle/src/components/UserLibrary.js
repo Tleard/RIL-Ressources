@@ -3,6 +3,8 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import auth from "../auth";
 import userlib from "../userLibraryFunctions";
+import moment from 'moment';
+import 'moment/locale/fr';
 
 // MaterialUI import
 import Grid from "@material-ui/core/Grid";
@@ -59,18 +61,14 @@ function UserLibrary() {
       <Grid container spacing={3}>
         {!libResources.message ? (
           libResources.map((resource) => {
-            // To format the Date to dd/mm/YYYY
             const date = new Date(resource.createdAt);
-            const day = date.getDate();
-            const month = ("0" + date.getMonth()).slice(-1) + 1;
-            const year = date.getFullYear();
 
             return (
               <Grid item xs={12}>
                 <Card variant="outlined">
                   <CardHeader
                     title={resource.title}
-                    subheader={`${resource.author.username} - ${day}/${month}/${year}`}
+                    subheader={`${resource.author.username} - ${moment(date).format('L')}`}
                   />
                   <CardContent>{resource.description}</CardContent>
                   <CardActions style={{ justifyContent: "flex-end" }}>
@@ -86,12 +84,6 @@ function UserLibrary() {
                           getResource();
                         }}
                       />
-                    </IconButton>
-                    <IconButton aria-label="share">
-                      <ShareIcon />
-                    </IconButton>
-                    <IconButton aria-label="report">
-                      <ReportIcon />
                     </IconButton>
                     <Button size="medium" color="primary">
                       <Link

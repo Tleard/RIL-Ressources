@@ -76,6 +76,7 @@ export class AllResourcesScreen extends React.Component {
                                 this.state.loading = false;
                                 this.setState({resources: responseText})
                                 this.setState({resourcesLenght: responseText.length});
+
                             })
                             .catch((error) => {
                                 console.error(error.message)

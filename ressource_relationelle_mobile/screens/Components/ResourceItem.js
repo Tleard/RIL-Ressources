@@ -36,6 +36,7 @@ class ResourceItem extends React.Component {
       reaction: "",
       is_liked: false,
       isFavorite : false
+      is_reported:false
     };
   }
 
@@ -112,6 +113,40 @@ class ResourceItem extends React.Component {
       console.error("Somenting went wrong" + e);
     }
   };
+  _fetchReportRessource = async () => {
+    try {
+        await AsyncStorage.getItem("userToken").then((responseJson) => {
+            try {
+                let url =
+                    getUrl() + "/api/user/report_ressource";
+                return fetch(url, {
+                    method: "POST",
+                    headers: new Headers({
+                        "Content-Type": "application/json",
+                        "Accept": "application/json",
+                        "Authorization": "Bearer " + responseJson,
+                    }),
+                    body: JSON.stringify({
+                        id: this.props.postData.id,
+                    })
+
+                })
+                    .then((response) => response.json(), )
+                    .then((responseText) => {
+                        this.setState({ is_reported: true });
+                        
+                    })
+                    .catch((error) => {
+                        console.error(error.message);
+                    });
+            } catch (e) {
+                console.error("Something went wrong" + e);
+            }
+        });
+    } catch (e) {
+        console.error("Somenting went wrong" + e);
+    }
+};
 
   render() {
     const post = this.props.postData;
@@ -170,9 +205,9 @@ class ResourceItem extends React.Component {
                 />
                 :
                 <IconButton
-                    onPress={() => {
-                      if(this.state.is_liked === false)
+                  if(this.state.is_liked === false)
                       {this._fetchCreateReactions()}
+                      else alert('Vous avez déjà mis like sur cette ressource')
                     }}
                     aria-label="add to favorites"
                     icon="heart-outline"
@@ -199,8 +234,13 @@ class ResourceItem extends React.Component {
                       aria-label="bookmark"
                       icon="bookmark-outline" />
               }
+
             <IconButton aria-label="share" icon="share-variant"></IconButton>
-            <IconButton aria-label="report" icon="alert-octagon"></IconButton>
+            <IconButton aria-label="report" icon="alert-octagon" onPress={() => {
+                                if(this.state.is_reported === false)
+                                {this._fetchReportRessource()}
+                                else alert('Vous avez déjà reporte cette ressource')
+                            }}></IconButton>
           </Card.Actions>
         </Card>
       </View>

@@ -36,7 +36,6 @@ class ProfileScreen extends React.Component{
             this._fetchData();
             this._fetchLib();
         });
-    }
 
     _fetchData = async() => {
         this.state.loading = true

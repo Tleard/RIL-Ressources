@@ -63,6 +63,48 @@ class UserLibraryFunctions {
         })
     }
 
+    reportResource(idResource){
+        const payload = {
+            id : idResource
+        }
+
+        fetch(`${global.api}/api/user/report_ressource`, {
+            method:'POST',
+            headers:{
+                'Accept':'application/json',
+                'Content-type':'application/json',
+                Authorization: `Bearer ${auth.getToken()}`,
+            },
+            body: JSON.stringify(payload)
+        })
+        .then(res=>res.json())
+        .then((data)=>{
+            console.log(data);
+        })
+    }
+
+    reportUser(idUser){
+        console.log(idUser)
+        const payload = {
+            id : idUser
+        }
+
+        fetch(`${global.api}/api/user/report_user`, {
+            method:'POST',
+            headers:{
+                'Accept':'application/json',
+                'Content-type':'application/json',
+                Authorization: `Bearer ${auth.getToken()}`,
+            },
+            body: JSON.stringify(payload)
+        })
+        .then(res=>res.json())
+        .then((data)=>{
+            console.log(data);
+        })
+    }
+    
+
 }
 
 export default new UserLibraryFunctions();
