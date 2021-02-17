@@ -91,10 +91,11 @@ class ResourcesController extends AbstractController
         $em = $this->getDoctrine()->getManager();
 
         try {
-            $qb = $em->getRepository(Resource::class)
-                ->createQueryBuilder('r');
+            $resources = $em->getRepository(Resource::class)
+                ->createQueryBuilder('r')->where('r.is_blocked = false or r.is_blocked is null')
+                ->getQuery()->getResult();
 
-            $resources = $qb->getQuery()->getResult();
+
 
         } catch (NonUniqueResultException $nonUniqueResultException) {
             return FosRestView::create(['message' => 'Non unique result'], Response::HTTP_INTERNAL_SERVER_ERROR);
@@ -239,12 +240,12 @@ class ResourcesController extends AbstractController
             if (isset($orderBy))
             {
                 $resources = $em->getRepository(Resource::class)
-                    ->createQueryBuilder('r')->where('r.author = :author')
+                    ->createQueryBuilder('r')->where('r.author = :author')->andWhere('r.is_blocked = false or r.is_blocked is null')
                     ->OrderBy('r.'. $orderBy[0], $orderBy[1])
                     ->setParameter('author', $authorId)->getQuery()->getResult();
             } else {
                 $resources = $em->getRepository(Resource::class)
-                    ->createQueryBuilder('r')->where('r.author = :author')
+                    ->createQueryBuilder('r')->where('r.author = :author')->andWhere('r.is_blocked = false or r.is_blocked is null')
                     ->setParameter('author', $authorId)->getQuery()->getResult();
             }
 
@@ -298,12 +299,14 @@ class ResourcesController extends AbstractController
                     if (isset($orderBy))
                     {
                         $categoryElement = $em->getRepository(Resource::class)
-                            ->createQueryBuilder('r')->join('r.categories', 'c')->where('c.name = :name')
+                            ->createQueryBuilder('r')->join('r.categories', 'c')->where('c.name = :name')->andWhere('r.is_blocked = false or r.is_blocked is null')
                             ->OrderBy('r.'. $orderBy[0], $orderBy[1])
+                            ->setParameter('status', false)
                             ->setParameter('name', $item)->getQuery()->getResult();
                     } else {
                         $categoryElement = $em->getRepository(Resource::class)
-                            ->createQueryBuilder('r')->join('r.categories', 'c')->where('c.name = :name')
+                            ->createQueryBuilder('r')->join('r.categories', 'c')->where('c.name = :name')->andWhere('r.is_blocked = false or r.is_blocked is null')
+                            ->setParameter('status', false)
                             ->setParameter('name', $item)->getQuery()->getResult();
                     }
 
@@ -326,7 +329,7 @@ class ResourcesController extends AbstractController
             try {
                 //Search
                 $resources = $em->getRepository(Resource::class)
-                    ->createQueryBuilder('r')->join('r.categories', 'c')->where('c.name = :name')
+                    ->createQueryBuilder('r')->join('r.categories', 'c')->where('c.name = :name')->andWhere('r.is_blocked = false or r.is_blocked is null')
                     ->setParameter('name', $categoriesId)->getQuery()->getResult();
                 if (empty($resources))
                 {
@@ -379,12 +382,12 @@ class ResourcesController extends AbstractController
                     if (isset($orderBy))
                     {
                         $typeElement = $em->getRepository(Resource::class)
-                            ->createQueryBuilder('r')->join('r.type', 't')->where('t.type_name = :name')
+                            ->createQueryBuilder('r')->join('r.type', 't')->where('t.type_name = :name')->andWhere('r.is_blocked = false or r.is_blocked is null')
                             ->OrderBy('r.'. $orderBy[0], $orderBy[1])
                             ->setParameter('name', $item)->getQuery()->getResult();
                     } else {
                         $typeElement = $em->getRepository(Resource::class)
-                            ->createQueryBuilder('r')->join('r.type', 't')->where('t.type_name = :name')
+                            ->createQueryBuilder('r')->join('r.type', 't')->where('t.type_name = :name')->andWhere('r.is_blocked = false or r.is_blocked is null')
                             ->setParameter('name', $item)->getQuery()->getResult();
                     }
 
@@ -407,7 +410,7 @@ class ResourcesController extends AbstractController
             try {
                 //Search
                 $resources = $em->getRepository(Resource::class)
-                    ->createQueryBuilder('r')->join('r.type', 't')->where('t.type_name = :name')
+                    ->createQueryBuilder('r')->join('r.type', 't')->where('t.type_name = :name')->andWhere('r.is_blocked = false or r.is_blocked is null')
                     ->setParameter('name', $typeid)->getQuery()->getResult();
                 if (empty($resources))
                 {
