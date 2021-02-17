@@ -27,11 +27,9 @@ class ResourcesCategoryController extends AbstractController
         $em = $this->getDoctrine()->getManager();
 
         try {
-            $qb = $em->getRepository(ResourceCategory::class)
-                ->createQueryBuilder('rc');
-
-            $resources = $qb->getQuery()->getResult();
-
+            $resources = $em->getRepository(ResourceCategory::class)
+                ->createQueryBuilder('rc')->where('rc.status != :status')
+                ->setParameter('status', false)->getQuery()->getResult();
         } catch (NonUniqueResultException $nonUniqueResultException) {
             return FosRestView::create(['message' => 'Non unique result'], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
