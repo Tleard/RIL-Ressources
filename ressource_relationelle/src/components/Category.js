@@ -4,6 +4,8 @@ import auth from "../auth";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import userlib from "../userLibraryFunctions";
+import moment from 'moment';
+import 'moment/locale/fr';
 
 // MaterialUI import
 import Grid from "@material-ui/core/Grid";
@@ -17,10 +19,11 @@ import Button from "@material-ui/core/Button";
 
 // MaterialUI Icon Import
 import FavoriteIcon from "@material-ui/icons/Favorite";
-import ShareIcon from "@material-ui/icons/Share";
 import ReportIcon from "@material-ui/icons/Report";
 import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import Badge from '@material-ui/core/Badge';
+import NotInterestedIcon from '@material-ui/icons/NotInterested';
+import ReportProblemIcon from '@material-ui/icons/ReportProblem';
 
 // MaterialUI Lab
 import { Alert, AlertTitle } from "@material-ui/lab";
@@ -52,7 +55,7 @@ function Category(props) {
   // Fetch Resources
   const fetchResources = async () => {
     const res = await fetch(
-      `${global.api}/api/resources/category/${categoryName}`,
+      `${global.api}/api/resources/category/${categoryName}^createdAt=ASC`,
       {
         method: "get",
         headers: {
@@ -85,12 +88,14 @@ function Category(props) {
   // The condition check if the User has something in his library.
   if (libResources.length > 0) {
     resources.forEach((resource) => {
-      resource["inLibrary"] = false;
-      for (let libResource of libResources) {
+      if(typeof resource !== "string"){
+        resource["inLibrary"] = false;
+        for (let libResource of libResources) {
         if (libResource.id === resource.id) {
           resource["inLibrary"] = true;
           break;
         }
+      }
       }
     });
   }
@@ -98,12 +103,14 @@ function Category(props) {
   let localStorageId = localStorage.idUser.substring(1, localStorage.idUser.length - 1);
   // Loop and Conditional to check if a resource was already "liked" or not by the current user
   for(let object of resources) {
-    object["hasLiked"] = false;
-    for(let prop of object.reactions) {
+    if(typeof object !== "string"){
+      object["hasLiked"] = false;
+      for(let prop of object.reactions) {
       if(prop.user === localStorageId) {
         object["hasLiked"] = true; 
         break;   
       }
+    }
     }
   }
 
@@ -115,18 +122,15 @@ function Category(props) {
       <Grid container spacing={3}>
         {typeof resources[0] !== "string" ? (
           resources.map((resource) => {
-            // To format the Date to dd/mm/YYYY
+            if(resource.isBlocked !== true) {
             const date = new Date(resource.createdAt);
-            const day = date.getDate();
-            const month = ("0" + date.getMonth()).slice(-1) + 1;
-            const year = date.getFullYear();
 
             return (
               <Grid item xs={12}>
                 <Card variant="outlined">
                   <CardHeader
                     title={resource.title}
-                    subheader={`${resource.author.username} - ${day}/${month}/${year}`}
+                    subheader={`${resource.author.username} - ${moment(date).format('L')}`}
                   />
                   <CardContent>{resource.description}</CardContent>
                   <CardActions style={{ justifyContent: "flex-end" }}>
@@ -134,9 +138,14 @@ function Category(props) {
                       {resource.inLibrary === true ? (
                         <FavoriteIcon
                           color="primary"
-                          onClick={() => {
-                            userlib.removeFromLibrary(resource.id);
+                          onClick={ async () => {                            
+                            const removeFromLibrary = () => {
+                              return new Promise((resolve,reject) => {
+                                resolve(userlib.removeFromLibrary(resource.id))
+                              })
+                            }
                             const getResources = async () => {
+                              
                               const libResources = await fetchLibResources();
                               if (libResources.length > 0) {
                                 setLibResources(libResources);
@@ -144,22 +153,29 @@ function Category(props) {
                                 setLibResources([0]);
                               }
                             };
-
-                            getResources();
+                            await removeFromLibrary();
+                            await getResources();
                           }}
                         />
                       ) : (
+                        resource.author.id !== localStorageId ?
                         <FavoriteIcon
-                          onClick={() => {
-                            userlib.saveInLibrary(resource.id);
+                          onClick={async () => {
+                            const saveFavorite = () => {
+                              return new Promise((resolve, reject) => {
+                                resolve(userlib.saveInLibrary(resource.id))
+                              })
+                            }
                             const getResources = async () => {
                               const libResources = await fetchLibResources();
                               setLibResources(libResources);
                             };
-
-                            getResources();
+                            await saveFavorite();
+                            await getResources();
                           }}
                         />
+                        :
+                        <NotInterestedIcon/>
                       )}
                     </IconButton>
                     <IconButton aria-label="like">
@@ -173,25 +189,54 @@ function Category(props) {
                             />
                           ) : (
                             <ThumbUpIcon 
-                              onClick={() => {
-                                userlib.postReactionLike(resource.id);
+                              onClick={async () => {
+                                const saveReaction = () => {
+                                  return new Promise((resolve,reject) => {
+                                    resolve(userlib.postReactionLike(resource.id));
+                                  })
+                                }
                                 const getResources = async () => {
+                                  
                                   const resources = await fetchResources();
                                   setResources(resources);
                                 };
-            
-                                getResources();
+                                await saveReaction();
+                                await getResources();
                               }}
                             />
                           )
                         }
                       </Badge>
                     </IconButton>
-                    <IconButton aria-label="share">
-                      <ShareIcon />
-                    </IconButton>
                     <IconButton aria-label="report">
-                      <ReportIcon />
+                      <ReportIcon 
+                        onClick={() => {
+                          userlib.reportResource(resource.id);
+                          const getResources = async () => {
+                            const resource = await fetchResources();
+                            setResources(resource);
+                          }
+      
+                          getResources();
+                        }}
+                      />
+                    </IconButton>
+                    <IconButton>
+                      {resource.author.id !== localStorageId ? 
+                        <ReportProblemIcon 
+                        onClick={() => {
+                          userlib.reportUser(resource.author.id);
+                          const getResources = async () => {
+                            const resource = await fetchResources();
+                            setResources(resource);
+                          }
+      
+                          getResources();
+                        }}
+                      />
+                      : 
+                        <NotInterestedIcon/>
+                      }                      
                     </IconButton>
                     <Button size="medium" color="primary">
                       <Link
@@ -209,6 +254,8 @@ function Category(props) {
                 </Card>
               </Grid>
             );
+            }
+            
           })
         ) : (
           <Alert severity="info">

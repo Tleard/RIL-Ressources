@@ -12,17 +12,17 @@ function HomeCarousel(props) {
         {
             name: "Bienvenu sur Ressource Relationnelle",
             description: "Une plateforme Citoyenne",
-            image: "https://picsum.photos/1400/400"
+            image: "images/logo_pc.jpg"
         },
         {
             name: "Partagez des ressources",
             description: "Renforcez la solidatrité autour de soi",
-            image: "https://picsum.photos/1400/400"
+            image: "images/logo_postit.jpg"
         },
         {
             name: "En apprendre plus",
             description: "Augmentez ses compétences",
-            image: "https://picsum.photos/1400/400"
+            image: "images/logo_meeting.jpg"
         }
     ]
 
@@ -53,8 +53,6 @@ function Item(props)
             alignItems: "center"
           }}
         >
-          <h2>{props.item.name}</h2>
-          <p>{props.item.description}</p>
         </div>
       </Paper>
     );
