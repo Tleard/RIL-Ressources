@@ -215,7 +215,7 @@ class ResourceItem extends React.Component {
             }
             
               {this.props.postData.reactions.length > 1 ?
-                  <Text>{this.props.postData.reactions.length}</Text>
+                  <Text>{this.props.postData.reactions.length - 1}</Text>
                   :
                   <Text>0</Text>
               }

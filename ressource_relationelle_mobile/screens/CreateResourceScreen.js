@@ -69,7 +69,7 @@ const CreateResource = (props) => {
         name: 'my_photo.jpg',
         type: 'image/jpg'
       });
-      
+
       try {
         await AsyncStorage.getItem("userToken").then((responseJson) => {
           try {
@@ -82,7 +82,7 @@ const CreateResource = (props) => {
               }),
               body: formData,
             })
-              .then((response) => response.text(), setIsRegistraionSuccess(true))
+              .then((response) => response.text())
           } catch (e) {
             console.error("Something went wrong" + e);
             
@@ -92,12 +92,10 @@ const CreateResource = (props) => {
         console.error("Somenting went wrong" + e);
       }
     };
-    _fetchResources();
-    if(isRegistraionSuccess == true ){
+      _fetchResources();
       props.navigation.navigate("Profile")
-    }
   };
- 
+
 
 
   const fetchCategories = async () => {
