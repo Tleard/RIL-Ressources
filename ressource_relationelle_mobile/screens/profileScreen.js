@@ -2,6 +2,7 @@ import * as React from "react";
 import {
     Button,
     View,
+    ScrollView,
     StyleSheet,
     AsyncStorage,
     TextInput,
@@ -235,11 +236,11 @@ class profileScreen extends React.Component {
             return (
                 <View>
                     <Paragraph style={{fontSize : 22, paddingTop: height/30, paddingBottom : height/70}}>Ressources :</Paragraph>
-                    <FlatList
-                        data={this.state.userResources}
-                        keyExtractor={(item) => String(item.id)}
-                        renderItem={({item}) => <ResourceItem postData={item} postLib={this.state.postDataLib} DisplayDetails={this._DisplayDetails}/>}
-                    />
+                        <FlatList
+                            data={this.state.userResources}
+                            keyExtractor={(item) => String(item.id)}
+                            renderItem={({item}) => <ResourceItem postData={item} postDataLib={this.state.postDataLib} DisplayDetails={this._DisplayDetails}/>}
+                        />
                 </View>
             )
         }
