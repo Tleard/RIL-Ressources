@@ -19,6 +19,7 @@ import BlockedUserList from "./components/BlockedUserList";
 import BlockedResList from "./components/BlockedResList";
 import ResRepList from "./components/ResRepList";
 import Profile from "./components/Profile"
+import MyResources from "./components/MyResources";
 
 import "./App.css";
 
@@ -118,6 +119,12 @@ function App() {
                                         path="/resource"
                                         component={Resource}
                                     />
+                                    <ProtectedRoute
+                                        exact
+                                        path="/me"
+                                        component={MyResources}
+                                    />
+
                                     <Route path="*" component={Home}/>
                                 </Switch>
                             </Container>

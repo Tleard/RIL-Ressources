@@ -77,6 +77,9 @@ if (props.role === 'admin') {
                 <Typography component={Link} to="/" variant="h6" className={classes.title}>
                   Publier
                 </Typography>
+                  <Typography component={Link} to="/me" variant="h6" className={classes.title}>
+                      Mes Ressources
+                  </Typography>
                 <Typography component={Link} to="/" variant="h6" className={classes.title}>
                   Aide
                 </Typography>

@@ -28,6 +28,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Validator\Constraints\Json;
 
 /**
  * Class ResourcesController
@@ -423,6 +424,28 @@ class ResourcesController extends AbstractController
         return $this->json($resources,
             Response::HTTP_ACCEPTED
         );
+    }
+
+    /**
+     * @Route(name="delRes", path="api/user/delRes", methods={"POST"})
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function deleteRes(Request $request){
+        $em = $this->getDoctrine()->getManager();
+        $data = json_decode($request->getContent(), true);
+
+        $res = $em->getRepository(Resource::class)->find( [
+            'id' => $data['r']
+        ]);
+
+        $em->remove($res);
+        $em->flush();
+        $em->persist($res);
+
+        return $this->json(['message' => 'ressources supprimées']);
+
+
     }
 
 }

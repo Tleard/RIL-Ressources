@@ -503,5 +503,23 @@ class UsersController extends AbstractFOSRestController
         }
     }
 
+    /**
+     * @Route(name="me", path="/api/user/me", methods={"POST"})
+     * @return JsonResponse
+     */
+
+    public function me(){
+        $uId = $this->getUser()->getId();
+
+
+        $em = $this->getDoctrine()->getManager();
+                $resources = $em->getRepository(Resource::class)
+                    ->createQueryBuilder('r')->where('r.author = :author')
+                    ->setParameter('author', $uId)->getQuery()->getResult();
+        return $this->json($resources,
+            Response::HTTP_ACCEPTED
+        );
+    }
+
 
 }

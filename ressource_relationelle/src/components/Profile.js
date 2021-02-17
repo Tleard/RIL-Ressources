@@ -12,6 +12,7 @@ import ShareIcon from "@material-ui/icons/Share";
 import ReportIcon from "@material-ui/icons/Report";
 import {Link} from "react-router-dom";
 import Picture from '../assets/nopicture.png';
+import Moment from "moment";
 
 
 
@@ -307,19 +308,14 @@ function Profile(props){
                         </List>
                     </div>
                 </Container>
-
             {res.map((r) => {
                 // To format the Date to dd/mm/YYYY
-                const date = new Date(r.createdAt);
-                const day = date.getDate();
-                const month = ("0" + date.getMonth()).slice(-1) + 1;
-                const year = date.getFullYear();
                 return (
                     <Card variant="outlined">
                         <CardHeader
                             key={r.id}
                             title={r.title}
-                            subheader={`${r.author.username} - ${day}/${month}/${year}`}
+                            subheader={`${r.author.username} - date de publication: ${Moment(r.createdAt).format('L')}`}
                         />
                         <CardContent>{r.description}</CardContent>
                         <CardActions style={{ justifyContent: "flex-end" }}>
