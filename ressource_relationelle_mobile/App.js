@@ -51,7 +51,7 @@ function getHeaderTitle(route) {
   
     switch (routeName) {
       case 'Ressources':
-        return 'Resources';
+        return 'Ressources';
       case 'Profile':
         return 'Mon profil';
       case 'Register':
@@ -63,7 +63,7 @@ function getHeaderTitle(route) {
         case "CategoryScreen":
         return "Catégories ";
         case "Library":
-        return "Favourites ";
+        return "Favoris ";
         
     }
   }
@@ -116,7 +116,7 @@ function App() {
                     component={CategoryScreen}
                 />
                  <Stack.Screen
-                    name="Résources par categorie"
+                    name="Ressources par categorie"
                     component={CategoryResourcesScreen}
                 />
             </Stack.Navigator>

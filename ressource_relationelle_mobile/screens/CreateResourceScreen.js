@@ -96,8 +96,6 @@ const CreateResource = (props) => {
     if(isRegistraionSuccess == true ){
       props.navigation.navigate("Profile")
     }
-    else alert('Something Went Wrong')
-
   };
  
 
