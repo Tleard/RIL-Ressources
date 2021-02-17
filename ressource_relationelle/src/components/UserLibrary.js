@@ -87,12 +87,15 @@ function UserLibrary() {
                     </IconButton>
                     <Button size="medium" color="primary">
                       <Link
-                        key={resource.id}
-                        //to={{pathname: "category/resource", state: {id: resource.id}}}
-                        to={{
-                          pathname: "resource",
-                          hash: `${resource.id}`,
-                        }}
+                          key={resource.id}
+                          //to={{pathname: "category/resource", state: {id: resource.id}}}
+                          to={{
+                            pathname: "resource",
+                            state : {
+                              role : ""
+                            },
+                            hash: `${resource.id}̀̀`, //don't forget the backtick
+                          }}
                       >
                         Consulter
                       </Link>
