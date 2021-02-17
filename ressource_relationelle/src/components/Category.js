@@ -26,6 +26,7 @@ import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import Badge from '@material-ui/core/Badge';
 import NotInterestedIcon from '@material-ui/icons/NotInterested';
 import ReportProblemIcon from '@material-ui/icons/ReportProblem';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 
 // MaterialUI Lab
 
@@ -239,6 +240,32 @@ function Category(props) {
                       : 
                         <NotInterestedIcon/>
                       }                      
+                    </IconButton>
+                    <IconButton aria-label="profile">
+                      {/* <AccountCircleIcon>
+                        <Link 
+                          key={resource.id}
+                          to={{
+                            pathname: "profile",
+                            state : {
+                              role : ''
+                            },
+                            hash: `${resource.author.id}`
+                          }}
+                        />
+                      </AccountCircleIcon> */}
+                      <Link 
+                          key={resource.id}
+                          to={{
+                            pathname: "profile",
+                            state : {
+                              role : ''
+                            },
+                            hash: `${resource.author.id}`
+                          }}
+                        >
+                          <AccountCircleIcon/>
+                        </Link>
                     </IconButton>
                     <Button size="medium" color="primary">
                       <Link

@@ -109,50 +109,56 @@ function App() {
         )
     } else if (roleTab === 'user') {
         return (
-            <>
-
+          <>
             <ThemeProvider theme={theme}>
-                <BrowserRouter>
-                    <Router>
-                        <Navigation role={roleTab}/>
-                        <Container maxWidth="lg">
-                            <Switch>
-                                <ProtectedRoute exact path="/home" component={Home}/>
-                                <ProtectedRoute exact path="/categories" component={Categories}/>
-                                <ProtectedRoute
-                                    exact
-                                    path="/category"
-                                    component={Category}
-                                />
-                                <ProtectedRoute
-                                    exact
-                                    path="/resource"
-                                    component={Resource}
-                                />
-                                <ProtectedRoute 
-                                    exact 
-                                    path="/userlibrary"
-                                    component={UserLibrary}
-                                />
-                                <ProtectedRoute 
-                                    exact
-                                    path="/publication"
-                                    component={Publication}
-                                />
-                                <ProtectedRoute
-                                    exact
-                                    path="/me"
-                                    component={MyResources}
-                                />
-                                <Route path="*" component={Home}/>
-                            </Switch>
-                        </Container>
-                    </Router>
-                </BrowserRouter>
+              <BrowserRouter>
+                <Router>
+                  <Navigation role={roleTab} />
+                  <Container maxWidth="lg">
+                    <Switch>
+                      <ProtectedRoute exact path="/home" component={Home} />
+                      <ProtectedRoute
+                        exact
+                        path="/categories"
+                        component={Categories}
+                      />
+                      <ProtectedRoute
+                        exact
+                        path="/category"
+                        component={Category}
+                      />
+                      <ProtectedRoute
+                        exact
+                        path="/resource"
+                        component={Resource}
+                      />
+                      <ProtectedRoute
+                        exact
+                        path="/userlibrary"
+                        component={UserLibrary}
+                      />
+                      <ProtectedRoute
+                        exact
+                        path="/publication"
+                        component={Publication}
+                      />
+                      <ProtectedRoute
+                        exact
+                        path="/me"
+                        component={MyResources}
+                      />
+                      <ProtectedRoute
+                        exact
+                        path="/profile"
+                        component={Profile}
+                      />
+                      <Route path="*" component={Home} />
+                    </Switch>
+                  </Container>
+                </Router>
+              </BrowserRouter>
             </ThemeProvider>
-
-            </>
-
+          </>
         );
     }
     else if (roleTab == null){

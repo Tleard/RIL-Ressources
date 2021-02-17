@@ -25,6 +25,7 @@ import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import Badge from '@material-ui/core/Badge';
 import NotInterestedIcon from '@material-ui/icons/NotInterested';
 import ReportProblemIcon from '@material-ui/icons/ReportProblem';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 
 
 //const {id}  = props.location.state;
