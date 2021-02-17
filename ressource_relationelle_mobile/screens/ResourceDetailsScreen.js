@@ -58,7 +58,6 @@ class ProfileScreen extends React.Component{
                                 {
                                     this.setState({reactionsLength : responseText[0].reactions.length})
                                 }
-                                //console.log(responseText[0].reactions.length)
                             })
                             .catch((error) => {
                                 console.error(error.message)

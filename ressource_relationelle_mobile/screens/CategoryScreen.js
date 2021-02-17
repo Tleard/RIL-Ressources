@@ -45,7 +45,7 @@ export class CategoryScreen extends React.Component {
     }
    
     _DisplayDetails = (categoryName) => {
-        this.props.navigation.navigate("CategoryResources", {categoryName: categoryName});
+        this.props.navigation.navigate("Résources par categorie", {categoryName: categoryName});
     }
 
     

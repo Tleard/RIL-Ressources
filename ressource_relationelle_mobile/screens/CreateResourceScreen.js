@@ -43,7 +43,6 @@ const CreateResource = (props) => {
   const [isRegistraionSuccess, setIsRegistraionSuccess] = useState(false);
 
   const handleSubmitButton = () => {
-    console.log(oneCategorie);
     setErrortext("");
     if (!title) {
       alert("Veuillez renseigner le titre");
@@ -59,7 +58,7 @@ const CreateResource = (props) => {
     }
 
     let _fetchResources = async () => {
-
+     
       let formData = new FormData();
       formData.append("title", title);
       formData.append("description", description);
@@ -83,9 +82,10 @@ const CreateResource = (props) => {
               }),
               body: formData,
             })
-              .then((response) => response.text())
+              .then((response) => response.text(), setIsRegistraionSuccess(true))
           } catch (e) {
             console.error("Something went wrong" + e);
+            
           }
         });
       } catch (e) {
@@ -93,6 +93,10 @@ const CreateResource = (props) => {
       }
     };
     _fetchResources();
+    if(isRegistraionSuccess == true ){
+      props.navigation.navigate("Profile")
+    }
+    else alert('Something Went Wrong')
 
   };
  

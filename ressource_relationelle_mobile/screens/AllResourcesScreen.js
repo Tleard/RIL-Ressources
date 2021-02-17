@@ -72,9 +72,7 @@ export class AllResourcesScreen extends React.Component {
                             .then((response) => response.json())
                             .then((responseText) => {
                                 this.state.loading = false;
-                                this.setState({resources: responseText})
-                                console.log(responseText)
-                               
+                                this.setState({resources: responseText})                               
                                     this.setState({resourcesLenght: responseText.length});
                                     
                             })
