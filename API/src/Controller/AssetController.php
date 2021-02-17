@@ -53,6 +53,7 @@ class AssetController extends AbstractController
     public function showRessourceAsset(Request $request)
     {
         $assetId =$request->get('asset_id');
+
         $em = $this->getDoctrine()->getManager();
 
         try {

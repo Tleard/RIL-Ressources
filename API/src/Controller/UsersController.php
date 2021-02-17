@@ -22,6 +22,7 @@ use Doctrine\ORM\NonUniqueResultException;
 
 use Exception;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
+use FOS\RestBundle\Controller\Annotations as Rest;
 use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 use Lexik\Bundle\JWTAuthenticationBundle\Tests\Functional\Utils\CallableEventSubscriber;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -63,8 +64,16 @@ class UsersController extends AbstractFOSRestController
         $data = json_decode($request->getContent(), true);
 
         /** @var User $user */
-        $user = $em->getRepository(User::class)->findOneBy(["username" => $data['username']]);
-
+        $user = $em->getRepository(User::class)->findOneBy(
+            ["username" => $data['username'],
+            "isBanned" => false
+    ]
+        );
+        if (!isset($user)){
+            return new JsonResponse([
+                'message' => "Compte Bloqué"
+            ], Response::HTTP_UNAUTHORIZED);
+        }
         $userPassword = $em->getRepository(User::class)->findOneByUserForPassword($data['username']);
 
         if ($userPassword == $encoder->encodePassword($user, $data['password'])){
@@ -379,6 +388,10 @@ class UsersController extends AbstractFOSRestController
        $report->setDate(new \DateTime());
        $report->setReportedUser($userReported[0]);
 
+     //  $report->setReportBy($reporter[0]);
+
+
+
        $em->persist($report);
        $em->flush();
 
@@ -488,5 +501,24 @@ class UsersController extends AbstractFOSRestController
             return $this->json(['roles' => 'user']);
         }
     }
+
+    /**
+     * @Route(name="me", path="/api/user/me", methods={"POST"})
+     * @return JsonResponse
+     */
+
+    public function me(){
+        $uId = $this->getUser()->getId();
+
+
+        $em = $this->getDoctrine()->getManager();
+                $resources = $em->getRepository(Resource::class)
+                    ->createQueryBuilder('r')->where('r.author = :author')
+                    ->setParameter('author', $uId)->getQuery()->getResult();
+        return $this->json($resources,
+            Response::HTTP_ACCEPTED
+        );
+    }
+
 
 }

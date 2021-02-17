@@ -27,11 +27,34 @@ class ResourcesCategoryController extends AbstractController
         $em = $this->getDoctrine()->getManager();
 
         try {
-            $qb = $em->getRepository(ResourceCategory::class)
-                ->createQueryBuilder('rc');
+            $resources = $em->getRepository(ResourceCategory::class)
+                ->createQueryBuilder('rc')->where('rc.status != :status')
+                ->setParameter('status', false)->getQuery()->getResult();
+        } catch (NonUniqueResultException $nonUniqueResultException) {
+            return FosRestView::create(['message' => 'Non unique result'], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
 
-            $resources = $qb->getQuery()->getResult();
+        return $this->json($resources,
+            Response::HTTP_FOUND);
 
+    }
+
+    /**
+     * @Rest\Get(
+     *     path = "/api/admin/resources_category",
+     *     name = "list_resource_category_admin"
+     * )
+     * @param Request $request
+     * @return FosRestView|Response
+     */
+    public function listCategoriesActionAdmin(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        try {
+            $resources = $em->getRepository(ResourceCategory::class)
+                ->createQueryBuilder('rc')
+               ->getQuery()->getResult();
         } catch (NonUniqueResultException $nonUniqueResultException) {
             return FosRestView::create(['message' => 'Non unique result'], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
@@ -84,8 +107,6 @@ class ResourcesCategoryController extends AbstractController
      */
     public function deleteCategoriesAction(Request $request)
     {
-
-
         $em = $this->getDoctrine()->getManager();
         $data = json_decode($request->getContent(), true);
 

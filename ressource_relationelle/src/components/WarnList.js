@@ -1,9 +1,10 @@
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import auth from "../auth";
 import Container from "@material-ui/core/Container";
 import {Input, List, ListItem, ListItemText, ListSubheader, Typography} from "@material-ui/core";
-import Link from "@material-ui/core/Link";
+import {Link} from 'react-router-dom'
 import Moment from 'moment'
+import CardActions from "@material-ui/core/CardActions";
 
 function WarnList () {
     Moment.locale('fr');
@@ -110,7 +111,7 @@ function WarnList () {
     if (warnList.length > 0){
     return (
         <Container style={stylesContainer}>
-            <h1> Gestion des averissements</h1>
+            <h1> Gestion des avertissements</h1>
             <List subheader={<ListSubheader> Liste des Avertissements </ListSubheader>}>
                 {warnList.map((l) =>
                     <ListItem>

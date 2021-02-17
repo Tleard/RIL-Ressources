@@ -2,7 +2,7 @@ import auth from "../auth";
 import {useEffect, useState} from "react";
 import Container from "@material-ui/core/Container";
 import {Input, List, ListItem, ListItemText, ListSubheader, Typography} from "@material-ui/core";
-import Link from "@material-ui/core/Link";
+import {Link} from "react-router-dom";
 
 
 function BlockedResList(){
@@ -120,9 +120,20 @@ function BlockedResList(){
                         <ListItem style={dFlexAround}>
 
                             <ListItemText primary={l.title} />
-                            <Link style={btnStyleLink} href="#" color="inherit">
-                               VOIR
-                            </Link>
+                            <Link style={btnStyleLink}
+                                  key={l.id}
+                                //   params={{ role : "admin" }}
+                                //to={{pathname: "category/resource", state: {id: resource.id}}}
+                                  to={{
+                                      pathname: "resource",
+                                      state: {
+                                          role: 'admin',
+                                          option : 'deblock',
+
+                                      },
+                                      hash: `${l.id}`,
+                                  }}
+                            > VOIR </Link>
 
                             <Input type={"submit"} onClick={(e) => deblockRes(e)} name={l.id}  style={btnStyleDes}  value={'DEBLOQUER'}/>
                         </ListItem>

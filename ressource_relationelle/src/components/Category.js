@@ -1,4 +1,5 @@
 // This compenent contains the resources of ONE chosen category
+
 import React from "react";
 import auth from "../auth";
 import { useState, useEffect } from "react";
@@ -6,6 +7,7 @@ import { Link } from "react-router-dom";
 import userlib from "../userLibraryFunctions";
 import moment from 'moment';
 import 'moment/locale/fr';
+
 
 // MaterialUI import
 import Grid from "@material-ui/core/Grid";
@@ -26,7 +28,9 @@ import NotInterestedIcon from '@material-ui/icons/NotInterested';
 import ReportProblemIcon from '@material-ui/icons/ReportProblem';
 
 // MaterialUI Lab
-import { Alert, AlertTitle } from "@material-ui/lab";
+
+import {Alert, AlertTitle} from "@material-ui/lab";
+
 
 function Category(props) {
   // The category name is passed through the hash props in Categories.js
@@ -80,9 +84,7 @@ function Category(props) {
         Authorization: `Bearer ${auth.getToken()}`,
       },
     });
-    const data = await res.json();
-
-    return data;
+    return await res.json();
   };
 
   // The condition check if the User has something in his library.

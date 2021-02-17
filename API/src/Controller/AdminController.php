@@ -212,6 +212,15 @@ class AdminController extends AbstractFOSRestController
             'id' => $report->getReportedUser()
         ]);
 
+        $resources = $em->getRepository(Resource::class)
+            ->createQueryBuilder('r')->where('r.author = :author')
+            ->setParameter('author', $report->getReportedUser())->getQuery()->getResult();
+
+        foreach ($resources as $r ){
+            $r->setIsBlocked(true);
+            $em->persist($r);
+            $em->flush();
+        }
 
         $message = (new \Swift_Message('Hello Email'))
             ->setFrom('ressourcesrelationelle@gmail.com')
@@ -302,6 +311,16 @@ class AdminController extends AbstractFOSRestController
             $user->setIsBanned(false);
         } catch (\Exception $exception) {
             throw new \Exception($exception->getMessage(), Response::HTTP_BAD_REQUEST);
+        }
+
+        $resources = $em->getRepository(Resource::class)
+            ->createQueryBuilder('r')->where('r.author = :author')
+            ->setParameter('author', $user->getId())->getQuery()->getResult();
+
+        foreach ($resources as $r ){
+            $r->setIsBlocked(null);
+            $em->persist($r);
+            $em->flush();
         }
 
         $em->persist($user);

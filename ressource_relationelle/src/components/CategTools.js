@@ -159,7 +159,7 @@ function CategTools() {
         getCategory();
     }, [])
     const fetchCategories = async () => {
-        const res = await fetch(`${global.api}/api/resources_category`, {
+        const res = await fetch(`${global.api}/api/admin/resources_category`, {
             method: 'GET',
             headers: {
                 Accept: "application/json",

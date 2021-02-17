@@ -2,7 +2,7 @@ import {useEffect, useState} from "react";
 import auth from "../auth";
 import Container from "@material-ui/core/Container";
 import {Input, List, ListItem, ListItemText, ListSubheader, Typography} from "@material-ui/core";
-import Link from "@material-ui/core/Link";
+import {Link} from 'react-router-dom'
 
 function ResRepList(){
 
@@ -79,7 +79,7 @@ function ResRepList(){
 
     }
 
-    const blockRes = (e) => {
+const blockRes = (e) => {
 
         const name = e.target.name
 
@@ -139,20 +139,32 @@ function ResRepList(){
             </Container>
         )
     } else {
+
         return (
             <Container style={stylesContainer}>
                 <h1> Gestion des ressources signalées</h1>
                 <List subheader={<ListSubheader> Liste des ressources signalées</ListSubheader>}>
                     {repList.map((l) =>
                         <ListItem>
+                            {console.log(l.reportRessource.id)}
                             <ListItemText primary={l.reportRessource.title} />
 
                             <Input name={l.id} type={"submit"} onClick={(e) => blockRes(e)} style={btnStyleBlock}  value={'BLOQUER'}/>
 
                             <Input name={l.id} type={"submit"} onClick={(e) => closeReport(e)} style={btnStyleClose}  value={'CLOTURER'}/>
-                            <Link style={btnStyleLink} href="#" color="inherit">
-                                VOIR
-                            </Link>
+                            <Link style={btnStyleLink}
+                                key={l.reportRessource.id}
+                             //   params={{ role : "admin" }}
+                                //to={{pathname: "category/resource", state: {id: resource.id}}}
+                                to={{
+                                    pathname: "resource",
+                                    state: {
+                                        role: 'admin',
+                                        rep : l.id
+                                    },
+                                    hash: `${l.reportRessource.id}`,
+                                }}
+                            > VOIR </Link>
                         </ListItem>
 
                     )}

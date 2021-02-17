@@ -37,11 +37,11 @@ const Navigation = (props) => {
 
   const classes = useStyles();
 
+
 // Breakpoints
 const theme = useTheme();
 
 const isMatch = useMediaQuery(theme.breakpoints.down('md'));
-
 
 
 if (props.role === 'admin') {
@@ -66,11 +66,11 @@ if (props.role === 'admin') {
           </AppBar>
       )
     } else if (props.role === 'user') {
-      return (
-        <>
-          <AppBar position="static">
-            <Toolbar>
-              {/* <IconButton
+  return (
+      <>
+        <AppBar position="static">
+          <Toolbar>
+            {/* <IconButton
                 edge="start"
                 className={classes.menuButton}
                 color="inherit"
@@ -79,81 +79,82 @@ if (props.role === 'admin') {
                 <MenuIcon />
               </IconButton> */}
 
-              {isMatch ? (
+            {isMatch ? (
                 <NavDrawer />
-              ) : (
+            ) : (
                 <>
                   <Typography
-                    color="secondary"
-                    component={Link}
-                    to="/home"
-                    variant="h6"
-                    className={classes.title}
+                      color="secondary"
+                      component={Link}
+                      to="/home"
+                      variant="h6"
+                      className={classes.title}
                   >
                     Accueil
                   </Typography>
                   <Typography
-                    color="secondary"
-                    component={Link}
-                    to="/categories"
-                    variant="h6"
-                    className={classes.title}
+                      color="secondary"
+                      component={Link}
+                      to="/categories"
+                      variant="h6"
+                      className={classes.title}
                   >
                     Catégories
                   </Typography>
                   <Typography
-                    color="secondary"
-                    component={Link}
-                    to="/publication"
-                    variant="h6"
-                    className={classes.title}
+                      color="secondary"
+                      component={Link}
+                      to="/publication"
+                      variant="h6"
+                      className={classes.title}
                   >
                     Publier
                   </Typography>
                   <Typography
-                    color="secondary"
-                    component={Link}
-                    to="/userlibrary"
-                    variant="h6"
-                    className={classes.title}
+                      color="secondary"
+                      component={Link}
+                      to="/userlibrary"
+                      variant="h6"
+                      className={classes.title}
                   >
                     Ma Bibliothèque
                   </Typography>
 
                   <Button
-                    variant="outlined"
-                    color="inherit"
-                    onClick={() => {
-                      auth.loggedout(() => {
-                        console.log("callback in test");
-                        window.location.assign("http://localhost:3000/login");
-                      });
-                    }}
+                      variant="outlined"
+                      color="inherit"
+                      onClick={() => {
+                        auth.loggedout(() => {
+                          console.log("callback in test");
+                          window.location.assign("http://localhost:3000/login");
+                        });
+                      }}
                   >
                     Logout
                   </Button>
                 </>
-              )}
-            </Toolbar>
-          </AppBar>
-        </>
-      );
-    }
-    else {
-      return (
+            )}
+          </Toolbar>
+        </AppBar>
+      </>
+  );
+}
+else {
+  return (
 
-          <AppBar position="static">
-            <Toolbar>
-              <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
-                <MenuIcon/>
-              </IconButton>
-              <Button variant="outlined" color="inherit" component={Link} to="/login">Login</Button>
-              <Button color="inherit" component={Link} to="/register">S'inscrire</Button>
-            </Toolbar>
-          </AppBar>
-      )
-    }
+      <AppBar position="static">
+        <Toolbar>
+          <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
+            <MenuIcon/>
+          </IconButton>
+          <Button variant="outlined" color="inherit" component={Link} to="/login">Login</Button>
+          <Button color="inherit" component={Link} to="/register">S'inscrire</Button>
+        </Toolbar>
+      </AppBar>
+  )
+}
 
 }
+
 
 export default withRouter(Navigation);
