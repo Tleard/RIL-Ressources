@@ -21,7 +21,7 @@ import {
 } from "react-native-paper";
 import defaultImage from "../../assets/default-picture.png";
 import { getUrl } from "../../API/RequestHandler";
-//import {navigate} from "@react-navigation/routers/lib/typescript/src/CommonActions";
+import moment from "moment";
 const { width: WIDTH } = Dimensions.get("window");
 
 class ResourceItem extends React.Component {
@@ -35,6 +35,7 @@ class ResourceItem extends React.Component {
       reactions_lenght : 0,
       reaction: "",
       is_liked: false,
+      isFavorite : false,
       is_reported:false
     };
   }
@@ -57,6 +58,7 @@ class ResourceItem extends React.Component {
                   .then((response) => response.json())
                   .then((responseText) => {
                     this.state.loading = false;
+                    alert("Ressource ajoutée aux favoris");
                   })
                   .catch((error) => {
                     console.error(error.message)
@@ -70,7 +72,7 @@ class ResourceItem extends React.Component {
       console.error("Somenting went wrong" + e)
     }
   }
-  
+
   _fetchCreateReactions = async () => {
     try {
       await AsyncStorage.getItem("userToken").then((responseJson) => {
@@ -87,14 +89,19 @@ class ResourceItem extends React.Component {
             body: JSON.stringify({
                 reaction: 'like',
             })
-            
+
           })
             .then((response) => response.json(), )
             .then((responseText) => {
               this.setState({ is_liked: true });
-              this.setState({reaction_length: this.props.postData.reactions.length})
+              this.setState({postData: responseText})
+              if (responseText[0].reactions.length > 1)
+              {
+                this.setState({reaction_length : responseText[0].reactions.length})
+              }
+              //this.setState({reaction_length: this.props.postData.reactions.length})
             })
-           
+
             .catch((error) => {
               console.error(error.message);
             });
@@ -144,6 +151,24 @@ class ResourceItem extends React.Component {
   render() {
     const post = this.props.postData;
     const { DisplayDetails } = this.props;
+    moment.locale(['fr', 'fr']);
+    var date = moment(this.props.postData.createdAt).format('LLLL');
+    var isFavorite = false;
+
+    //check for favorite
+    if (typeof this.props.postDataLib == "object" )
+    {
+      for (const [key, value] of Object.entries(this.props.postDataLib)) {
+        if (value.id === this.props.postData.id)
+        {
+          isFavorite = true;
+        }
+      }
+    } else {
+      //If no argument is passed for comparaison then it's true
+      isFavorite = true;
+    }
+
 
     return (
       <View
@@ -163,8 +188,8 @@ class ResourceItem extends React.Component {
                 {this.props.postData.title}
               </Title>
               <Text size={10} style={{ color: "grey" }}>
-                {this.props.postData.author.username} -{" "}
-                {this.props.postData.createdAt}
+                {this.props.postData.author.username} - {" "}
+                {date}
               </Text>
               <Paragraph style={{ paddingTop: 10 }} numberOfLines={5}>
                 {this.props.postData.description}
@@ -172,23 +197,44 @@ class ResourceItem extends React.Component {
             </Card.Content>
           </TouchableOpacity>
           <Card.Actions style={{ justifyContent: "flex-end" }}>
-            <IconButton
-              onPress={() => {
-                  if(this.state.is_liked === false)
-                  {this._fetchCreateReactions()}
-                  else alert('Vous avez déjà mis like sur cette ressource')
-            }}
-              aria-label="add to favorites"
-              icon="heart-outline"
-            />
-            <Text>{this.props.postData.reactions.length}</Text>
-            <IconButton
-                onPress={() => {
-                  {this._addToLibrary()}
-                }}
-                aria-label="bookmark"
-                icon="bookmark-outline">
-            </IconButton>
+
+            {this.state.is_liked?
+                <IconButton
+                    aria-label="add to favorites"
+                    icon="heart"
+                />
+                :
+                <IconButton
+                onPress={() => { if(this.state.is_liked === false)
+                      {this._fetchCreateReactions()}
+                      else alert('Vous avez déjà mis like sur cette ressource')
+                    }}
+                    aria-label="add to favorites"
+                    icon="heart-outline"
+                />
+            }
+            
+              {this.props.postData.reactions.length > 1 ?
+                  <Text>{this.props.postData.reactions.length}</Text>
+                  :
+                  <Text>0</Text>
+              }
+              {isFavorite === true ?
+                  <IconButton
+                      onPress={() => {
+                        {this._removeFromLibrary()}
+                      }}
+                      aria-label="bookmark"
+                      icon="bookmark" />
+                  :
+                  <IconButton
+                      onPress={() => {
+                        {this._addToLibrary()}
+                      }}
+                      aria-label="bookmark"
+                      icon="bookmark-outline" />
+              }
+
             <IconButton aria-label="share" icon="share-variant"></IconButton>
             <IconButton aria-label="report" icon="alert-octagon" onPress={() => {
                                 if(this.state.is_reported === false)

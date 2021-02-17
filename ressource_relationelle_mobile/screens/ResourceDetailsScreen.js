@@ -3,11 +3,11 @@ import {StyleSheet, Text, TouchableOpacity, View, Image, Dimensions, FlatList} f
 import {Card, Title, Paragraph, IconButton} from 'react-native-paper';
 import {getUrl} from "../API/RequestHandler";
 import { Ionicons } from '@expo/vector-icons';
-import { RectButton, ScrollView } from 'react-native-gesture-handler';
 import { FontAwesome } from '@expo/vector-icons';
 import {AsyncStorage} from 'react-native';
-import {UserHandler} from "../API/UserHandler";
 import Loader from "./Components/Loader";
+import moment from "moment";
+
 
 const {width: WIDTH} = Dimensions.get('window');
 class ProfileScreen extends React.Component{
@@ -28,54 +28,14 @@ class ProfileScreen extends React.Component{
         }
     }
 
-    UNSAFE_componentWillMount(){
+    componentDidMount() {
         this._fetchData();
         this._fetchLib();
-    }
 
-    _fetchDataFavorite = async() => {
-        this.state.loading = true
-        try {
-            let resourceId = this.props.route.params['resourceId'];
-            await AsyncStorage.getItem("userToken")
-                .then((responseJson) => {
-                    try{
-                        let url = getUrl() +"/api/resources/" + resourceId;
-                        this.setState({userId : responseJson[1][1]})
-                        return fetch(url, {
-                            method: 'GET',
-                            headers: new Headers({
-                                'Content-Type': 'application/json',
-                                'Accept': 'application/json',
-                                'Authorization': 'Bearer '+ responseJson[0][1],
-                            }),
-                        })
-                            .then((response) => response.json())
-                            .then((responseText) => {
-                                this.state.loading = false;
-                                this.setState({postData: responseText[0]})
-                                if (responseText[0].reactions.length > 1)
-                                {
-                                    this.setState({reactionsLength : responseText[0].reactions.length})
-                                }
-                            })
-                            .catch((error) => {
-                                console.error(error.message)
-                            })
-                    } catch (e) {
-                        console.error("Something went wrong" + e)
-                    }
-                })
-        }
-        catch (e) {
-            console.error("Something went wrong" + e)
-        }
-
-        if(this.state.postData.assets && this.state.postData.assets.length)
-        {
-            this.setState({postImage : this.state.postData.assets[0].id})
-        }
-    }
+        this.focusListener = this.props.navigation.addListener('focus', () => {
+            this._fetchData();
+            this._fetchLib();
+        })};
 
     _fetchData = async() => {
         this.state.loading = true
@@ -178,6 +138,8 @@ class ProfileScreen extends React.Component{
                             .then((response) => response.json())
                             .then((responseText) => {
                                 this.state.loading = false;
+                                alert("Ressource ajoutée aux favoris");
+                                this.componentDidMount();
                             })
                             .catch((error) => {
                                 console.error(error.message)
@@ -266,6 +228,8 @@ class ProfileScreen extends React.Component{
     render() {
         var width = Dimensions.get('window').width;
         var height = Dimensions.get('window').height;
+        moment.locale(['fr', 'fr']);
+        var date = moment(this.state.postData.createdAt).format('LLLL');
 
         if (this.state.postData.assets && this.state.postData.assets.length)
         {
@@ -275,11 +239,11 @@ class ProfileScreen extends React.Component{
                     <Card style={{width : width /1.05}}>
                         <Card.Content>
                             <Title size={20}>{this.state.postData.title}</Title>
-                            <Text size={10} style={{color: 'grey'}}> - {this.state.postData.createdAt}</Text>
+                            <Text size={10} style={{color: 'grey'}}> - {date}</Text>
                         </Card.Content>
                         <Card.Cover source={{ uri: getUrl() + "/asset/file/" + this.state.postImage }} />
                         <Card.Content>
-                            <Paragraph style={{paddingTop : 10}} numberOfLines={5}>{this.state.postData.description}</Paragraph>
+                            <Paragraph style={{paddingTop : 10}}>{this.state.postData.description}</Paragraph>
                         </Card.Content>
 
                         <Card.Actions style={{ justifyContent: "flex-end" }}>
@@ -322,8 +286,8 @@ class ProfileScreen extends React.Component{
                     <Card style={{width : width /1.05}}>
                         <Card.Content>
                             <Title size={20}>{this.state.postData.title}</Title>
-                            <Text size={10} style={{color: 'grey'}}> - {this.state.postData.createdAt}</Text>
-                            <Paragraph style={{paddingTop : 10}} numberOfLines={5}>{this.state.postData.description}</Paragraph>
+                            <Text size={10} style={{color: 'grey'}}> - {date}</Text>
+                            <Paragraph style={{paddingTop : 10}}>{this.state.postData.description}</Paragraph>
                         </Card.Content>
 
                         <Card.Actions style={{ justifyContent: "flex-end" }}>

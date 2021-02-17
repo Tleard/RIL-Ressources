@@ -39,17 +39,22 @@ export class CategoryScreen extends React.Component {
             loading : false
         }
     }
-
-    UNSAFE_componentWillMount() {
+    componentDidMount() {
+        
         this._fetchCategory();
+
+        this.focusListener = this.props.navigation.addListener('focus', () => {
+            this._fetchCategory();
+        });
     }
    
     _DisplayDetails = (categoryName) => {
-        this.props.navigation.navigate("Résources par categorie", {categoryName: categoryName});
+        this.props.navigation.navigate("Ressources par categorie", {categoryName: categoryName});
     }
 
     
     _fetchCategory = async() => {
+       
         try {
             await AsyncStorage.getItem("userToken").then((responseJson) => {
               try {

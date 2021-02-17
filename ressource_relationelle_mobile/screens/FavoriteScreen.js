@@ -14,6 +14,7 @@ import {
     ImageBackground,
     FlatList
 } from "react-native";
+import { NavigationEvents } from "react-navigation";
 import { Text, Card, Title, Paragraph } from 'react-native-paper';
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -22,7 +23,7 @@ import {LoginAttempt} from "../API/LoginAttempt";
 import {UserHandler} from "../API/UserHandler";
 import {getUrl} from "../API/RequestHandler";
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import Ionicons from "react-native-vector-icons/Ionicons";
+import {useIsFocused} from '@react-navigation/native';
 import ResourceItem from "./Components/ResourceItem";
 import Loader from "./Components/Loader";
 
@@ -30,18 +31,23 @@ export class FavoriteScreen extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            resources:[],
+            resources:'',
             resourcesLenght:'',
             token: '',
             id:'',
+            postDataLib : '',
             error_message:'',
             loading : false
         }
 
     }
 
-    UNSAFE_componentWillMount() {
+    componentDidMount() {
         this._fetchResources();
+
+        this.focusListener = this.props.navigation.addListener('focus', () => {
+            this._fetchResources();
+        });
     }
 
     _DisplayDetails = (resourceId) => {

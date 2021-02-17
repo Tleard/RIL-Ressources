@@ -41,6 +41,7 @@ class profileScreen extends React.Component {
             userReactions : '',
             userReactionsLenght : '',
             profilePicture:'',
+            postDataLib : '',
             token: '',
             id:'',
             error_message:'',
@@ -48,15 +49,23 @@ class profileScreen extends React.Component {
         }
     }
 
-    UNSAFE_componentWillMount() {
+    componentDidMount() {
+        this._fetchLib();
         this._fetchUserInfo();
         this._fetchUserResources();
         this._fetchUserReactions();
+
+        this.focusListener = this.props.navigation.addListener('focus', () => {
+            this._fetchLib();
+            this._fetchUserInfo();
+            this._fetchUserResources();
+            this._fetchUserReactions();
+        });
     }
 
     _fetchUserInfo = async() => {
         //Show Loading
-        this.state.loading = true
+        
         //Get User Info
         try {
             let userId = this.props.route.params['userId'];
@@ -96,6 +105,7 @@ class profileScreen extends React.Component {
     }
 
     _fetchUserResources = async() => {
+        this.state.loading = true
         try {
             let userId = this.props.route.params['userId'];
             await AsyncStorage.getItem("userToken")
@@ -113,6 +123,7 @@ class profileScreen extends React.Component {
                             .then((response) => response.json())
                             .then((responseText) => {
                                 this.setState({userResources: responseText})
+                                this.state.loading = false;
                                 if (responseText[0] == "The user has no ressource")
                                 {
                                     this.setState({userResourcesLenght: 0})
@@ -152,7 +163,7 @@ class profileScreen extends React.Component {
                             .then((responseText) => {
                                 this.setState({userReactions: responseText});
                                 // Hide Loader
-                                this.state.loading = false;
+                                
                                 if (responseText[0] == "The user has no reactions")
                                 {
                                     this.setState({userReactionsLenght: 0});
@@ -173,6 +184,41 @@ class profileScreen extends React.Component {
         }
     }
 
+    _fetchLib = async() => {
+        
+        try {
+            await AsyncStorage.multiGet(["userToken", "user"])
+                .then((responseJson) => {
+                    try{
+                        let url = getUrl() +"/api/user/getLib";
+                        return fetch(url, {
+                            method: 'POST',
+                            headers: new Headers({
+                                'Content-Type': 'application/json',
+                                'Accept': 'application/json',
+                                'Authorization': 'Bearer '+ responseJson[0][1],
+                            }),
+                            body : JSON.stringify({'id' : responseJson[1][1]})
+                        })
+                            .then((response) => response.json())
+                            .then((responseText) => {
+                               
+                                this.setState({postDataLib: responseText})
+                            })
+                            .catch((error) => {
+                                console.error(error.message)
+                            })
+                    } catch (e) {
+                        console.error("Something went wrong" + e);
+                    }
+                })
+        }
+        catch (e) {
+            console.error("Something went wrong" + e)
+        }
+    }
+
+
     _DisplayDetails = (resourceId) => {
         this.props.navigation.navigate("Details", {resourceId: resourceId});
     }
@@ -192,7 +238,7 @@ class profileScreen extends React.Component {
                     <FlatList
                         data={this.state.userResources}
                         keyExtractor={(item) => String(item.id)}
-                        renderItem={({item}) => <ResourceItem postData={item} DisplayDetails={this._DisplayDetails}/>}
+                        renderItem={({item}) => <ResourceItem postData={item} postLib={this.state.postDataLib} DisplayDetails={this._DisplayDetails}/>}
                     />
                 </View>
             )
