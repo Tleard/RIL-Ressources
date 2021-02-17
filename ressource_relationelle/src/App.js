@@ -18,13 +18,13 @@ import Loader from "react-loader-spinner";
 import BlockedUserList from "./components/BlockedUserList";
 import BlockedResList from "./components/BlockedResList";
 import ResRepList from "./components/ResRepList";
-<<<<<<< HEAD
+
 import Profile from "./components/Profile"
 import MyResources from "./components/MyResources";
-=======
+
 import UserLibrary from "./components/UserLibrary";
 import Publication from "./components/Publication";
->>>>>>> origin/develop
+
 
 import "./App.css";
 
@@ -54,7 +54,7 @@ export function getRole() {
 
 const theme = createMuiTheme({
     palette: {
-<<<<<<< HEAD
+
         primary: {
             main: '#009688',
         },
@@ -63,16 +63,8 @@ const theme = createMuiTheme({
         }
     }
 })
-=======
-      primary: {
-        main: '#009688',
-      },
-      secondary: {
-        main: '#404E88'
-      }
-    }
-  })
->>>>>>> origin/develop
+
+
 
 function App() {
     const [roleTab, setRoleTab] = useState(
@@ -89,7 +81,7 @@ function App() {
     if (roleTab === 'admin') {
         return (
             <>
-<<<<<<< HEAD
+
                 <ThemeProvider theme={theme}>
                     <BrowserRouter>
                         <Router>
@@ -112,65 +104,13 @@ function App() {
                         </Router>
                     </BrowserRouter>
                 </ThemeProvider>
-=======
-            <ThemeProvider theme={theme}>
-                <BrowserRouter>
-                    <Router>
-                        <Navigation role={roleTab}/>
-                        <Container maxWidth="lg">
-                            <Switch>
-                                <ProtectedRoute exact path="/categTools" component={CategTools}/>
-                                <ProtectedRoute exact path="/home" component={Home}/>
-                                <ProtectedRoute exact path='/blockedUser' component={BlockedUserList}/>
-                                <ProtectedRoute exact path='/blockedRes' component={BlockedResList}/>
-                                <ProtectedRoute exact path='/repResList' component={ResRepList}/>
-                                <ProtectedRoute exact path='/repUserList' component={UserRepList}/>
-                                <ProtectedRoute exact path='/warnList' component={WarnList} />
-                                <Route path="*" component={Home}/>
-                            </Switch>
-                        </Container>
-                    </Router>
-                </BrowserRouter>
-            </ThemeProvider>
->>>>>>> origin/develop
             </>
 
         )
     } else if (roleTab === 'user') {
         return (
             <>
-<<<<<<< HEAD
-                <ThemeProvider theme={theme}>
-                    <BrowserRouter>
-                        <Router>
-                            <Navigation role={roleTab}/>
-                            <Container maxWidth="lg">
-                                <Switch>
-                                    <ProtectedRoute exact path="/home" component={Home}/>
-                                    <ProtectedRoute exact path="/categories" component={Categories}/>
-                                    <ProtectedRoute
-                                        exact
-                                        path="/category"
-                                        component={Category}
-                                    />
-                                    <ProtectedRoute
-                                        exact
-                                        path="/resource"
-                                        component={Resource}
-                                    />
-                                    <ProtectedRoute
-                                        exact
-                                        path="/me"
-                                        component={MyResources}
-                                    />
 
-                                    <Route path="*" component={Home}/>
-                                </Switch>
-                            </Container>
-                        </Router>
-                    </BrowserRouter>
-                </ThemeProvider>
-=======
             <ThemeProvider theme={theme}>
                 <BrowserRouter>
                     <Router>
@@ -199,13 +139,18 @@ function App() {
                                     path="/publication"
                                     component={Publication}
                                 />
+                                <ProtectedRoute
+                                    exact
+                                    path="/me"
+                                    component={MyResources}
+                                />
                                 <Route path="*" component={Home}/>
                             </Switch>
                         </Container>
                     </Router>
                 </BrowserRouter>
             </ThemeProvider>
->>>>>>> origin/develop
+
             </>
 
         );
@@ -213,7 +158,7 @@ function App() {
     else if (roleTab == null){
 
         return(
-<<<<<<< HEAD
+
             <ThemeProvider theme={theme}>
                 <BrowserRouter>
                     <Router>
@@ -229,23 +174,6 @@ function App() {
                     </Router>
                 </BrowserRouter>
             </ThemeProvider>
-=======
-        <ThemeProvider theme={theme}>
-            <BrowserRouter>
-                <Router>
-                    <Navigation/>
-                    <Container maxWidth="lg">
-                        <Switch>
-                            <Route exact path="/login" component={Login}/>
-                            <Route exact path="/register" component={Register}/>
-                            <Route path="*" component={Login}/>
-
-                        </Switch>
-                    </Container>
-                </Router>
-            </BrowserRouter>
-        </ThemeProvider>
->>>>>>> origin/develop
         )
     } else {
 

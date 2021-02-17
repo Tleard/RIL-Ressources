@@ -37,16 +37,12 @@ const Navigation = (props) => {
 
   const classes = useStyles();
 
-<<<<<<< HEAD
-console.log(props)
-=======
+
 // Breakpoints
 const theme = useTheme();
 
 const isMatch = useMediaQuery(theme.breakpoints.down('md'));
 
-
->>>>>>> origin/develop
 
 if (props.role === 'admin') {
       return (
@@ -70,40 +66,11 @@ if (props.role === 'admin') {
           </AppBar>
       )
     } else if (props.role === 'user') {
-      return (
-<<<<<<< HEAD
-
-          <>
-            <AppBar position="static">
-              <Toolbar>
-                <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
-                  <MenuIcon/>
-                </IconButton>
-                <Typography component={Link} to="/home" variant="h6" className={classes.title}>
-                  Accueil
-                </Typography>
-                <Typography component={Link} to="/" variant="h6" className={classes.title}>
-                  Fil d'actualité
-                </Typography>
-                <Typography component={Link} to="/categories" variant="h6" className={classes.title}>
-                  Catégories
-                </Typography>
-                <Typography component={Link} to="/" variant="h6" className={classes.title}>
-                  Publier
-                </Typography>
-                  <Typography component={Link} to="/me" variant="h6" className={classes.title}>
-                      Mes Ressources
-                  </Typography>
-                <Typography component={Link} to="/" variant="h6" className={classes.title}>
-                  Aide
-                </Typography>
-
-                  <Button color="inherit" onClick={() => {
-=======
-        <>
-          <AppBar position="static">
-            <Toolbar>
-              {/* <IconButton
+  return (
+      <>
+        <AppBar position="static">
+          <Toolbar>
+            {/* <IconButton
                 edge="start"
                 className={classes.menuButton}
                 color="inherit"
@@ -112,82 +79,82 @@ if (props.role === 'admin') {
                 <MenuIcon />
               </IconButton> */}
 
-              {isMatch ? (
+            {isMatch ? (
                 <NavDrawer />
-              ) : (
+            ) : (
                 <>
                   <Typography
-                    color="secondary"
-                    component={Link}
-                    to="/home"
-                    variant="h6"
-                    className={classes.title}
+                      color="secondary"
+                      component={Link}
+                      to="/home"
+                      variant="h6"
+                      className={classes.title}
                   >
                     Accueil
                   </Typography>
                   <Typography
-                    color="secondary"
-                    component={Link}
-                    to="/categories"
-                    variant="h6"
-                    className={classes.title}
+                      color="secondary"
+                      component={Link}
+                      to="/categories"
+                      variant="h6"
+                      className={classes.title}
                   >
                     Catégories
                   </Typography>
                   <Typography
-                    color="secondary"
-                    component={Link}
-                    to="/publication"
-                    variant="h6"
-                    className={classes.title}
+                      color="secondary"
+                      component={Link}
+                      to="/publication"
+                      variant="h6"
+                      className={classes.title}
                   >
                     Publier
                   </Typography>
                   <Typography
-                    color="secondary"
-                    component={Link}
-                    to="/userlibrary"
-                    variant="h6"
-                    className={classes.title}
+                      color="secondary"
+                      component={Link}
+                      to="/userlibrary"
+                      variant="h6"
+                      className={classes.title}
                   >
                     Ma Bibliothèque
                   </Typography>
 
                   <Button
-                    variant="outlined"
-                    color="inherit"
-                    onClick={() => {
->>>>>>> origin/develop
-                      auth.loggedout(() => {
-                        console.log("callback in test");
-                        window.location.assign("http://localhost:3000/login");
-                      });
-                    }}
+                      variant="outlined"
+                      color="inherit"
+                      onClick={() => {
+                        auth.loggedout(() => {
+                          console.log("callback in test");
+                          window.location.assign("http://localhost:3000/login");
+                        });
+                      }}
                   >
                     Logout
                   </Button>
                 </>
-              )}
-            </Toolbar>
-          </AppBar>
-        </>
-      );
-    }
-    else {
-      return (
+            )}
+          </Toolbar>
+        </AppBar>
+      </>
+  );
+}
+else {
+  return (
 
-          <AppBar position="static">
-            <Toolbar>
-              <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
-                <MenuIcon/>
-              </IconButton>
-              <Button variant="outlined" color="inherit" component={Link} to="/login">Login</Button>
-              <Button color="inherit" component={Link} to="/register">S'inscrire</Button>
-            </Toolbar>
-          </AppBar>
-      )
-    }
+      <AppBar position="static">
+        <Toolbar>
+          <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
+            <MenuIcon/>
+          </IconButton>
+          <Button variant="outlined" color="inherit" component={Link} to="/login">Login</Button>
+          <Button color="inherit" component={Link} to="/register">S'inscrire</Button>
+        </Toolbar>
+      </AppBar>
+  )
+}
 
 }
+
 
 export default withRouter(Navigation);

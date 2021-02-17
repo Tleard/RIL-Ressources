@@ -40,6 +40,31 @@ class ResourcesCategoryController extends AbstractController
     }
 
     /**
+     * @Rest\Get(
+     *     path = "/api/admin/resources_category",
+     *     name = "list_resource_category_admin"
+     * )
+     * @param Request $request
+     * @return FosRestView|Response
+     */
+    public function listCategoriesActionAdmin(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        try {
+            $resources = $em->getRepository(ResourceCategory::class)
+                ->createQueryBuilder('rc')
+               ->getQuery()->getResult();
+        } catch (NonUniqueResultException $nonUniqueResultException) {
+            return FosRestView::create(['message' => 'Non unique result'], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+
+        return $this->json($resources,
+            Response::HTTP_FOUND);
+
+    }
+
+    /**
      * @Rest\Post (
      *     path = "/api/admin/addCategory",
      *     name = "create_resource_category"
@@ -82,8 +107,6 @@ class ResourcesCategoryController extends AbstractController
      */
     public function deleteCategoriesAction(Request $request)
     {
-
-
         $em = $this->getDoctrine()->getManager();
         $data = json_decode($request->getContent(), true);
 

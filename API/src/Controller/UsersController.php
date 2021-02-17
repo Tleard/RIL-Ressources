@@ -387,11 +387,11 @@ class UsersController extends AbstractFOSRestController
        $report = new Report();
        $report->setDate(new \DateTime());
        $report->setReportedUser($userReported[0]);
-<<<<<<< HEAD
-     //  $report->setReportBy($reporter[0]);
-=======
 
->>>>>>> origin/develop
+     //  $report->setReportBy($reporter[0]);
+
+
+
        $em->persist($report);
        $em->flush();
 
