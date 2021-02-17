@@ -73,7 +73,7 @@ const RegisterScreen = (props) => {
         fetch(urlBase +'/register', {
           method: 'POST',
           body: JSON.stringify({
-            username: userName,
+          username: userName,
           first_name: firstName,
           last_name: lastName,
           email: userEmail,

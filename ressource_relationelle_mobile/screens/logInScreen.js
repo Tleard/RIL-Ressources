@@ -22,7 +22,7 @@ class logInScreen extends React.Component {
         this.state = {
             username : '',
             password : '',
-            token :'',
+            token :null,
             user : '',
             id:'',
             error_message:'',
@@ -30,27 +30,36 @@ class logInScreen extends React.Component {
     }
 
     _login = async() => {
-        if  (this.state.username.length > 2 && this.state.password.length > 2)
+        if  (this.state.username.length >= 1 && this.state.password.length >= 1)
         {
             //Get all data from connexion and register them as state
             await LoginAttempt(this.state.username, this.state.password).then(data =>
-                this.setState({
-                    token: data.token,
-                    user: data.user,
-                    error_message: JSON.stringify(data.message)
-                })
-            );
+            {
+                if (typeof data.token == 'undefined')
+                {
+                    alert('Mauvais identifiants')
+                } else {
+                    this.setState({
+                        token: data.token,
+                        user: data.user,
+                        error_message: JSON.stringify(data.message)
+                    })
+                }
+            });
         } else if (typeof this.state.error_message !== 'undefined') {
-            alert(this.state.error_message)
+            alert("Merci de saisir vos identifiants")
         }
         //Store Token & Current User
-        await TokenHandler.storeToken(this.state.token, this.state.user);
-        alert("Bienvenue " + this.state.user.username)
-        //this.props.navigation.navigate("profile", {userId: this.state.user.id})
-        this.props.navigation.navigate('Root', {
-            screen: 'Profile',
-            params: {userId: this.state.user.id}
-        });
+        if (typeof this.state.token == 'string')
+        {
+            await TokenHandler.storeToken(this.state.token, this.state.user.id);
+            alert("Bienvenue " + this.state.user.username)
+            //this.props.navigation.navigate("profile", {userId: this.state.user.id})
+            this.props.navigation.navigate('Root', {
+                screen: 'Profile',
+                params: {userId: this.state.user.id}
+            });
+        }
     };
 
 

@@ -12,17 +12,17 @@ function HomeCarousel(props) {
         {
             name: "Bienvenu sur Ressource Relationnelle",
             description: "Une plateforme Citoyenne",
-            image: "https://picsum.photos/1400/400"
+            image: "images/logo_pc.jpg"
         },
         {
             name: "Partagez des ressources",
             description: "Renforcez la solidatrité autour de soi",
-            image: "https://picsum.photos/1400/400"
+            image: "images/logo_postit.jpg"
         },
         {
             name: "En apprendre plus",
             description: "Augmentez ses compétences",
-            image: "https://picsum.photos/1400/400"
+            image: "images/logo_meeting.jpg"
         }
     ]
 
@@ -39,6 +39,7 @@ function HomeCarousel(props) {
 function Item(props)
 {
     return (
+<<<<<<< HEAD
         <Paper>
             <div
                 style={{
@@ -57,6 +58,24 @@ function Item(props)
                 <p>{props.item.description}</p>
             </div>
         </Paper>
+=======
+      <Paper>
+        <div
+          style={{
+            backgroundImage: "url(" + `${props.item.image}` + ")",
+            backgroundPosition: "center",
+            backgroundSize: "cover",
+            backgroundRepeat: "no-repeat",
+            height: "400px",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center"
+          }}
+        >
+        </div>
+      </Paper>
+>>>>>>> origin/develop
     );
 }
 

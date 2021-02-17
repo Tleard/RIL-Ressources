@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\Asset;
 use App\Entity\Resource;
 use App\Entity\ResourceCategory;
 use App\Entity\ResourceStatus;
@@ -10,16 +9,9 @@ use App\Entity\ResourceType;
 use App\Entity\User;
 use App\Form\ResourcesType;
 use App\Service\FileManager;
-use Doctrine\ORM\Id\AssignedGenerator;
-use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\NonUniqueResultException;
 use Exception;
-use Faker\Provider\File;
-use JMS\Serializer\SerializationContext;
-use Symfony\Component\Serializer\SerializerInterface;
-use Symfony\Component\Uid\Uuid;
 use FOS\RestBundle\Controller\Annotations as Rest;
-use FOS\RestBundle\View\View;
 use FOS\RestBundle\View\View as FosRestView;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -122,20 +114,38 @@ class ResourcesController extends AbstractController
 
         $data = $request->request->all();
 
-        /** @var UploadedFile $uploadedAssets */
-        $uploadedAssets = $request->files->all();
+        if ($data === [])
+        {
+            $data = json_decode($request->getContent(), true);
+        }
 
         $resource = new Resource();
 
-        if ($uploadedAssets['assets'] !== NULL)
+        if ($request->files->all() !== [])
         {
-            foreach ($uploadedAssets['assets'] as $file)
-            {
-                //Set Assets , create file(s) & check Type
-                $assets = $fileUpload->UploadFile($file, $this->getParameter('kernel.project_dir'));
-                $resource->addAssets($assets);
+            /** @var UploadedFile $uploadedAssets */
+            $uploadedAssets = $request->files->all();
 
+            if ($uploadedAssets['assets'] !== NULL)
+            {
+                if (gettype($uploadedAssets['assets']) == "object")
+                {
+                   $assets = $fileUpload->UploadFile($uploadedAssets['assets'], $this->getParameter('kernel.project_dir'));
+                   $resource->addAssets($assets);
+                   //Check Constraints for Mime
+                   $fileUpload->CheckMimeTypeConstraints($resource);
+                }
+                foreach ($uploadedAssets['assets'] as $file)
+                {
+                    //Set Assets , create file(s) & check Type
+                    $assets = $fileUpload->UploadFile($file, $this->getParameter('kernel.project_dir'));
+                    $resource->addAssets($assets);
+                    //Check Constraints for Mime
+                    $fileUpload->CheckMimeTypeConstraints($resource);
+
+                }
             }
+
         }
 
         //Default Status
@@ -143,15 +153,21 @@ class ResourcesController extends AbstractController
 
         //Todo : Improve, Create Service
         //Set Data
-        foreach ($data['categories'] as $categoryName)
-        {
-            $category = $em->getRepository(ResourceCategory::class)->findBy(['name' => $categoryName]);
-            $resource->addCategories($category[0]);
-        }
-        $resource->setType($em->getRepository(ResourceType::class)->findOneBy(['type_name' => $data['type']]));
+        //if ($data['categories'])
 
-        //Check Constraints for Mime
-        $fileUpload->CheckMimeTypeConstraints($resource);
+        if (gettype($data['categories']) == "string")
+        {
+            $category = $em->getRepository(ResourceCategory::class)->findBy(['name' => $data['categories']]);
+            $resource->addCategories($category[0]);
+        } else {
+            foreach ($data['categories'] as $categoryName)
+                {
+                    $category = $em->getRepository(ResourceCategory::class)->findBy(['name' => $categoryName]);
+                    $resource->addCategories($category[0]);
+                }
+        }
+
+        $resource->setType($em->getRepository(ResourceType::class)->findOneBy(['type_name' => $data['type']]));
 
         $resource->setAuthor($this->getUser());
         $em = $this->getDoctrine()->getManager();

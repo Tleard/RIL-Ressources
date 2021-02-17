@@ -84,7 +84,7 @@ class UsersController extends AbstractFOSRestController
         } else {
             return new JsonResponse([
                 'message' => "Invalid Credentials."
-                ], Response::HTTP_UNAUTHORIZED);
+            ], Response::HTTP_UNAUTHORIZED);
         }
     }
 
@@ -163,21 +163,11 @@ class UsersController extends AbstractFOSRestController
                     ->setBody("Bienvenue sur Ressources Relationelles veuillez confirmer 
                     votre compte via l'addresse suivante : http://localhost:8000/confirmation/?code=$code");
 
-
-
                 $mailer->send($message);
-
-
-
-
-
-
 
             }
             return $this->json($message, Response::HTTP_CREATED);
-
-
-            //return $user;
+            
         } catch (\Exception $exception) {
             return new JsonResponse(['message' => $exception->getMessage()], Response::HTTP_BAD_REQUEST);
         }
@@ -344,7 +334,6 @@ class UsersController extends AbstractFOSRestController
             }
             return $this->json($user, Response::HTTP_CREATED);
 
-            //return $user;
         } catch (\Exception $exception) {
             return new JsonResponse(['message' => $exception->getMessage()], Response::HTTP_BAD_REQUEST);
         }
@@ -377,7 +366,7 @@ class UsersController extends AbstractFOSRestController
 
     }
     /**
-     * @Route(name="report_user", path="/api/user/report_user", methods={"POST"})
+       * @Route(name="report_user", path="/api/user/report_user", methods={"POST"})
      * @param Request $request
      * @throws Exception
      */
@@ -389,9 +378,6 @@ class UsersController extends AbstractFOSRestController
             'id' => $data['id']
         ]);
 
-        if ($request->get('comment') != ""){
-            $comment = $request->get('comment');
-        }
        $reporterId = $this->getUser()->getId();
 
        $reporter = $em->getRepository(User::class)->findBy([
@@ -401,12 +387,17 @@ class UsersController extends AbstractFOSRestController
        $report = new Report();
        $report->setDate(new \DateTime());
        $report->setReportedUser($userReported[0]);
+<<<<<<< HEAD
      //  $report->setReportBy($reporter[0]);
+=======
+
+>>>>>>> origin/develop
        $em->persist($report);
        $em->flush();
 
         return $this->json(['message' => 'Merci pour votre signalement'], Response::HTTP_CREATED);
     }
+
 
     /**
      * @Route (name="report_ressource", path="/api/user/report_ressource", methods="POST")

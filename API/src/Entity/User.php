@@ -284,13 +284,18 @@ class User implements UserInterface
        return $this->password;
     }
 
-
-
+    /**
+     * @return string|null
+     */
     public function getCodeConfirmation(): ?string
     {
         return $this->codeConfirmation;
     }
 
+    /**
+     * @param string|null $codeConfirmation
+     * @return $this
+     */
     public function setCodeConfirmation(?string $codeConfirmation): self
     {
         $this->codeConfirmation = $codeConfirmation;
@@ -299,18 +304,18 @@ class User implements UserInterface
         return $this;
     }
 
-
-
-
-
-
-
-
+    /**
+     * @return bool|null
+     */
     public function getIsValid(): ?bool
     {
         return $this->is_valid;
     }
 
+    /**
+     * @param bool|null $is_valid
+     * @return $this
+     */
     public function setIsValid(?bool $is_valid): self
     {
         $this->is_valid = $is_valid;
@@ -326,6 +331,10 @@ class User implements UserInterface
         return $this->warnings;
     }
 
+    /**
+     * @param Warning $warning
+     * @return $this
+     */
     public function addWarning(Warning $warning): self
     {
         if (!$this->warnings->contains($warning)) {
@@ -336,6 +345,10 @@ class User implements UserInterface
         return $this;
     }
 
+    /**
+     * @param Warning $warning
+     * @return $this
+     */
     public function removeWarning(Warning $warning): self
     {
         if ($this->warnings->removeElement($warning)) {
@@ -365,6 +378,10 @@ class User implements UserInterface
         return $this;
     }
 
+    /**
+     * @param Resource $library
+     * @return $this
+     */
     public function removeLibrary(Resource $library): self
     {
         $this->library->removeElement($library);
