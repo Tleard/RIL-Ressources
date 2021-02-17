@@ -64,8 +64,16 @@ class UsersController extends AbstractFOSRestController
         $data = json_decode($request->getContent(), true);
 
         /** @var User $user */
-        $user = $em->getRepository(User::class)->findOneBy(["username" => $data['username']]);
-
+        $user = $em->getRepository(User::class)->findOneBy(
+            ["username" => $data['username'],
+            "isBanned" => false
+    ]
+        );
+        if (!isset($user)){
+            return new JsonResponse([
+                'message' => "Compte Bloqué"
+            ], Response::HTTP_UNAUTHORIZED);
+        }
         $userPassword = $em->getRepository(User::class)->findOneByUserForPassword($data['username']);
 
         if ($userPassword == $encoder->encodePassword($user, $data['password'])){
