@@ -56,7 +56,6 @@ export class CategoryResourcesScreen extends React.Component {
     
     _fetchResources = async() => {
        const categoryName =  this.props.route.params.categoryName;
-       console.log(categoryName);
        this.state.loading = true;
        
         try {
@@ -76,7 +75,7 @@ export class CategoryResourcesScreen extends React.Component {
                             .then((responseText) => {
                                 this.state.loading = false;
                                 this.setState({resources: responseText})
-                                console.log(responseText)
+                               
                                
                                     this.setState({resourcesLenght: responseText.length});
                                     

@@ -1,7 +1,7 @@
 import * as React from "react";
 import {Button, View, Text, TouchableOpacity, Image} from "react-native";
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
-import {NavigationContainer} from "@react-navigation/native";
+import {NavigationContainer, getFocusedRouteNameFromRoute} from "@react-navigation/native";
 import {createStackNavigator} from "@react-navigation/stack";
 import logInScreen from "./screens/logInScreen";
 import profileScreen from "./screens/profileScreen";
@@ -42,11 +42,37 @@ const Tab = createMaterialBottomTabNavigator(/*{
     inactiveColor: '#DACE91',
 }*/);
 
+
+function getHeaderTitle(route) {
+    // If the focused route is not found, we need to assume it's the initial screen
+    // This can happen during if there hasn't been any navigation inside the screen
+    // In our case, it's "Feed" as that's the first screen inside the navigator
+    const routeName = getFocusedRouteNameFromRoute(route) ?? 'Feed';
+  
+    switch (routeName) {
+      case 'Ressources':
+        return 'Ressources';
+      case 'Profile':
+        return 'Mon profil';
+      case 'Register':
+        return 'Register';
+        case 'Details':
+        return 'Details';
+        case "CreateResource":
+        return "Création ";
+        case "CategoryScreen":
+        return "Catégories ";
+        case "Library":
+        return "Favoris ";
+        
+    }
+  }
+
 function App() {
     return (
         <NavigationContainer>
             <Stack.Navigator
-                initialRouteName="login"
+                initialRouteName="Connexion"
                 screenOptions={{
                     headerStyle: {
                         backgroundColor: "#009688",
@@ -65,10 +91,12 @@ function App() {
                 <Stack.Screen
                     name="Root"
                     component={Root}
-                    options={{ headerShown: true}}
+                    options={({ route }) => ({
+                        headerTitle: getHeaderTitle(route),
+                      })}
                 />
                 <Stack.Screen
-                    name="login"
+                    name="Connexion"
                     component={logInScreen}
                 />
                 <Stack.Screen
@@ -88,7 +116,7 @@ function App() {
                     component={CategoryScreen}
                 />
                  <Stack.Screen
-                    name="CategoryResources"
+                    name="Ressources par categorie"
                     component={CategoryResourcesScreen}
                 />
             </Stack.Navigator>
