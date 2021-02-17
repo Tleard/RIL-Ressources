@@ -101,7 +101,7 @@ function Publication(props) {
       },
       body: JSON.stringify(payload),
     }).then(() => {
-      //props.history.push("Home");
+      window.location.assign("http://localhost:3000/home");
     });
   };
 

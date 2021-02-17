@@ -132,16 +132,11 @@ function Home() {
               Dernières ressources
             </Typography>
           </Box>
-          <Grid container spacing={5} alignContent="center">
+          <Grid container spacing={5} justify="center">
             {lastResources.map((resource) => (
               <Grid item xs={12} sm={3} key={resource.id}>
                 <Card className={classes.root}>
                   <CardActionArea>
-                    <CardMedia
-                      className={classes.media}
-                      image="/static/images/cards/contemplative-reptile.jpg"
-                      title="Contemplative Reptile"
-                    />
                     <CardContent>
                       <Typography gutterBottom variant="h5" component="h2">
                         {resource.title}
