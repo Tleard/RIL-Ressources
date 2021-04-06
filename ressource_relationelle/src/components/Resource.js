@@ -38,7 +38,7 @@ function Resource(props) {
   const [libResources, setLibResources] = useState([]);
 
   useEffect(() => {
-    if (localStorage.getItem("auth_token")) {
+    if (sessionStorage.getItem("auth_token")) {
       const getResource = async () => {
         const resourceFromServer = await fetchResource();
         setResource(resourceFromServer);
@@ -99,7 +99,10 @@ function Resource(props) {
             });
         }
 
-        let localStorageId = localStorage.idUser.substring(1, localStorage.idUser.length - 1);
+        const id = sessionStorage.getItem('idUser');
+        const len = id.length;
+
+        let localStorageId = id.substring(1, len - 1)
 
         // Checking if a resource was already "liked" or not
         let hasLiked = false;
