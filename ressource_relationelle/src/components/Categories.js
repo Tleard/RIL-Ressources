@@ -15,7 +15,7 @@ function Categories() {
   const [categories, setCategories] = useState([]);
 
   useEffect(() => {
-    if (localStorage.getItem("auth_token")) {
+    if (sessionStorage.getItem("auth_token")) {
       const getCategories = async() => {
         const categoriesFromServer = await fetchCategories();
         setCategories(categoriesFromServer)

@@ -67,6 +67,7 @@ const theme = createMuiTheme({
 
 
 function App() {
+    console.log(sessionStorage.getItem('idUser'))
     const [roleTab, setRoleTab] = useState(
         ''
     )

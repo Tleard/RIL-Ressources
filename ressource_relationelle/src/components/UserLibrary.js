@@ -29,7 +29,7 @@ function UserLibrary() {
   const [libResources, setLibResources] = useState([]);
 
   useEffect(() => {
-    if (localStorage.getItem("auth_token")) {
+    if (sessionStorage.getItem("auth_token")) {
       const getResource = async () => {
         const resourceFromServer = await fetchResource();
         setLibResources(resourceFromServer);

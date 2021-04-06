@@ -41,7 +41,7 @@ function Category(props) {
   const [libResources, setLibResources] = useState([]);
 
   useEffect(() => {
-    if (localStorage.getItem("auth_token")) {
+    if (sessionStorage.getItem("auth_token")) {
       const getResources = async () => {
         const resourcesFromServer = await fetchResources();
         setResources(resourcesFromServer);
@@ -102,8 +102,10 @@ function Category(props) {
       }
     });
   }
+  const id = sessionStorage.getItem('idUser');
+  const len = id.length;
 
-  let localStorageId = localStorage.idUser.substring(1, localStorage.idUser.length - 1);
+  let localStorageId = id.substring(1, len - 1)
   // Loop and Conditional to check if a resource was already "liked" or not by the current user
   for(let object of resources) {
     if(typeof object !== "string"){
