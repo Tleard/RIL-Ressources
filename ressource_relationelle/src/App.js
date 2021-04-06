@@ -68,11 +68,12 @@ const theme = createMuiTheme({
 
 function App() {
     const [roleTab, setRoleTab] = useState(
-        'undef'
+        ''
     )
     useEffect(() => {
-        if (localStorage.auth_token !== undefined) {
-            getRole().then(({roles}) => setRoleTab(roles))
+
+        if (sessionStorage.getItem('auth_token') !== null) {
+         return getRole().then(({roles}) => setRoleTab(roles))
         } else {
             setRoleTab(null);
         }

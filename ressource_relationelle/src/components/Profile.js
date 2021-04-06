@@ -286,8 +286,6 @@ function Profile(props){
 
     if (props.location.state.role !== 'admin') {
         return (
-
-
             <>
                 <Container style={jumbo}>
                     <div style={picProfile}>

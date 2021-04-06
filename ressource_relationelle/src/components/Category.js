@@ -60,15 +60,15 @@ function Category(props) {
   // Fetch Resources
   const fetchResources = async () => {
     const res = await fetch(
-      `${global.api}/api/resources/category/${categoryName}^createdAt=ASC`,
-      {
-        method: "get",
-        headers: {
-          Accept: "application/json",
-          "Content-type": "application/json",
-          Authorization: `Bearer ${auth.getToken()}`,
-        },
-      }
+        `${global.api}/api/resources/category/${categoryName}^createdAt=ASC`,
+        {
+          method: "get",
+          headers: {
+            Accept: "application/json",
+            "Content-type": "application/json",
+            Authorization: `Bearer ${auth.getToken()}`,
+          },
+        }
     );
     const data = await res.json();
 
@@ -94,11 +94,11 @@ function Category(props) {
       if(typeof resource !== "string"){
         resource["inLibrary"] = false;
         for (let libResource of libResources) {
-        if (libResource.id === resource.id) {
-          resource["inLibrary"] = true;
-          break;
+          if (libResource.id === resource.id) {
+            resource["inLibrary"] = true;
+            break;
+          }
         }
-      }
       }
     });
   }
@@ -109,141 +109,141 @@ function Category(props) {
     if(typeof object !== "string"){
       object["hasLiked"] = false;
       for(let prop of object.reactions) {
-      if(prop.user === localStorageId) {
-        object["hasLiked"] = true; 
-        break;   
+        if(prop.user === localStorageId) {
+          object["hasLiked"] = true;
+          break;
+        }
       }
-    }
     }
   }
 
   return (
-    <>
-      <Typography variant="h2" component="h1" style={{ margin: "4% 0 4% 0" }}>
-        Ressources pour : {categoryName}
-      </Typography>
-      <Grid container spacing={3}>
-        {typeof resources[0] !== "string" ? (
-          resources.map((resource) => {
-            if(resource.isBlocked !== true) {
-            const date = new Date(resource.createdAt);
+      <>
+        <Typography variant="h2" component="h1" style={{ margin: "4% 0 4% 0" }}>
+          Ressources pour : {categoryName}
+        </Typography>
+        <Grid container spacing={3}>
+          {typeof resources[0] !== "string" ? (
+              resources.map((resource) => {
+                if(resource.isBlocked !== true) {
+                  const date = new Date(resource.createdAt);
 
-            return (
-              <Grid item xs={12}>
-                <Card variant="outlined">
-                  <CardHeader
-                    title={resource.title}
-                    subheader={`${resource.author.username} - ${moment(date).format('L')}`}
-                  />
-                  <CardContent>{resource.description}</CardContent>
-                  <CardActions style={{ justifyContent: "flex-end" }}>
-                    <IconButton aria-label="add to favorites">
-                      {resource.inLibrary === true ? (
-                        <FavoriteIcon
-                          color="primary"
-                          onClick={ async () => {                            
-                            const removeFromLibrary = () => {
-                              return new Promise((resolve,reject) => {
-                                resolve(userlib.removeFromLibrary(resource.id))
-                              })
-                            }
-                            const getResources = async () => {
-                              
-                              const libResources = await fetchLibResources();
-                              if (libResources.length > 0) {
-                                setLibResources(libResources);
-                              } else {
-                                setLibResources([0]);
-                              }
-                            };
-                            await removeFromLibrary();
-                            await getResources();
-                          }}
-                        />
-                      ) : (
-                        resource.author.id !== localStorageId ?
-                        <FavoriteIcon
-                          onClick={async () => {
-                            const saveFavorite = () => {
-                              return new Promise((resolve, reject) => {
-                                resolve(userlib.saveInLibrary(resource.id))
-                              })
-                            }
-                            const getResources = async () => {
-                              const libResources = await fetchLibResources();
-                              setLibResources(libResources);
-                            };
-                            await saveFavorite();
-                            await getResources();
-                          }}
-                        />
-                        :
-                        <NotInterestedIcon/>
-                      )}
-                    </IconButton>
-                    <IconButton aria-label="like">
-                      <Badge
-                        badgeContent={resource.reactions.length}
-                        color="primary"
-                      >
-                        {resource.hasLiked ? (
-                            <ThumbUpIcon
-                              color="primary"
-                            />
-                          ) : (
-                            <ThumbUpIcon 
-                              onClick={async () => {
-                                const saveReaction = () => {
-                                  return new Promise((resolve,reject) => {
-                                    resolve(userlib.postReactionLike(resource.id));
-                                  })
+                  return (
+                      <Grid item xs={12}>
+                        <Card variant="outlined">
+                          <CardHeader
+                              title={resource.title}
+                              subheader={`${resource.author.username} - ${moment(date).format('L')}`}
+                          />
+                          <CardContent>{resource.description}</CardContent>
+                          <CardActions style={{ justifyContent: "flex-end" }}>
+                            <IconButton aria-label="add to favorites">
+                              {resource.inLibrary === true ? (
+                                  <FavoriteIcon
+                                      color="primary"
+                                      onClick={ async () => {
+                                        const removeFromLibrary = () => {
+                                          return new Promise((resolve,reject) => {
+                                            resolve(userlib.removeFromLibrary(resource.id))
+                                          })
+                                        }
+                                        const getResources = async () => {
+
+                                          const libResources = await fetchLibResources();
+                                          if (libResources.length > 0) {
+                                            setLibResources(libResources);
+                                          } else {
+                                            setLibResources([0]);
+                                          }
+                                        };
+                                        await removeFromLibrary();
+                                        await getResources();
+                                      }}
+                                  />
+                              ) : (
+                                  resource.author.id !== localStorageId ?
+                                      <FavoriteIcon
+                                          onClick={async () => {
+                                            const saveFavorite = () => {
+                                              return new Promise((resolve, reject) => {
+                                                resolve(userlib.saveInLibrary(resource.id))
+                                              })
+                                            }
+                                            const getResources = async () => {
+                                              const libResources = await fetchLibResources();
+                                              setLibResources(libResources);
+                                            };
+                                            await saveFavorite();
+                                            await getResources();
+                                          }}
+                                      />
+                                      :
+                                      <NotInterestedIcon/>
+                              )}
+                            </IconButton>
+                            <IconButton aria-label="like">
+                              <Badge
+                                  badgeContent={resource.reactions.length}
+                                  color="primary"
+                              >
+                                {resource.hasLiked ? (
+                                    <ThumbUpIcon
+                                        color="primary"
+                                    />
+                                ) : (
+                                    <ThumbUpIcon
+                                        onClick={async () => {
+                                          const saveReaction = () => {
+                                            return new Promise((resolve,reject) => {
+                                              resolve(userlib.postReactionLike(resource.id));
+                                            })
+                                          }
+                                          const getResources = async () => {
+
+                                            const resources = await fetchResources();
+                                            setResources(resources);
+                                          };
+                                          await saveReaction();
+                                          await getResources();
+                                        }}
+                                    />
+                                )
                                 }
-                                const getResources = async () => {
-                                  
-                                  const resources = await fetchResources();
-                                  setResources(resources);
-                                };
-                                await saveReaction();
-                                await getResources();
-                              }}
-                            />
-                          )
-                        }
-                      </Badge>
-                    </IconButton>
-                    <IconButton aria-label="report">
-                      <ReportIcon 
-                        onClick={() => {
-                          userlib.reportResource(resource.id);
-                          const getResources = async () => {
-                            const resource = await fetchResources();
-                            setResources(resource);
-                          }
-      
-                          getResources();
-                        }}
-                      />
-                    </IconButton>
-                    <IconButton>
-                      {resource.author.id !== localStorageId ? 
-                        <ReportProblemIcon 
-                        onClick={() => {
-                          userlib.reportUser(resource.author.id);
-                          const getResources = async () => {
-                            const resource = await fetchResources();
-                            setResources(resource);
-                          }
-      
-                          getResources();
-                        }}
-                      />
-                      : 
-                        <NotInterestedIcon/>
-                      }                      
-                    </IconButton>
-                    <IconButton aria-label="profile">
-                      {/* <AccountCircleIcon>
-                        <Link 
+                              </Badge>
+                            </IconButton>
+                            <IconButton aria-label="report">
+                              <ReportIcon
+                                  onClick={() => {
+                                    userlib.reportResource(resource.id);
+                                    const getResources = async () => {
+                                      const resource = await fetchResources();
+                                      setResources(resource);
+                                    }
+
+                                    getResources();
+                                  }}
+                              />
+                            </IconButton>
+                            <IconButton>
+                              {resource.author.id !== localStorageId ?
+                                  <ReportProblemIcon
+                                      onClick={() => {
+                                        userlib.reportUser(resource.author.id);
+                                        const getResources = async () => {
+                                          const resource = await fetchResources();
+                                          setResources(resource);
+                                        }
+
+                                        getResources();
+                                      }}
+                                  />
+                                  :
+                                  <NotInterestedIcon/>
+                              }
+                            </IconButton>
+                            <IconButton aria-label="profile">
+                              {/* <AccountCircleIcon>
+                        <Link
                           key={resource.id}
                           to={{
                             pathname: "profile",
@@ -254,49 +254,49 @@ function Category(props) {
                           }}
                         />
                       </AccountCircleIcon> */}
-                      <Link 
-                          key={resource.id}
-                          to={{
-                            pathname: "profile",
-                            state : {
-                              role : ''
-                            },
-                            hash: `${resource.author.id}`
-                          }}
-                        >
-                          <AccountCircleIcon/>
-                        </Link>
-                    </IconButton>
-                    <Button size="medium" color="primary">
-                      <Link
-                        key={resource.id}
-                        //to={{pathname: "category/resource", state: {id: resource.id}}}
-                        to={{
-                          pathname: "resource",
-                          state : {
-                            role : ''
-                          },
-                          hash: `${resource.id}`,
-                        }}
-                      >
-                        Consulter
-                      </Link>
-                    </Button>
-                  </CardActions>
-                </Card>
-              </Grid>
-            );
-            }
-            
-          })
-        ) : (
-          <Alert severity="info">
-            <AlertTitle>Attention</AlertTitle>
-            Cette catégorie n'a pas encore de ressource
-          </Alert>
-        )}
-      </Grid>
-    </>
+                              <Link
+                                  key={resource.id}
+                                  to={{
+                                    pathname: "profile",
+                                    state : {
+                                      role : ''
+                                    },
+                                    hash: `${resource.author.id}`
+                                  }}
+                              >
+                                <AccountCircleIcon/>
+                              </Link>
+                            </IconButton>
+                            <Button size="medium" color="primary">
+                              <Link
+                                  key={resource.id}
+                                  //to={{pathname: "category/resource", state: {id: resource.id}}}
+                                  to={{
+                                    pathname: "resource",
+                                    state : {
+                                      role : ''
+                                    },
+                                    hash: `${resource.id}`,
+                                  }}
+                              >
+                                Consulter
+                              </Link>
+                            </Button>
+                          </CardActions>
+                        </Card>
+                      </Grid>
+                  );
+                }
+
+              })
+          ) : (
+              <Alert severity="info">
+                <AlertTitle>Attention</AlertTitle>
+                Cette catégorie n'a pas encore de ressource
+              </Alert>
+          )}
+        </Grid>
+      </>
   );
 }
 
