@@ -59,7 +59,7 @@ function Home() {
 
 
     useEffect(() => {
-        if (localStorage.getItem("auth_token")) {
+        if (sessionStorage.getItem("auth_token") !== null) {
             const getCategories = async () => {
                 const categoriesFromServer = await fetchCategories();
                 setCategories(categoriesFromServer);
@@ -108,7 +108,7 @@ function Home() {
         getRole().then(({ roles }) => setRoleTab(roles));
     }, []);
 
-    if (localStorage.auth_token !== undefined) {
+    if (sessionStorage.getItem("auth_token") !== null) {
         if (roleTab === "admin") {
             return (
                 <>

@@ -2,8 +2,8 @@
 
 class Auth {
     constructor() {
-        if(localStorage.getItem('auth_token') !== 'undefined') {
-            this.accessToken = JSON.parse(localStorage.getItem('auth_token'));
+        if(sessionStorage.getItem('auth_token')) {
+            this.accessToken = JSON.parse(sessionStorage.getItem('auth_token'));
         } 
     }
 
@@ -15,8 +15,8 @@ class Auth {
     loggedout(callback) {
 
         console.log('loggedout');
-        localStorage.auth_token = undefined;
-        localStorage.idUser = undefined;
+        sessionStorage.removeItem('auth_token')
+        sessionStorage.removeItem('idUser')
         callback();
     }
 

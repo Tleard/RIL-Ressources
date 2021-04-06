@@ -57,19 +57,20 @@ const Login  = (props) => {
 
     // Store in localstorage
     function storeTokenInLocalStorage(token) {
-        localStorage.removeItem('auth_token');
-        localStorage.setItem('auth_token', JSON.stringify(token));
+        sessionStorage.removeItem('auth_token');
+        sessionStorage.setItem('auth_token', JSON.stringify(token));
     }
 
     // Store Id in localstorage
     function storeIdInLocalStorage(idUser) {
-      localStorage.removeItem('idUser');
-      localStorage.setItem('idUser', JSON.stringify(idUser));
+      sessionStorage.removeItem('idUser');
+      sessionStorage.setItem('idUser', JSON.stringify(idUser));
     }
 
-    if (localStorage.auth_token !== undefined) {
+    if (sessionStorage.getItem('auth_token') !== undefined) {
         return (
           <>
+
             <Container component="main" maxWidth="xs">
               <Box my={3}>
                 <Typography component="h1" variant="h3">
